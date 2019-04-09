@@ -9,3 +9,9 @@
 .card.custom-card {
   overflow-x: scroll;
 }
+
+table-cell-view-mode div div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
