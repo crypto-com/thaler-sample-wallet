@@ -6,5 +6,5 @@ import { Component } from "@angular/core";
   styleUrls: ["./app.component.sass"]
 })
 export class AppComponent {
-  title = "angularjs-wallet";
+  title = "crypto.com-chain-wallet";
 }
