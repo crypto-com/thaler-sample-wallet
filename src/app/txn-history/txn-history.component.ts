@@ -18,7 +18,8 @@ export class TxnHistoryComponent implements OnInit {
     },
     columns: {
       tx_hash: {
-        title: "TxHash"
+        title: "TxHash",
+        width: "5%"
       },
       block: {
         title: "Block",
@@ -39,7 +40,8 @@ export class TxnHistoryComponent implements OnInit {
         }
       },
       target: {
-        title: "From/To"
+        title: "From/To",
+        width: "5%"
       },
       value: {
         title: "Value",
