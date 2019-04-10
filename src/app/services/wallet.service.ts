@@ -1,15 +1,15 @@
 import { Injectable } from "@angular/core";
-import { Observable, of, throwError } from "rxjs";
+import { Observable, of, throwError, BehaviorSubject } from "rxjs";
 import BigNumber from "bignumber.js";
 import * as lodash from "lodash";
 
-import { Wallet } from "./types/wallet";
+import { Wallet } from "../types/wallet";
 
 @Injectable({
   providedIn: "root"
 })
 export class WalletService {
-  private walletData: Wallet[] = [
+  walletData: Wallet[] = [
     {
       id: "Default",
       balance: new BigNumber(50),
@@ -22,6 +22,7 @@ export class WalletService {
     }
   ];
 
+  selectedWalletIndex = new BehaviorSubject<number>(0);
   constructor() {}
 
   addWallet(id: string): Observable<Wallet> {
@@ -45,5 +46,9 @@ export class WalletService {
 
   getWallets(): Observable<Wallet[]> {
     return of(this.walletData);
+  }
+
+  selectWallet(index: number) {
+    this.selectedWalletIndex.next(index);
   }
 }

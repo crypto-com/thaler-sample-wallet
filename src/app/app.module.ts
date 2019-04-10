@@ -3,13 +3,21 @@ import { NgModule } from "@angular/core";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { TxnHistoryComponent } from "./txn-history/txn-history.component";
+import { TxnHistoryComponent } from "./components/txn-history/txn-history.component";
 
 import { Ng2SmartTableModule } from "ng2-smart-table";
-import { HomeComponent } from "./home/home.component";
+import { HomeComponent } from "./components/home/home.component";
+import { WalletListComponent } from "./components/wallet-list/wallet-list.component";
+import { WalletInfoComponent } from "./components/wallet-info/wallet-info.component";
 
 @NgModule({
-  declarations: [AppComponent, TxnHistoryComponent, HomeComponent],
+  declarations: [
+    AppComponent,
+    TxnHistoryComponent,
+    HomeComponent,
+    WalletListComponent,
+    WalletInfoComponent
+  ],
   imports: [BrowserModule, AppRoutingModule, Ng2SmartTableModule],
   providers: [],
   bootstrap: [AppComponent]
