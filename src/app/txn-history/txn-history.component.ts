@@ -22,7 +22,8 @@ export class TxnHistoryComponent implements OnInit {
     },
     columns: {
       tx_hash: {
-        title: "TxHash"
+        title: "TxHash",
+        sort: false
       },
       block: {
         title: "Block",
@@ -33,7 +34,7 @@ export class TxnHistoryComponent implements OnInit {
         filter: false
       },
       action: {
-        title: "",
+        title: "IN/OUT",
         filter: {
           type: "list",
           config: {
@@ -41,10 +42,12 @@ export class TxnHistoryComponent implements OnInit {
             list: [{ value: "IN", title: "IN" }, { value: "OUT", title: "OUT" }]
           }
         },
-        width: "100px"
+        width: "130px",
+        sort: false
       },
       target: {
-        title: "From/To"
+        title: "From/To",
+        sort: false
       },
       value: {
         title: "Value",
