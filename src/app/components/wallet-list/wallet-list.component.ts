@@ -8,16 +8,18 @@ import { WalletService } from "../../services/wallet.service";
   styleUrls: ["./wallet-list.component.scss"]
 })
 export class WalletListComponent implements OnInit {
-  walletList: Wallet[] = this.wallet.walletData;
-  selectedWalletIndex: number;
-  constructor(private wallet: WalletService) {}
-
+  walletList: Wallet[];
+  selectedWallet: Wallet;
+  constructor(private walletService: WalletService) {}
   ngOnInit() {
-    this.wallet.selectedWalletIndex.subscribe(
-      selectedWallet => (this.selectedWalletIndex = selectedWallet)
+    this.walletService
+      .getWallets()
+      .subscribe(wallets => (this.walletList = wallets));
+    this.walletService.selectedWallet.subscribe(
+      selectedWallet => (this.selectedWallet = selectedWallet)
     );
   }
-  public selectWallet(id: number) {
-    this.wallet.selectWallet(id);
+  public selectWallet(wallet: Wallet) {
+    this.walletService.selectWallet(wallet);
   }
 }

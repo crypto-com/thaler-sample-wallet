@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { WalletService } from "../../services/wallet.service";
+import { Wallet } from "src/app/types/wallet";
 
 @Component({
   selector: "app-wallet-info",
@@ -7,13 +8,12 @@ import { WalletService } from "../../services/wallet.service";
   styleUrls: ["./wallet-info.component.scss"]
 })
 export class WalletInfoComponent implements OnInit {
-  walletId: string;
-  constructor(private wallet: WalletService) {}
+  wallet: Wallet;
+  constructor(private walletService: WalletService) {}
 
   ngOnInit() {
-    this.wallet.selectedWalletIndex.subscribe(
-      selectedWalletIndex =>
-        (this.walletId = this.wallet.walletData[selectedWalletIndex].id)
+    this.walletService.selectedWallet.subscribe(
+      selectedWallet => (this.wallet = selectedWallet)
     );
   }
 }

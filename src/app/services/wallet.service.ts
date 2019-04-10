@@ -21,8 +21,7 @@ export class WalletService {
       addresses: ["0xa0b73e1ff0b80914ab6fe0444e65848c4c34450b"]
     }
   ];
-
-  selectedWalletIndex = new BehaviorSubject<number>(0);
+  selectedWallet = new BehaviorSubject<Wallet>(this.walletData[0]);
   constructor() {}
 
   addWallet(id: string): Observable<Wallet> {
@@ -48,7 +47,7 @@ export class WalletService {
     return of(this.walletData);
   }
 
-  selectWallet(index: number) {
-    this.selectedWalletIndex.next(index);
+  selectWallet(wallet: Wallet) {
+    this.selectedWallet.next(wallet);
   }
 }
