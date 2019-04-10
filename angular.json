@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angularjs-wallet": {
+    "crypto.com-chain-wallet": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -60,18 +60,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "angularjs-wallet:build"
+            "browserTarget": "crypto.com-chain-wallet:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "angularjs-wallet:build:production"
+              "browserTarget": "crypto.com-chain-wallet:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angularjs-wallet:build"
+            "browserTarget": "crypto.com-chain-wallet:build"
           }
         },
         "test": {
@@ -95,7 +95,7 @@
         }
       }
     },
-    "angularjs-wallet-e2e": {
+    "crypto.com-chain-wallet-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "prefix": "",
@@ -104,11 +104,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "angularjs-wallet:serve"
+            "devServerTarget": "crypto.com-chain-wallet:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "angularjs-wallet:serve:production"
+              "devServerTarget": "crypto.com-chain-wallet:serve:production"
             }
           }
         },
@@ -122,5 +122,5 @@
       }
     }
   },
-  "defaultProject": "angularjs-wallet"
+  "defaultProject": "crypto.com-chain-wallet"
 }
