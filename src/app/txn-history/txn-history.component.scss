@@ -1,0 +1,26 @@
+.txn-history-table {
+  overflow-x: scroll;
+  .ng2-smart-pagination {
+    .page-link-prev,
+    .page-link-next {
+      padding-top: 11px;
+      padding-bottom: 10px;
+    }
+  }
+}
+
+.txn-history {
+  .card.custom-card {
+    overflow-x: scroll;
+  }
+
+  table-cell-view-mode {
+    div {
+      div {
+        overflow: hidden;
+        max-width: 300px;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}
