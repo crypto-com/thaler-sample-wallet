@@ -10,16 +10,22 @@ import { WalletService } from "../../services/wallet.service";
 export class WalletListComponent implements OnInit {
   walletList: Wallet[];
   selectedWallet: Wallet;
+
   constructor(private walletService: WalletService) {}
+
   ngOnInit() {
     this.walletService
-      .getWallets()
-      .subscribe(wallets => (this.walletList = wallets));
-    this.walletService.selectedWallet.subscribe(
+      .getWalletList()
+      .subscribe(walletList => {
+        this.walletList = walletList;
+      });
+
+    this.walletService.getSelectedWallet().subscribe(
       selectedWallet => (this.selectedWallet = selectedWallet)
     );
   }
-  public selectWallet(wallet: Wallet) {
-    this.walletService.selectWallet(wallet);
+
+  public selectWallet(walletId: string) {
+    this.walletService.selectWalletById(walletId);
   }
 }

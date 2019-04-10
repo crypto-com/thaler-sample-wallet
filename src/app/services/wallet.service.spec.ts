@@ -2,8 +2,7 @@ import { TestBed } from "@angular/core/testing";
 import { Observable } from "rxjs";
 
 import { WalletService } from "./wallet.service";
-import { Wallet } from './types/wallet';
-import BigNumber from 'bignumber.js';
+import BigNumber from "bignumber.js";
 
 describe("WalletService", () => {
   beforeEach(() => TestBed.configureTestingModule({}));
@@ -14,25 +13,23 @@ describe("WalletService", () => {
   });
 
   describe("addWallet", () => {
-    it("should add the wallet", () => {
+    it("should add the wallet", async () => {
       const service: WalletService = TestBed.get(WalletService);
       const walletId = "New Wallet";
 
-      return service.addWallet(walletId).toPromise().then(() => {
-        return service.getWallets().toPromise().then(wallets => {
-          expect(wallets.length).toBeGreaterThan(0);
+      await service.addWallet(walletId).toPromise();
+      const walletList = await service.getWalletList().toPromise();
+      expect(walletList.length).toBeGreaterThan(0);
 
-          const lastWallet = wallets[wallets.length - 1];
-          expect(lastWallet).toEqual({
-            id: walletId,
-            balance: new BigNumber(0),
-            addresses: [],
-          });
-        });
+      const lastWallet = walletList[walletList.length - 1];
+      expect(lastWallet).toEqual({
+        id: walletId,
+        balance: new BigNumber(0),
+        addresses: []
       });
     });
 
-    it("should throw error when the wallet id is duplicated", async (done) => {
+    it("should throw error when the wallet id is duplicated", async done => {
       const service: WalletService = TestBed.get(WalletService);
       const walletId = "New Wallet";
 
@@ -46,17 +43,17 @@ describe("WalletService", () => {
     });
   });
 
-  describe("getWallets", () => {
+  describe("getWalletList", () => {
     it("should return an observable", () => {
       const service: WalletService = TestBed.get(WalletService);
-      expect(service.getWallets()).toEqual(jasmine.any(Observable));
+      expect(service.getWalletList()).toEqual(jasmine.any(Observable));
     });
 
-    it("should resolve an array of wallets in the memory", () => {
+    it("should resolve an array of wallets in the memory", async () => {
       const service: WalletService = TestBed.get(WalletService);
-      return service.getWallets().toPromise().then(wallets => {
-        expect(wallets).toEqual(jasmine.any(Array));
-      });
+      const walletList = await service.getWalletList().toPromise();
+
+      expect(walletList).toEqual(jasmine.any(Array));
     });
   });
 });

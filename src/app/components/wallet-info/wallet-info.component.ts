@@ -12,8 +12,8 @@ export class WalletInfoComponent implements OnInit {
   constructor(private walletService: WalletService) {}
 
   ngOnInit() {
-    this.walletService.selectedWallet.subscribe(
-      selectedWallet => (this.wallet = selectedWallet)
-    );
+    this.walletService
+      .getSelectedWallet()
+      .subscribe(selectedWallet => (this.wallet = selectedWallet));
   }
 }
