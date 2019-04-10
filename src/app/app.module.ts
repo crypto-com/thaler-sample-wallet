@@ -10,6 +10,7 @@ import { HomeComponent } from "./components/home/home.component";
 import { WalletListComponent } from "./components/wallet-list/wallet-list.component";
 import { WalletInfoComponent } from "./components/wallet-info/wallet-info.component";
 
+import { AngularFontAwesomeModule } from "angular-font-awesome";
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,7 +19,12 @@ import { WalletInfoComponent } from "./components/wallet-info/wallet-info.compon
     WalletListComponent,
     WalletInfoComponent
   ],
-  imports: [BrowserModule, AppRoutingModule, Ng2SmartTableModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    Ng2SmartTableModule,
+    AngularFontAwesomeModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })
