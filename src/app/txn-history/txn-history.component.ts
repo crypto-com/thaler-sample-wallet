@@ -22,8 +22,7 @@ export class TxnHistoryComponent implements OnInit {
     },
     columns: {
       tx_hash: {
-        title: "TxHash",
-        width: "5%"
+        title: "TxHash"
       },
       block: {
         title: "Block",
@@ -41,11 +40,11 @@ export class TxnHistoryComponent implements OnInit {
             selectText: "Select...",
             list: [{ value: "IN", title: "IN" }, { value: "OUT", title: "OUT" }]
           }
-        }
+        },
+        width: "100px"
       },
       target: {
-        title: "From/To",
-        width: "5%"
+        title: "From/To"
       },
       value: {
         title: "Value",
