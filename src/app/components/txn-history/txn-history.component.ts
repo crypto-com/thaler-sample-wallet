@@ -4,13 +4,13 @@ import { Component, OnInit, ViewEncapsulation } from "@angular/core";
   selector: "app-txn-history",
   templateUrl: "./txn-history.component.html",
   styleUrls: ["./txn-history.component.scss"],
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None
 })
 export class TxnHistoryComponent implements OnInit {
   constructor() {}
   settings = {
     attr: {
-      class: "txn-history",
+      class: "txn-history"
     },
     pager: {
       perPage: 5

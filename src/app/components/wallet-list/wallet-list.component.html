@@ -2,12 +2,12 @@
   <a
     href="#"
     class="list-group-item list-group-item-action flex-column align-items-start"
-    *ngFor="let wallet of walletList"
-    [ngClass]="{ active: selectedWallet == wallet.id }"
-    (click)="selectWallet(wallet.id)"
+    *ngFor="let wallet of walletList; let i = index"
+    [ngClass]="{ active: selectedWalletIndex == i }"
+    (click)="selectWallet(i)"
   >
     <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">{{ wallet.label }}</h5>
+      <h5 class="mb-1">{{ wallet.id }}</h5>
     </div>
     <small>{{ wallet.balance }} CRO</small>
   </a>

@@ -1,12 +1,9 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
-import { TxnHistoryComponent } from "./txn-history/txn-history.component";
-import { HomeComponent } from "./home/home.component";
+import { TxnHistoryComponent } from "./components/txn-history/txn-history.component";
+import { HomeComponent } from "./components/home/home.component";
 
-const routes: Routes = [
-  { path: "txn-history", component: TxnHistoryComponent },
-  { path: "**", component: HomeComponent }
-];
+const routes: Routes = [{ path: "**", component: HomeComponent }];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
