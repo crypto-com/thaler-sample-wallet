@@ -1,13 +1,17 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 
 @Component({
   selector: "app-txn-history",
   templateUrl: "./txn-history.component.html",
-  styleUrls: ["./txn-history.component.scss"]
+  styleUrls: ["./txn-history.component.scss"],
+  encapsulation: ViewEncapsulation.None,
 })
 export class TxnHistoryComponent implements OnInit {
   constructor() {}
   settings = {
+    attr: {
+      class: "txn-history",
+    },
     pager: {
       perPage: 5
     },
