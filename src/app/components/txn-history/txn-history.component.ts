@@ -27,7 +27,8 @@ export class TxnHistoryComponent implements OnInit {
       },
       block: {
         title: "Block",
-        filter: false
+        filter: false,
+        sortDirection: "desc"
       },
       age: {
         title: "Age",
