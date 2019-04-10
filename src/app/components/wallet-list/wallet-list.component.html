@@ -1,0 +1,18 @@
+<div class="list-group">
+  <a
+    href="#"
+    class="list-group-item list-group-item-action flex-column align-items-start"
+    *ngFor="let wallet of walletList"
+    [ngClass]="{ active: selectedWallet == wallet }"
+    (click)="selectWallet(wallet.id)"
+  >
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">{{ wallet.id }}</h5>
+    </div>
+    <small>{{ wallet.balance }} CRO</small>
+  </a>
+</div>
+
+<button type="button" class="btn btn-secondary btn-sm btn-block">
+  Create new wallet
+</button>
