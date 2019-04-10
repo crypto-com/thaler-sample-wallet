@@ -1,16 +1,17 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { TxnHistoryComponent } from './txn-history.component';
+import { TxnHistoryComponent } from "./txn-history.component";
+import { Ng2SmartTableModule } from "ng2-smart-table";
 
-describe('TxnHistoryComponent', () => {
+describe("TxnHistoryComponent", () => {
   let component: TxnHistoryComponent;
   let fixture: ComponentFixture<TxnHistoryComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TxnHistoryComponent ]
-    })
-    .compileComponents();
+      declarations: [TxnHistoryComponent],
+      imports: [Ng2SmartTableModule]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +20,7 @@ describe('TxnHistoryComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });
