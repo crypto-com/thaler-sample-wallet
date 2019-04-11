@@ -12,7 +12,7 @@
       Send
     </button>
     &nbsp;
-    <button type="button" class="btn btn-blue">
+    <button type="button" class="btn btn-blue" (click)="openModal(receiveFund)">
       <fa name="inbox"></fa>
       Receive
     </button>
@@ -37,5 +37,22 @@
       (sent)="closeModal()"
       (cancelled)="closeModal()"
     ></app-send-funds-form>
+  </div>
+</ng-template>
+
+<ng-template #receiveFund>
+  <div class="modal-header">
+    <h5 class="modal-title pull-left">Receive Funds</h5>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-receive-fund></app-receive-fund>
   </div>
 </ng-template>
