@@ -6,7 +6,7 @@
     <button
       type="button"
       class="btn btn-green"
-      (click)="openSendFundModal(sendFund)"
+      (click)="openModal(sendFund)"
     >
       <fa name="paper-plane"></fa>
       Send
@@ -26,7 +26,7 @@
       type="button"
       class="close pull-right"
       aria-label="Close"
-      (click)="modalRef.hide()"
+      (click)="closeModal()"
     >
       <span aria-hidden="true">&times;</span>
     </button>
@@ -34,8 +34,8 @@
   <div class="modal-body">
     <app-send-funds-form
       [walletId]="wallet.id"
-      (sent)="closeSendFundModal()"
-      (cancelled)="closeSendFundModal()"
+      (sent)="closeModal()"
+      (cancelled)="closeModal()"
     ></app-send-funds-form>
   </div>
 </ng-template>
