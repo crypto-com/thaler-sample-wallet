@@ -1,11 +1,15 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
+import { FormsModule } from "@angular/forms";
+import { Ng2SmartTableModule } from "ng2-smart-table";
+import { AngularFontAwesomeComponent } from "angular-font-awesome";
+import { ModalModule } from "ngx-bootstrap/modal";
+
 import { HomeComponent } from "./home.component";
 import { TxnHistoryComponent } from "../txn-history/txn-history.component";
-import { Ng2SmartTableModule } from "ng2-smart-table";
 import { WalletListComponent } from "../wallet-list/wallet-list.component";
 import { WalletInfoComponent } from "../wallet-info/wallet-info.component";
-import { AngularFontAwesomeComponent } from "angular-font-awesome";
+import { SendFundsFormComponent } from "../send-funds-form/send-funds-form.component";
 describe("HomeComponent", () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
@@ -17,9 +21,10 @@ describe("HomeComponent", () => {
         TxnHistoryComponent,
         WalletListComponent,
         WalletInfoComponent,
-        AngularFontAwesomeComponent
+        AngularFontAwesomeComponent,
+        SendFundsFormComponent
       ],
-      imports: [Ng2SmartTableModule]
+      imports: [Ng2SmartTableModule, FormsModule, ModalModule.forRoot()]
     }).compileComponents();
   }));
 

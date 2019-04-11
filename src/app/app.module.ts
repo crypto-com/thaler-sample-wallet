@@ -1,6 +1,6 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
-import { FormsModule } from '@angular/forms';
+import { FormsModule } from "@angular/forms";
 import { AngularFontAwesomeModule } from "angular-font-awesome";
 
 import { AppRoutingModule } from "./app-routing.module";
@@ -23,7 +23,7 @@ import { SendFundsFormComponent } from "./components/send-funds-form/send-funds-
     WalletListComponent,
     WalletInfoComponent,
     SendFundsFormComponent,
-    InOutViewComponent,
+    InOutViewComponent
   ],
   entryComponents: [InOutViewComponent],
   imports: [
@@ -32,7 +32,7 @@ import { SendFundsFormComponent } from "./components/send-funds-form/send-funds-
     Ng2SmartTableModule,
     AngularFontAwesomeModule,
     ModalModule.forRoot(),
-    FormsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -47,8 +47,9 @@ export class SendFundsFormComponent implements OnInit {
   }
 
   handleSubmit(f: NgForm): void {
-    console.log(f.value);
-    console.log(f.valid);
+    if (f.valid) {
+      this.send();
+    }
   }
 
   send(): void {
