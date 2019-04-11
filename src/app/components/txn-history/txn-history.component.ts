@@ -14,7 +14,7 @@ export class TxnHistoryComponent implements OnInit {
       class: "txn-history"
     },
     pager: {
-      perPage: 5
+      perPage: 10
     },
     actions: {
       add: false,
@@ -33,7 +33,8 @@ export class TxnHistoryComponent implements OnInit {
       },
       age: {
         title: "Age",
-        filter: false
+        filter: false,
+        sort: false
       },
       from: {
         title: "From",
