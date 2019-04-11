@@ -7,6 +7,7 @@ import { WalletService } from "src/app/services/wallet.service";
   styleUrls: ["./create-wallet-form.component.scss"]
 })
 export class CreateWalletFormComponent implements OnInit {
+  @Output() cancelled = new EventEmitter<void>();
   @Output() created = new EventEmitter<string>();
 
   walletId: string;
@@ -26,5 +27,8 @@ export class CreateWalletFormComponent implements OnInit {
       this.created.emit(id);
     });
   }
-  cancel() {}
+
+  cancel(): void {
+    this.cancelled.emit();
+  }
 }
