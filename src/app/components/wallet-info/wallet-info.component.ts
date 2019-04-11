@@ -24,11 +24,11 @@ export class WalletInfoComponent implements OnInit {
       .subscribe(selectedWallet => (this.wallet = selectedWallet));
   }
 
-  openSendFundModal(template: TemplateRef<any>) {
+  openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
   }
 
-  closeSendFundModal() {
+  closeModal() {
     this.modalRef.hide();
   }
 }
