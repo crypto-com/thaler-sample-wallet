@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output } from "@angular/core";
-import { WalletService } from 'src/app/services/wallet.service';
+import { WalletService } from "src/app/services/wallet.service";
 
 @Component({
   selector: "app-create-wallet-form",
@@ -10,7 +10,7 @@ export class CreateWalletFormComponent implements OnInit {
   @Output() created = new EventEmitter<string>();
 
   walletId: string;
-
+  walletName: string;
   constructor(private walletService: WalletService) {}
 
   ngOnInit() {}
@@ -26,4 +26,5 @@ export class CreateWalletFormComponent implements OnInit {
       this.created.emit(id);
     });
   }
+  cancel() {}
 }
