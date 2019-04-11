@@ -11,7 +11,6 @@ export class CreateWalletFormComponent implements OnInit {
   @Output() created = new EventEmitter<string>();
 
   walletId: string;
-  walletName: string;
   constructor(private walletService: WalletService) {}
 
   ngOnInit() {}

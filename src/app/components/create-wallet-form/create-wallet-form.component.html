@@ -7,12 +7,12 @@
         type="text"
         name="walletId"
         class="form-control"
-        #walletNameModel="ngModel"
+        #walletIdModel="ngModel"
         [ngClass]="{
-          'is-invalid': walletNameModel.value && !walletNameModel.valid
+          'is-invalid': walletIdModel.value && !walletIdModel.valid
         }"
         placeholder="Wallet Name"
-        [(ngModel)]="walletName"
+        [(ngModel)]="walletId"
         required
       />
     </div>
