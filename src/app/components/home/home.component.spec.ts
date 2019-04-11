@@ -10,6 +10,7 @@ import { TxnHistoryComponent } from "../txn-history/txn-history.component";
 import { WalletListComponent } from "../wallet-list/wallet-list.component";
 import { WalletInfoComponent } from "../wallet-info/wallet-info.component";
 import { SendFundsFormComponent } from "../send-funds-form/send-funds-form.component";
+import { CreateWalletFormComponent } from "../create-wallet-form/create-wallet-form.component";
 describe("HomeComponent", () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
@@ -22,7 +23,8 @@ describe("HomeComponent", () => {
         WalletListComponent,
         WalletInfoComponent,
         AngularFontAwesomeComponent,
-        SendFundsFormComponent
+        SendFundsFormComponent,
+        CreateWalletFormComponent
       ],
       imports: [Ng2SmartTableModule, FormsModule, ModalModule.forRoot()]
     }).compileComponents();

@@ -14,7 +14,28 @@
   <a
     href="#"
     class="list-group-item list-group-item-action flex-column align-items-start"
+    (click)="openModal(createWallet)"
   >
     <small> <fa name="plus"></fa> Create new wallet</small>
   </a>
 </div>
+
+<ng-template #createWallet>
+    <div class="modal-header">
+      <h5 class="modal-title pull-left">Create Wallet</h5>
+      <button
+        type="button"
+        class="close pull-right"
+        aria-label="Close"
+        (click)="closeModal()"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-create-wallet-form
+        (created)="closeModal()"
+        (cancelled)="closeModal()"
+      ></app-create-wallet-form>
+    </div>
+  </ng-template>

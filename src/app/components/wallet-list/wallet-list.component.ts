@@ -1,4 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef } from "@angular/core";
+import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
+
 import { Wallet } from "../../types/wallet";
 import { WalletService } from "../../services/wallet.service";
 
@@ -8,24 +10,34 @@ import { WalletService } from "../../services/wallet.service";
   styleUrls: ["./wallet-list.component.scss"]
 })
 export class WalletListComponent implements OnInit {
+  modalRef: BsModalRef;
   walletList: Wallet[];
   selectedWallet: Wallet;
 
-  constructor(private walletService: WalletService) {}
+  constructor(
+    private modalService: BsModalService,
+    private walletService: WalletService
+  ) {}
 
   ngOnInit() {
-    this.walletService
-      .getWalletList()
-      .subscribe(walletList => {
-        this.walletList = walletList;
-      });
+    this.walletService.getWalletList().subscribe(walletList => {
+      this.walletList = walletList;
+    });
 
-    this.walletService.getSelectedWallet().subscribe(
-      selectedWallet => (this.selectedWallet = selectedWallet)
-    );
+    this.walletService
+      .getSelectedWallet()
+      .subscribe(selectedWallet => (this.selectedWallet = selectedWallet));
   }
 
-  public selectWallet(walletId: string) {
+  selectWallet(walletId: string) {
     this.walletService.selectWalletById(walletId);
+  }
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
+
+  closeModal() {
+    this.modalRef.hide();
   }
 }

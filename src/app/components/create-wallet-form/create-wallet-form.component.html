@@ -1,0 +1,29 @@
+<form #f="ngForm" (ngSubmit)="handleSubmit(f)" novalidate>
+  <div class="form-group row">
+    <label for="walletId" class="col-sm-3 col-form-label">Wallet Name</label>
+    <div class="col-sm-9">
+      <input
+        id="walletId"
+        type="text"
+        name="walletId"
+        class="form-control"
+        #walletNameModel="ngModel"
+        [ngClass]="{
+          'is-invalid': walletNameModel.value && !walletNameModel.valid
+        }"
+        placeholder="Wallet Name"
+        [(ngModel)]="walletName"
+        required
+      />
+    </div>
+  </div>
+  <div class="text-right">
+    <button type="button" class="btn btn-secondary" (click)="cancel()">
+      Cancel</button
+    >&nbsp;
+    <button type="submit" class="btn btn-green">
+      <fa name="check"></fa>
+      Create
+    </button>
+  </div>
+</form>

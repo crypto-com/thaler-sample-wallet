@@ -3,7 +3,11 @@
     <h2>{{ wallet.id }}</h2>
   </div>
   <div class="col-6 text-right">
-    <button type="button" class="btn btn-green" (click)="openModal(sendFund)">
+    <button
+      type="button"
+      class="btn btn-green"
+      (click)="openModal(sendFund)"
+    >
       <fa name="paper-plane"></fa>
       Send
     </button>
@@ -22,7 +26,7 @@
       type="button"
       class="close pull-right"
       aria-label="Close"
-      (click)="modalRef.hide()"
+      (click)="closeModal()"
     >
       <span aria-hidden="true">&times;</span>
     </button>

@@ -15,6 +15,7 @@ import { WalletInfoComponent } from "./components/wallet-info/wallet-info.compon
 
 import { ModalModule } from "ngx-bootstrap/modal";
 import { SendFundsFormComponent } from "./components/send-funds-form/send-funds-form.component";
+import { CreateWalletFormComponent } from "./components/create-wallet-form/create-wallet-form.component";
 import { ReceiveFundComponent } from "./components/receive-fund/receive-fund.component";
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { ReceiveFundComponent } from "./components/receive-fund/receive-fund.com
     WalletInfoComponent,
     SendFundsFormComponent,
     InOutViewComponent,
+    CreateWalletFormComponent,
     ReceiveFundComponent
   ],
   entryComponents: [InOutViewComponent],
