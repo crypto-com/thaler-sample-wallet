@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
-import { Observable } from "rxjs";
 import BigNumber from "bignumber.js";
 
 import { WalletService } from "src/app/services/wallet.service";
