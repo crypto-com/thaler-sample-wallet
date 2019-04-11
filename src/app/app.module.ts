@@ -1,5 +1,7 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { NgModule } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { AngularFontAwesomeModule } from "angular-font-awesome";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -11,7 +13,8 @@ import { HomeComponent } from "./components/home/home.component";
 import { WalletListComponent } from "./components/wallet-list/wallet-list.component";
 import { WalletInfoComponent } from "./components/wallet-info/wallet-info.component";
 
-import { AngularFontAwesomeModule } from "angular-font-awesome";
+import { ModalModule } from "ngx-bootstrap/modal";
+import { SendFundsFormComponent } from "./components/send-funds-form/send-funds-form.component";
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,6 +22,7 @@ import { AngularFontAwesomeModule } from "angular-font-awesome";
     HomeComponent,
     WalletListComponent,
     WalletInfoComponent,
+    SendFundsFormComponent,
     InOutViewComponent
   ],
   entryComponents: [InOutViewComponent],
@@ -26,7 +30,9 @@ import { AngularFontAwesomeModule } from "angular-font-awesome";
     BrowserModule,
     AppRoutingModule,
     Ng2SmartTableModule,
-    AngularFontAwesomeModule
+    AngularFontAwesomeModule,
+    ModalModule.forRoot(),
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

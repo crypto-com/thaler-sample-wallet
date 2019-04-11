@@ -3,7 +3,11 @@
     <h2>{{ wallet.id }}</h2>
   </div>
   <div class="col-6 text-right">
-    <button type="button" class="btn btn-green">
+    <button
+      type="button"
+      class="btn btn-green"
+      (click)="openSendFundModal(sendFund)"
+    >
       <fa name="paper-plane"></fa>
       Send
     </button>
@@ -14,3 +18,24 @@
     </button>
   </div>
 </div>
+
+<ng-template #sendFund>
+  <div class="modal-header">
+    <h5 class="modal-title pull-left">Send Funds</h5>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-send-funds-form
+      [walletId]="wallet.id"
+      (sent)="closeSendFundModal()"
+      (cancelled)="closeSendFundModal()"
+    ></app-send-funds-form>
+  </div>
+</ng-template>

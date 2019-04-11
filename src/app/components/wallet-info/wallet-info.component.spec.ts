@@ -1,7 +1,11 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { WalletInfoComponent } from "./wallet-info.component";
 import { AngularFontAwesomeComponent } from "angular-font-awesome";
+import { FormsModule } from "@angular/forms";
+import { ModalModule } from "ngx-bootstrap/modal";
+
+import { WalletInfoComponent } from "./wallet-info.component";
+import { SendFundsFormComponent } from "../send-funds-form/send-funds-form.component";
 
 describe("WalletInfoComponent", () => {
   let component: WalletInfoComponent;
@@ -9,7 +13,12 @@ describe("WalletInfoComponent", () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [WalletInfoComponent, AngularFontAwesomeComponent]
+      declarations: [
+        WalletInfoComponent,
+        AngularFontAwesomeComponent,
+        SendFundsFormComponent
+      ],
+      imports: [FormsModule, ModalModule.forRoot()]
     }).compileComponents();
   }));
 
