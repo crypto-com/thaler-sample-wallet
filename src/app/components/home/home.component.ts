@@ -1,5 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef } from "@angular/core";
 import { WalletService } from "src/app/services/wallet.service";
+
 
 @Component({
   selector: "app-home",
@@ -7,7 +8,9 @@ import { WalletService } from "src/app/services/wallet.service";
   styleUrls: ["./home.component.scss"]
 })
 export class HomeComponent implements OnInit {
-  constructor(private walletService: WalletService) {}
+  constructor(
+    private walletService: WalletService,
+  ) {}
 
   ngOnInit() {
     this.walletService.syncWalletList();

@@ -1,4 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, TemplateRef } from "@angular/core";
+import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
+
 import { WalletService } from "../../services/wallet.service";
 import { Wallet } from "src/app/types/wallet";
 
@@ -8,12 +10,25 @@ import { Wallet } from "src/app/types/wallet";
   styleUrls: ["./wallet-info.component.scss"]
 })
 export class WalletInfoComponent implements OnInit {
+  modalRef: BsModalRef;
   wallet: Wallet;
-  constructor(private walletService: WalletService) {}
+
+  constructor(
+    private walletService: WalletService,
+    private modalService: BsModalService
+  ) {}
 
   ngOnInit() {
     this.walletService
       .getSelectedWallet()
       .subscribe(selectedWallet => (this.wallet = selectedWallet));
+  }
+
+  openSendFundModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
+
+  closeSendFundModal() {
+    this.modalRef.hide();
   }
 }
