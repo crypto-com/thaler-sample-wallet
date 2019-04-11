@@ -1,16 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { InOutViewComponent } from './in-out-view.component';
+import { InOutViewComponent } from "./in-out-view.component";
+import { Input } from "@angular/core";
 
-describe('InOutViewComponent', () => {
+describe("InOutViewComponent", () => {
   let component: InOutViewComponent;
   let fixture: ComponentFixture<InOutViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ InOutViewComponent ]
-    })
-    .compileComponents();
+      declarations: [InOutViewComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +19,7 @@ describe('InOutViewComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });
