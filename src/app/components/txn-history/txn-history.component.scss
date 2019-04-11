@@ -18,9 +18,21 @@
     div {
       div {
         overflow: hidden;
-        max-width: 300px;
+        max-width: 150px;
         text-overflow: ellipsis;
       }
     }
   }
+}
+
+.page-item.active .page-link {
+  background-color: #1199fa;
+  border-color: #1199fa;
+}
+.ng2-smart-sort {
+  color: rgba($color: #000000, $alpha: 0.4);
+}
+table tr th,
+table tr td {
+  font-size: 0.75em !important;
 }
