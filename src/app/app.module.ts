@@ -7,6 +7,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { TxnHistoryComponent } from "./components/txn-history/txn-history.component";
 
+import { InOutViewComponent } from "./components/txn-history/in-out-view/in-out-view.component";
 import { Ng2SmartTableModule } from "ng2-smart-table";
 import { HomeComponent } from "./components/home/home.component";
 import { WalletListComponent } from "./components/wallet-list/wallet-list.component";
@@ -21,8 +22,10 @@ import { SendFundsFormComponent } from "./components/send-funds-form/send-funds-
     HomeComponent,
     WalletListComponent,
     WalletInfoComponent,
-    SendFundsFormComponent
+    SendFundsFormComponent,
+    InOutViewComponent,
   ],
+  entryComponents: [InOutViewComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

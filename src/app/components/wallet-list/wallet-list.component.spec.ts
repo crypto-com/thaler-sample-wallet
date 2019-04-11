@@ -1,16 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { WalletListComponent } from './wallet-list.component';
+import { WalletListComponent } from "./wallet-list.component";
+import { AngularFontAwesomeComponent } from "angular-font-awesome";
 
-describe('WalletListComponent', () => {
+describe("WalletListComponent", () => {
   let component: WalletListComponent;
   let fixture: ComponentFixture<WalletListComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ WalletListComponent ]
-    })
-    .compileComponents();
+      declarations: [WalletListComponent, AngularFontAwesomeComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +19,7 @@ describe('WalletListComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });
