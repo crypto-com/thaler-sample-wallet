@@ -2,8 +2,14 @@
   background-color: #1199fa;
   color: #fff;
 }
+.btn-green {
+  background-color: #20bca4;
+  color: #fff;
+}
 .list-group-item.active {
   background: rgba(17, 153, 250, 0.1);
   border-color: rgba(17, 153, 250, 0.1);
   color: #1199fa;
+  border-left-color: #1199fa;
+  border-left-width: 5px;
 }

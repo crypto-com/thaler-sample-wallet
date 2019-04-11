@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import { InOutViewComponent } from "./in-out-view/in-out-view.component";
 
 @Component({
   selector: "app-txn-history",
@@ -36,6 +37,8 @@ export class TxnHistoryComponent implements OnInit {
       },
       action: {
         title: "IN/OUT",
+        type: "custom",
+        renderComponent: InOutViewComponent,
         filter: {
           type: "list",
           config: {
@@ -156,7 +159,7 @@ export class TxnHistoryComponent implements OnInit {
         "0x88022ca8a70ce32827a9476d2a50fb993050dacf79e632907684274368d26d57",
       block: 10,
       age: 132,
-      action: "IN",
+      action: "OUT",
       target: "0x412177283576d69bc8fd9d05336830776ed3971b",
       value: 123.123,
       tx_fee: 0.00001
