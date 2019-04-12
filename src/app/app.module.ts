@@ -17,6 +17,7 @@ import { ModalModule } from "ngx-bootstrap/modal";
 import { SendFundsFormComponent } from "./components/send-funds-form/send-funds-form.component";
 import { CreateWalletFormComponent } from "./components/create-wallet-form/create-wallet-form.component";
 import { ReceiveFundComponent } from "./components/receive-fund/receive-fund.component";
+import { PopoverModule } from "ngx-bootstrap/popover";
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +37,8 @@ import { ReceiveFundComponent } from "./components/receive-fund/receive-fund.com
     Ng2SmartTableModule,
     AngularFontAwesomeModule,
     ModalModule.forRoot(),
-    FormsModule
+    FormsModule,
+    PopoverModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,1 +1,11 @@
 @import "../../app.component.scss";
+.popover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+.popover-body {
+  color: #fff;
+}
+
+.popover > .arrow:after {
+  border-top-color: rgba(0, 0, 0, 0.8);
+}

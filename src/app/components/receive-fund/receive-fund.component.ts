@@ -1,9 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 
 @Component({
   selector: "app-receive-fund",
   templateUrl: "./receive-fund.component.html",
-  styleUrls: ["./receive-fund.component.scss"]
+  styleUrls: ["./receive-fund.component.scss"],
+  encapsulation: ViewEncapsulation.None
 })
 export class ReceiveFundComponent implements OnInit {
   constructor() {}
