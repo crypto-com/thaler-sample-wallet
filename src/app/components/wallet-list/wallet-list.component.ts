@@ -11,6 +11,10 @@ import { WalletService } from "../../services/wallet.service";
 })
 export class WalletListComponent implements OnInit {
   modalRef: BsModalRef;
+  modalConfig = {
+    backdrop: true,
+    ignoreBackdropClick: true,
+  };
   walletList: Wallet[];
   selectedWallet: Wallet;
 
@@ -34,7 +38,7 @@ export class WalletListComponent implements OnInit {
   }
 
   openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template);
+    this.modalRef = this.modalService.show(template, this.modalConfig);
   }
 
   closeModal() {
