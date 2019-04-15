@@ -1,8 +1,8 @@
-import { AddressDirective } from './address.directive';
+import { AddressValidatorDirective } from "./address.directive";
 
-describe('AddressDirective', () => {
-  it('should create an instance', () => {
-    const directive = new AddressDirective();
+describe("AddressValidatorDirective", () => {
+  it("should create an instance", () => {
+    const directive = new AddressValidatorDirective();
     expect(directive).toBeTruthy();
   });
 });

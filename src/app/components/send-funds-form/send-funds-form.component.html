@@ -22,7 +22,7 @@
         (ngModelChange)="handleAmountChange($event)"
         required
         pattern="\d*\.?\d+"
-        [appSufficientBalance]="selectedWallet.balance"
+        [appSufficientBalance]="selectedWallet?.balance"
       />
       <div class="input-group-append">
         <div class="input-group-text">CRO</div>
