@@ -25,7 +25,9 @@ export class SufficientBalanceValidatorDirective implements Validator, OnChanges
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.balance && this.onChange) {
-      this.onChange();
+      setTimeout(() => {
+        this.onChange();
+      });
     }
   }
 
@@ -39,7 +41,7 @@ export class SufficientBalanceValidatorDirective implements Validator, OnChanges
 }
 export function sufficientBalanceValidator(balance: BigNumber): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
-    if (!control.value) {
+    if (!control.value || new BigNumber(control.value).isNaN()) {
       return null;
     }
     const valid = balance.isGreaterThanOrEqualTo(control.value);
