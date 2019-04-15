@@ -55,11 +55,6 @@ export class SendFundsFormComponent implements OnInit {
     this.selectedWallet = this.findWalletById(walletId);
   }
 
-  // https://stackoverflow.com/a/53938552/3259983
-  handleWalletIdAfterChanged(form: NgForm): void {
-    form.controls.amount.updateValueAndValidity();
-  }
-
   findWalletById(walletId: string): Wallet {
     return this.walletList.find(wallet => wallet.id === walletId);
   }
