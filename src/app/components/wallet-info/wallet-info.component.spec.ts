@@ -6,6 +6,9 @@ import { ModalModule } from "ngx-bootstrap/modal";
 
 import { WalletInfoComponent } from "./wallet-info.component";
 import { SendFundsFormComponent } from "../send-funds-form/send-funds-form.component";
+import { ReceiveFundComponent } from "../receive-fund/receive-fund.component";
+import { SufficientBalanceValidatorDirective } from "../send-funds-form/sufficient-balance.directive";
+import { AddressValidatorDirective } from "src/app/shared/address.directive";
 
 describe("WalletInfoComponent", () => {
   let component: WalletInfoComponent;
@@ -16,7 +19,10 @@ describe("WalletInfoComponent", () => {
       declarations: [
         WalletInfoComponent,
         AngularFontAwesomeComponent,
-        SendFundsFormComponent
+        SendFundsFormComponent,
+        ReceiveFundComponent,
+        AddressValidatorDirective,
+        SufficientBalanceValidatorDirective
       ],
       imports: [FormsModule, ModalModule.forRoot()]
     }).compileComponents();

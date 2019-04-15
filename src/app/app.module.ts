@@ -18,6 +18,8 @@ import { SendFundsFormComponent } from "./components/send-funds-form/send-funds-
 import { CreateWalletFormComponent } from "./components/create-wallet-form/create-wallet-form.component";
 import { ReceiveFundComponent } from "./components/receive-fund/receive-fund.component";
 import { PopoverModule } from "ngx-bootstrap/popover";
+import { AddressValidatorDirective } from "./shared/address.directive";
+import { SufficientBalanceValidatorDirective } from "./components/send-funds-form/sufficient-balance.directive";
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,7 +30,9 @@ import { PopoverModule } from "ngx-bootstrap/popover";
     SendFundsFormComponent,
     InOutViewComponent,
     CreateWalletFormComponent,
-    ReceiveFundComponent
+    ReceiveFundComponent,
+    AddressValidatorDirective,
+    SufficientBalanceValidatorDirective
   ],
   entryComponents: [InOutViewComponent],
   imports: [

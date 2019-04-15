@@ -19,6 +19,7 @@ export class SendFundsFormComponent implements OnInit {
   walletList: Wallet[];
 
   @Input() walletId: string;
+  selectedWallet: Wallet;
   @Input() amount: BigNumber;
   amountValue: string;
   @Input() toAddress: string;
@@ -38,17 +39,37 @@ export class SendFundsFormComponent implements OnInit {
   private loadWalletList(): void {
     this.walletService
       .getWalletList()
-      .subscribe(walletList => (this.walletList = walletList));
+      .subscribe(walletList => {
+        this.walletList = walletList;
+        if (this.walletId) {
+          this.selectedWallet = this.findWalletById(this.walletId);
+        }
+      });
   }
 
-  handleAmountChange(amount): void {
+  handleAmountChange(amount: string): void {
     this.amount = new BigNumber(amount);
   }
 
-  handleSubmit(f: NgForm): void {
-    if (f.valid) {
+  handleWalletIdChange(walletId: string): void {
+    this.selectedWallet = this.findWalletById(walletId);
+  }
+
+  findWalletById(walletId: string): Wallet {
+    return this.walletList.find(wallet => wallet.id === walletId);
+  }
+
+  handleSubmit(form: NgForm): void {
+    this.markFormAsDirty(form);
+    if (form.valid) {
       this.send();
     }
+  }
+
+  markFormAsDirty(form: NgForm) {
+    Object.keys(form.controls).forEach(field => {
+      form.controls[field].markAsDirty();
+    });
   }
 
   send(): void {

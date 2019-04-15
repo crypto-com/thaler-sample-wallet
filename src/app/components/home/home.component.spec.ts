@@ -11,6 +11,9 @@ import { WalletListComponent } from "../wallet-list/wallet-list.component";
 import { WalletInfoComponent } from "../wallet-info/wallet-info.component";
 import { SendFundsFormComponent } from "../send-funds-form/send-funds-form.component";
 import { CreateWalletFormComponent } from "../create-wallet-form/create-wallet-form.component";
+import { ReceiveFundComponent } from "../receive-fund/receive-fund.component";
+import { SufficientBalanceValidatorDirective } from "../send-funds-form/sufficient-balance.directive";
+import { AddressValidatorDirective } from "src/app/shared/address.directive";
 describe("HomeComponent", () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
@@ -24,7 +27,10 @@ describe("HomeComponent", () => {
         WalletInfoComponent,
         AngularFontAwesomeComponent,
         SendFundsFormComponent,
-        CreateWalletFormComponent
+        CreateWalletFormComponent,
+        ReceiveFundComponent,
+        AddressValidatorDirective,
+        SufficientBalanceValidatorDirective
       ],
       imports: [Ng2SmartTableModule, FormsModule, ModalModule.forRoot()]
     }).compileComponents();

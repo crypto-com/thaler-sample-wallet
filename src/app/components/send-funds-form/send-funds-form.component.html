@@ -1,4 +1,9 @@
-<form #f="ngForm" (ngSubmit)="handleSubmit(f)" novalidate>
+<form
+  name="sendFundsForm"
+  #form="ngForm"
+  (ngSubmit)="handleSubmit(form)"
+  novalidate
+>
   <div class="form-group row">
     <label for="amount" class="col-sm-4 col-form-label">Amount</label>
     <div class="input-group col-sm-8">
@@ -8,15 +13,46 @@
         name="amount"
         class="form-control"
         #amountModel="ngModel"
-        [ngClass]="{ 'is-invalid': amountModel.value && !amountModel.valid }"
+        [ngClass]="{
+          'is-invalid':
+            amountModel.invalid && (amountModel.dirty || amountModel.touched)
+        }"
         placeholder="Amount to send"
         [(ngModel)]="amountValue"
         (ngModelChange)="handleAmountChange($event)"
         required
-        pattern="\d*[.,]?\d+"
+        pattern="\d*\.?\d+"
+        [appSufficientBalance]="selectedWallet?.balance"
       />
       <div class="input-group-append">
         <div class="input-group-text">CRO</div>
+      </div>
+      <div
+        class="invalid-feedback"
+        *ngIf="
+          (amountModel.dirty || amountModel.touched) &&
+          amountModel.errors?.required
+        "
+      >
+        Missing required amount
+      </div>
+      <div
+        class="invalid-feedback"
+        *ngIf="
+          (amountModel.dirty || amountModel.touched) &&
+          amountModel.errors?.pattern
+        "
+      >
+        Invalid amount
+      </div>
+      <div
+        class="invalid-feedback-block"
+        *ngIf="
+          (amountModel.dirty || amountModel.touched) &&
+          amountModel.errors?.sufficientBalance
+        "
+      >
+        Insufficient wallet balance
       </div>
     </div>
   </div>
@@ -32,22 +68,49 @@
         class="form-control"
         #toAddressModel="ngModel"
         [ngClass]="{
-          'is-invalid': toAddressModel.value && !toAddressModel.valid
+          'is-invalid':
+            toAddressModel.invalid &&
+            (toAddressModel.dirty || toAddressModel.touched)
         }"
         placeholder="Recipient Address"
         [(ngModel)]="toAddress"
         required
-        pattern="0x.*"
+        appAddress
       />
+      <div
+        class="invalid-feedback"
+        *ngIf="
+          (toAddressModel.dirty || toAddressModel.touched) &&
+          toAddressModel.errors?.required
+        "
+      >
+        Missing required recipient address
+      </div>
+      <div
+        class="invalid-feedback"
+        *ngIf="
+          (toAddressModel.dirty || toAddressModel.touched) &&
+          toAddressModel.errors?.address
+        "
+      >
+        Invalid recipient address
+      </div>
     </div>
   </div>
   <div class="form-group row">
     <label for="walletId" class="col-sm-4 col-form-label">From Wallet</label>
     <div class="col-sm-8">
-      <select id="walletId" name="walletId" class="form-control">
+      <select
+        id="walletId"
+        name="walletId"
+        class="form-control"
+        [(ngModel)]="walletId"
+        (ngModelChange)="handleWalletIdChange($event)"
+      >
         <option
           *ngFor="let wallet of walletList"
           [selected]="wallet.id === walletId"
+          value="{{ wallet.id }}"
           >{{ wallet.id }} ({{ wallet.balance.toString(10) }} CRO)</option
         >
       </select>
