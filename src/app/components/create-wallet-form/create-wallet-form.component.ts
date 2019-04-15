@@ -1,4 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from "@angular/core";
+import { NgForm } from "@angular/forms";
+
 import { WalletService } from "src/app/services/wallet.service";
 
 @Component({
@@ -15,10 +17,18 @@ export class CreateWalletFormComponent implements OnInit {
 
   ngOnInit() {}
 
-  handleSubmit(f): void {
-    if (f.valid) {
-      this.createWallet(f.value.walletId);
+  handleSubmit(form: NgForm): void {
+    this.markFormAsDirty(form);
+    if (form.valid) {
+      this.createWallet(form.value.walletId);
     }
+  }
+
+  markFormAsDirty(form: NgForm) {
+    console.log(form);
+    Object.keys(form.controls).forEach(field => {
+      form.controls[field].markAsDirty();
+    });
   }
 
   createWallet(id: string): void {

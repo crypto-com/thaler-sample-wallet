@@ -1,4 +1,4 @@
-<form #f="ngForm" (ngSubmit)="handleSubmit(f)" novalidate>
+<form #form="ngForm" (ngSubmit)="handleSubmit(form)" novalidate>
   <div class="form-group row">
     <label for="walletId" class="col-sm-3 col-form-label">Wallet Name</label>
     <div class="col-sm-9">
@@ -9,12 +9,21 @@
         class="form-control"
         #walletIdModel="ngModel"
         [ngClass]="{
-          'is-invalid': walletIdModel.value && !walletIdModel.valid
+          'is-invalid': walletIdModel.invalid && (walletIdModel.dirty || walletIdModel.touched)
         }"
         placeholder="Wallet Name"
         [(ngModel)]="walletId"
         required
       />
+      <div
+        class="invalid-feedback"
+        *ngIf="
+          (walletIdModel.dirty || walletIdModel.touched) &&
+          walletIdModel.errors?.required
+        "
+      >
+        Missing required wallet name
+      </div>
     </div>
   </div>
   <div class="text-right">
