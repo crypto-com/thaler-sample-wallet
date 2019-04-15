@@ -13,3 +13,12 @@
   border-left-color: #1199fa;
   border-left-width: 5px;
 }
+
+// Form
+.invalid-feedback-block {
+  display: block !important;
+  width: 100%;
+  margin-top: .25rem;
+  font-size: 80%;
+  color: #dc3545;
+}
