@@ -1,13 +1,10 @@
 <div *ngIf="wallet" class="row">
   <div class="col-6">
     <h2>{{ wallet.id }}</h2>
+    <h3>2312312312.12312312312 CRO</h3>
   </div>
   <div class="col-6 text-right">
-    <button
-      type="button"
-      class="btn btn-green"
-      (click)="openModal(sendFund)"
-    >
+    <button type="button" class="btn btn-green" (click)="openModal(sendFund)">
       <fa name="paper-plane"></fa>
       Send
     </button>

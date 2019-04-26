@@ -13,7 +13,7 @@ export class WalletListComponent implements OnInit {
   modalRef: BsModalRef;
   modalConfig = {
     backdrop: true,
-    ignoreBackdropClick: true,
+    ignoreBackdropClick: true
   };
   walletList: Wallet[];
   selectedWallet: Wallet;

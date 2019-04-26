@@ -9,8 +9,11 @@
         class="form-control"
         #walletIdModel="ngModel"
         [ngClass]="{
-          'is-invalid': walletIdModel.invalid && (walletIdModel.dirty || walletIdModel.touched)
+          'is-invalid':
+            walletIdModel.invalid &&
+            (walletIdModel.dirty || walletIdModel.touched)
         }"
+        (ngModelChange)="duplicatedWalletId = false"
         placeholder="Wallet Name"
         [(ngModel)]="walletId"
         required
@@ -24,6 +27,30 @@
       >
         Missing required wallet name
       </div>
+      <div class="invalid-feedback-block" *ngIf="duplicatedWalletId">
+        Wallet name must be unique
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="walletId" class="col-sm-3 col-form-label"
+      >Wallet Passphrase</label
+    >
+    <div class="col-sm-9">
+      <input
+        id="walletPassphrase"
+        type="password"
+        name="walletPassphrase"
+        class="form-control"
+        #walletPassphraseModel="ngModel"
+        [ngClass]="{
+          'is-invalid':
+            walletPassphraseModel.invalid &&
+            (walletPassphraseModel.dirty || walletPassphraseModel.touched)
+        }"
+        placeholder="Wallet Passphrase"
+        [(ngModel)]="walletPassphrase"
+      />
     </div>
   </div>
   <div class="text-right">

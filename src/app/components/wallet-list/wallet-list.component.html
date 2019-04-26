@@ -9,7 +9,6 @@
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1">{{ wallet.id }}</h5>
     </div>
-    <small>{{ wallet.balance }} CRO</small>
   </a>
   <a
     href="#"
@@ -21,21 +20,21 @@
 </div>
 
 <ng-template #createWallet>
-    <div class="modal-header">
-      <h5 class="modal-title pull-left">Create Wallet</h5>
-      <button
-        type="button"
-        class="close pull-right"
-        aria-label="Close"
-        (click)="closeModal()"
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
-    </div>
-    <div class="modal-body">
-      <app-create-wallet-form
-        (created)="closeModal()"
-        (cancelled)="closeModal()"
-      ></app-create-wallet-form>
-    </div>
-  </ng-template>
+  <div class="modal-header">
+    <h5 class="modal-title pull-left">Create Wallet</h5>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="closeModal()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-create-wallet-form
+      (created)="closeModal()"
+      (cancelled)="closeModal()"
+    ></app-create-wallet-form>
+  </div>
+</ng-template>
