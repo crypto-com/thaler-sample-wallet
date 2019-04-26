@@ -53,7 +53,7 @@ export class WalletService {
       .post(this.coreUrl, {
         jsonrpc: "2.0",
         id: "jsonrpc",
-        method: "wallet_wallets"
+        method: "wallet_list"
       })
       .subscribe(
         data => {
