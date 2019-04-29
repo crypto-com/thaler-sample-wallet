@@ -1,1 +1,8 @@
 @import "../../app.component.scss";
+.unlock {
+  color: rgba(0, 0, 0, $alpha: 0.3);
+  font-size: 150px;
+  .unlock_text {
+    font-size: 30px;
+  }
+}

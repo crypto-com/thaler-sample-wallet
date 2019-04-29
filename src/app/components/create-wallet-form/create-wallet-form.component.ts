@@ -11,7 +11,7 @@ import { WalletService } from "src/app/services/wallet.service";
 export class CreateWalletFormComponent implements OnInit {
   @Output() cancelled = new EventEmitter<void>();
   @Output() created = new EventEmitter<string>();
-
+  duplicatedWalletId = false;
   walletId: string;
   constructor(private walletService: WalletService) {}
 
@@ -20,21 +20,26 @@ export class CreateWalletFormComponent implements OnInit {
   handleSubmit(form: NgForm): void {
     this.markFormAsDirty(form);
     if (form.valid) {
-      this.createWallet(form.value.walletId);
+      this.createWallet(form.value.walletId, form.value.walletPassphrase);
     }
   }
 
   markFormAsDirty(form: NgForm) {
-    console.log(form);
     Object.keys(form.controls).forEach(field => {
       form.controls[field].markAsDirty();
     });
   }
 
-  createWallet(id: string): void {
-    this.walletService.addWallet(id).subscribe(() => {
-      this.created.emit(id);
-    });
+  createWallet(id: string, passphrase: string): void {
+    this.walletService.addWallet(id, passphrase).subscribe(
+      () => {
+        this.walletService.syncWalletList();
+        this.created.emit(id);
+      },
+      error => {
+        this.duplicatedWalletId = true;
+      }
+    );
   }
 
   cancel(): void {

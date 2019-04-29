@@ -4,19 +4,8 @@ import BigNumber from "bignumber.js";
 import * as lodash from "lodash";
 
 import { Wallet } from "../types/wallet";
-
-const sampleWalletList = [
-  {
-    id: "Default",
-    balance: new BigNumber(50),
-    addresses: ["0xb04cfa8a26d602fb50232cee0daf29060264e04b"]
-  },
-  {
-    id: "Business",
-    balance: new BigNumber(10000),
-    addresses: ["0xa0b73e1ff0b80914ab6fe0444e65848c4c34450b"]
-  }
-];
+import { HttpClient } from "@angular/common/http";
+import * as _ from "lodash";
 
 @Injectable({
   providedIn: "root"
@@ -25,28 +14,53 @@ export class WalletService {
   private walletList = new BehaviorSubject<Wallet[]>([]);
   private selectedWalletId = new BehaviorSubject<string>("");
   private selectedWallet = new BehaviorSubject<Wallet>(null);
-
-  constructor() {
+  private decryptedFlag = new BehaviorSubject<boolean>(false);
+  private walletBalance = new BehaviorSubject<string>("");
+  private coreUrl = "http://127.0.0.1:9981";
+  constructor(private http: HttpClient) {
     this.selectedWalletId.subscribe(walletId => {
       // TODO: What if wallet id cannot be found?
-      this.selectedWallet.next(this.walletList.getValue().find(wallet => wallet.id === walletId));
+      this.selectedWallet.next(
+        this.walletList.getValue().find(wallet => wallet.id === walletId)
+      );
     });
   }
 
-  addWallet(id: string): Observable<Wallet> {
+  decrypt(passphrase: string): Observable<boolean> {
+    let result = new BehaviorSubject<boolean>(null);
+    let selectedWalletId: string;
+    this.getSelectedWallet().subscribe(
+      selectedWallet => (selectedWalletId = selectedWallet.id)
+    );
+
+    this.checkWalletBalance(selectedWalletId, passphrase).subscribe(data => {
+      if (_.isNil(data["result"])) {
+        result.next(false);
+      } else {
+        this.setWalletBalance(data["result"]);
+        this.setDecryptedFlag(true);
+        result.next(true);
+        this.checkWalletTxnHistory(selectedWalletId, passphrase);
+      }
+    });
+
+    return result;
+  }
+  addWallet(id: string, passphrase: string): Observable<string> {
     if (this.isWalletIdDuplicated(id)) {
       return throwError(new Error("Duplicated wallet id"));
     }
-    const newWallet: Wallet = {
-      id,
-      balance: new BigNumber(0),
-      addresses: []
-    };
-    const newList = this.walletList.getValue();
-    newList.push(newWallet);
-    this.walletList.next(newList);
-
-    return of(newWallet);
+    return this.http.post<string>(this.coreUrl, {
+      jsonrpc: "2.0",
+      id: "jsonrpc",
+      method: "wallet_create",
+      params: [
+        {
+          name: id,
+          passphrase: _.isNil(passphrase) ? "" : passphrase
+        }
+      ]
+    });
   }
 
   private isWalletIdDuplicated(id: string): boolean {
@@ -55,16 +69,47 @@ export class WalletService {
     );
   }
 
-  syncWalletList(): Observable<Wallet[]> {
-    const list = this.walletList.getValue();
-    if (list.length === 0) {
-      this.walletList.next(sampleWalletList);
-      this.selectedWalletId.next(sampleWalletList[0].id);
-      return of(sampleWalletList);
-    }
-    return of(list);
+  syncWalletList() {
+    const walletListFromClient = [];
+    this.http
+      .post(this.coreUrl, {
+        jsonrpc: "2.0",
+        id: "jsonrpc",
+        method: "wallet_list"
+      })
+      .subscribe(
+        data => {
+          data["result"].forEach(wallet => {
+            walletListFromClient.push({ id: wallet });
+          });
+          this.walletList.next(walletListFromClient);
+          if (walletListFromClient.length > 0) {
+            // this.selectedWalletId.next(walletListFromClient[0].id);
+            // this.setDecryptedFlag(true);
+          }
+        },
+        error => {
+          console.log("Error", error);
+        }
+      );
   }
 
+  checkWalletBalance(walletId: string, passphrase: string): Observable<string> {
+    return this.http.post<string>(this.coreUrl, {
+      jsonrpc: "2.0",
+      id: "jsonrpc",
+      method: "wallet_balance",
+      params: [
+        {
+          name: walletId,
+          passphrase: _.isNil(passphrase) ? "" : passphrase
+        }
+      ]
+    });
+  }
+  checkWalletTxnHistory(walletId: string, passphrase: string) {
+    console.log(`getting txn with ${walletId} ${passphrase}`);
+  }
   getWalletList(): Observable<Wallet[]> {
     return this.walletList.asObservable();
   }
@@ -75,5 +120,17 @@ export class WalletService {
 
   getSelectedWallet(): Observable<Wallet> {
     return this.selectedWallet;
+  }
+  setDecryptedFlag(flag: boolean) {
+    this.decryptedFlag.next(flag);
+  }
+  getDecryptedFlag(): Observable<boolean> {
+    return this.decryptedFlag;
+  }
+  setWalletBalance(balance: string) {
+    this.walletBalance.next(balance);
+  }
+  getWalletBalance(): Observable<string> {
+    return this.walletBalance;
   }
 }
