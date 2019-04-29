@@ -14,6 +14,7 @@ export class WalletService {
   private walletList = new BehaviorSubject<Wallet[]>([]);
   private selectedWalletId = new BehaviorSubject<string>("");
   private selectedWallet = new BehaviorSubject<Wallet>(null);
+  private decryptedFlag = new BehaviorSubject<boolean>(false);
   private coreUrl = "http://127.0.0.1:9981";
   constructor(private http: HttpClient) {
     this.selectedWalletId.subscribe(walletId => {
@@ -24,6 +25,10 @@ export class WalletService {
     });
   }
 
+  decrypt(passphrase: string) {
+    // check balance and history here.
+    this.setDecryptedFlag(true);
+  }
   addWallet(id: string, passphrase: string): Observable<string> {
     if (this.isWalletIdDuplicated(id)) {
       return throwError(new Error("Duplicated wallet id"));
@@ -63,6 +68,7 @@ export class WalletService {
           this.walletList.next(walletListFromClient);
           if (walletListFromClient.length > 0) {
             this.selectedWalletId.next(walletListFromClient[0].id);
+            this.setDecryptedFlag(true);
           }
         },
         error => {
@@ -81,5 +87,11 @@ export class WalletService {
 
   getSelectedWallet(): Observable<Wallet> {
     return this.selectedWallet;
+  }
+  setDecryptedFlag(flag: boolean) {
+    this.decryptedFlag.next(flag);
+  }
+  getDecryptedFlag(): Observable<boolean> {
+    return this.decryptedFlag;
   }
 }

@@ -1,0 +1,32 @@
+<form #form="ngForm" (ngSubmit)="handleSubmit(form)" novalidate>
+  <div class="form-group row">
+    <label for="walletId" class="col-sm-3 col-form-label"
+      >Wallet Passphrase</label
+    >
+    <div class="col-sm-9">
+      <input
+        id="walletPassphrase"
+        type="password"
+        name="walletPassphrase"
+        class="form-control"
+        #walletPassphraseModel="ngModel"
+        [ngClass]="{
+          'is-invalid':
+            walletPassphraseModel.invalid &&
+            (walletPassphraseModel.dirty || walletPassphraseModel.touched)
+        }"
+        placeholder="Wallet Passphrase"
+        [(ngModel)]="walletPassphrase"
+      />
+    </div>
+  </div>
+  <div class="text-right">
+    <button type="button" class="btn btn-secondary" (click)="cancel()">
+      Cancel</button
+    >&nbsp;
+    <button type="submit" class="btn btn-green">
+      <fa name="lock"></fa>
+      Decrypt
+    </button>
+  </div>
+</form>

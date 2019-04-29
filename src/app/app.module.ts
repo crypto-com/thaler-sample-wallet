@@ -21,6 +21,7 @@ import { PopoverModule } from "ngx-bootstrap/popover";
 import { AddressValidatorDirective } from "./shared/address.directive";
 import { SufficientBalanceValidatorDirective } from "./components/send-funds-form/sufficient-balance.directive";
 import { HttpClientModule } from "@angular/common/http";
+import { PassphraseFormComponent } from './components/passphrase-form/passphrase-form.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,7 +34,8 @@ import { HttpClientModule } from "@angular/common/http";
     CreateWalletFormComponent,
     ReceiveFundComponent,
     AddressValidatorDirective,
-    SufficientBalanceValidatorDirective
+    SufficientBalanceValidatorDirective,
+    PassphraseFormComponent
   ],
   entryComponents: [InOutViewComponent],
   imports: [

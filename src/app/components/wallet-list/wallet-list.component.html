@@ -6,7 +6,10 @@
     [ngClass]="{ active: selectedWallet == wallet }"
     (click)="selectWallet(wallet.id)"
   >
-    <div class="d-flex w-100 justify-content-between">
+    <div
+      class="d-flex w-100 justify-content-between"
+      (click)="openModal(decryptWallet)"
+    >
       <h5 class="mb-1">{{ wallet.id }}</h5>
     </div>
   </a>
@@ -36,5 +39,24 @@
       (created)="closeModal()"
       (cancelled)="closeModal()"
     ></app-create-wallet-form>
+  </div>
+</ng-template>
+<ng-template #decryptWallet>
+  <div class="modal-header">
+    <h5 class="modal-title pull-left">Decrypt Wallet</h5>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="closeModal()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-passphrase-form
+      (created)="closeModal()"
+      (cancelled)="closeModal()"
+    ></app-passphrase-form>
   </div>
 </ng-template>

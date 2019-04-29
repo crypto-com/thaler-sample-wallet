@@ -13,10 +13,10 @@ export class WalletInfoComponent implements OnInit {
   modalRef: BsModalRef;
   modalConfig = {
     backdrop: true,
-    ignoreBackdropClick: true,
+    ignoreBackdropClick: true
   };
   wallet: Wallet;
-
+  decryptedFlag: boolean;
   constructor(
     private walletService: WalletService,
     private modalService: BsModalService
@@ -26,6 +26,9 @@ export class WalletInfoComponent implements OnInit {
     this.walletService
       .getSelectedWallet()
       .subscribe(selectedWallet => (this.wallet = selectedWallet));
+    this.walletService
+      .getDecryptedFlag()
+      .subscribe(decryptedFlag => (this.decryptedFlag = decryptedFlag));
   }
 
   openModal(template: TemplateRef<any>) {

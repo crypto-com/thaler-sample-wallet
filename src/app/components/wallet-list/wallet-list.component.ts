@@ -35,6 +35,7 @@ export class WalletListComponent implements OnInit {
 
   selectWallet(walletId: string) {
     this.walletService.selectWalletById(walletId);
+    this.walletService.setDecryptedFlag(false);
   }
 
   openModal(template: TemplateRef<any>) {

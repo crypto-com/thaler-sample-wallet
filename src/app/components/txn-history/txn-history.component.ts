@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import { InOutViewComponent } from "./in-out-view/in-out-view.component";
+import { WalletService } from "src/app/services/wallet.service";
+import { Wallet } from "src/app/types/wallet";
 
 @Component({
   selector: "app-txn-history",
@@ -8,7 +10,7 @@ import { InOutViewComponent } from "./in-out-view/in-out-view.component";
   encapsulation: ViewEncapsulation.None
 })
 export class TxnHistoryComponent implements OnInit {
-  constructor() {}
+  constructor(private walletService: WalletService) {}
   settings = {
     attr: {
       class: "txn-history"
@@ -191,5 +193,15 @@ export class TxnHistoryComponent implements OnInit {
       tx_fee: 0.00001
     }
   ];
-  ngOnInit() {}
+  wallet: Wallet;
+  decryptedFlag: boolean;
+  ngOnInit() {
+    this.walletService
+      .getSelectedWallet()
+      .subscribe(selectedWallet => (this.wallet = selectedWallet));
+
+    this.walletService
+      .getDecryptedFlag()
+      .subscribe(decryptedFlag => (this.decryptedFlag = decryptedFlag));
+  }
 }
