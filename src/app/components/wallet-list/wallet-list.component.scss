@@ -2,5 +2,27 @@
 
 .list-group {
   overflow: auto;
-  max-height: 600px;
+  max-height: 380px;
+}
+.walllet-item {
+  height: 100px;
+}
+.wallet-id {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.add-wallet {
+  margin-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 10px;
+  a {
+    opacity: 0.5;
+    font-family: Helvetica;
+    font-size: 16px;
+    color: #ffffff;
+    line-height: 20px;
+  }
+}
+.wallet-list {
+  height: 450px;
 }

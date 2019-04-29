@@ -2,9 +2,15 @@
   flex: 1 1 auto;
   margin: 1rem;
   padding: 1rem;
-  background-color: #fafafa;
-  border-radius: 10px;
   height: 600px;
   min-width: 1380px;
   height: 100%;
+}
+
+.wallet-title {
+  font-family: Helvetica;
+  font-size: 24px;
+  color: #ffffff;
+
+  height: 100px;
 }
