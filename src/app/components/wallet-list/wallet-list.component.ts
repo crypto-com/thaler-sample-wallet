@@ -3,6 +3,7 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
 
 import { Wallet } from "../../types/wallet";
 import { WalletService } from "../../services/wallet.service";
+import * as _ from "lodash";
 
 @Component({
   selector: "app-wallet-list",
@@ -38,8 +39,12 @@ export class WalletListComponent implements OnInit {
     this.walletService.setDecryptedFlag(false);
   }
 
-  openModal(template: TemplateRef<any>) {
+  openModal(template: TemplateRef<any>, walletId?: string) {
     this.modalRef = this.modalService.show(template, this.modalConfig);
+    if (!_.isNil(walletId)) {
+      this.walletService.selectWalletById(walletId);
+      this.walletService.setDecryptedFlag(false);
+    }
   }
 
   closeModal() {

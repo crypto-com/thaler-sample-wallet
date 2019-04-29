@@ -13,16 +13,29 @@ export class PassphraseFormComponent implements OnInit {
   @Output() created = new EventEmitter<string>();
   duplicatedWalletId = false;
   walletId: string;
+  errorMsgFlag = false;
   constructor(private walletService: WalletService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    setTimeout(() => {
+      document.getElementById("walletPassphrase").focus();
+    });
+  }
 
   handleSubmit(form: NgForm): void {
-    this.walletService.decrypt(form.value.walletPassphrase);
-    this.created.emit();
+    this.walletService
+      .decrypt(form.value.walletPassphrase)
+      .subscribe(decrypted => {
+        if (decrypted === true) {
+          this.created.emit();
+        } else if (decrypted === false) {
+          this.errorMsgFlag = true;
+        }
+      });
   }
 
   cancel(): void {
+    this.walletService.selectWalletById("");
     this.cancelled.emit();
   }
 }

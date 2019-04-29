@@ -18,6 +18,9 @@
         placeholder="Wallet Passphrase"
         [(ngModel)]="walletPassphrase"
       />
+      <div class="invalid-feedback-block" *ngIf="errorMsgFlag">
+        Cannot decrypt wallet. Wrong passprase.
+      </div>
     </div>
   </div>
   <div class="text-right">

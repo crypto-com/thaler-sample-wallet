@@ -15,6 +15,7 @@ export class WalletService {
   private selectedWalletId = new BehaviorSubject<string>("");
   private selectedWallet = new BehaviorSubject<Wallet>(null);
   private decryptedFlag = new BehaviorSubject<boolean>(false);
+  private walletBalance = new BehaviorSubject<string>("");
   private coreUrl = "http://127.0.0.1:9981";
   constructor(private http: HttpClient) {
     this.selectedWalletId.subscribe(walletId => {
@@ -25,9 +26,25 @@ export class WalletService {
     });
   }
 
-  decrypt(passphrase: string) {
-    // check balance and history here.
-    this.setDecryptedFlag(true);
+  decrypt(passphrase: string): Observable<boolean> {
+    let result = new BehaviorSubject<boolean>(null);
+    let selectedWalletId: string;
+    this.getSelectedWallet().subscribe(
+      selectedWallet => (selectedWalletId = selectedWallet.id)
+    );
+
+    this.checkWalletBalance(selectedWalletId, passphrase).subscribe(data => {
+      if (_.isNil(data["result"])) {
+        result.next(false);
+      } else {
+        this.setWalletBalance(data["result"]);
+        this.setDecryptedFlag(true);
+        result.next(true);
+        this.checkWalletTxnHistory(selectedWalletId, passphrase);
+      }
+    });
+
+    return result;
   }
   addWallet(id: string, passphrase: string): Observable<string> {
     if (this.isWalletIdDuplicated(id)) {
@@ -67,8 +84,8 @@ export class WalletService {
           });
           this.walletList.next(walletListFromClient);
           if (walletListFromClient.length > 0) {
-            this.selectedWalletId.next(walletListFromClient[0].id);
-            this.setDecryptedFlag(true);
+            // this.selectedWalletId.next(walletListFromClient[0].id);
+            // this.setDecryptedFlag(true);
           }
         },
         error => {
@@ -77,6 +94,22 @@ export class WalletService {
       );
   }
 
+  checkWalletBalance(walletId: string, passphrase: string): Observable<string> {
+    return this.http.post<string>(this.coreUrl, {
+      jsonrpc: "2.0",
+      id: "jsonrpc",
+      method: "wallet_balance",
+      params: [
+        {
+          name: walletId,
+          passphrase: _.isNil(passphrase) ? "" : passphrase
+        }
+      ]
+    });
+  }
+  checkWalletTxnHistory(walletId: string, passphrase: string) {
+    console.log(`getting txn with ${walletId} ${passphrase}`);
+  }
   getWalletList(): Observable<Wallet[]> {
     return this.walletList.asObservable();
   }
@@ -93,5 +126,11 @@ export class WalletService {
   }
   getDecryptedFlag(): Observable<boolean> {
     return this.decryptedFlag;
+  }
+  setWalletBalance(balance: string) {
+    this.walletBalance.next(balance);
+  }
+  getWalletBalance(): Observable<string> {
+    return this.walletBalance;
   }
 }

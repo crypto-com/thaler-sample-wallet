@@ -25,7 +25,6 @@ export class CreateWalletFormComponent implements OnInit {
   }
 
   markFormAsDirty(form: NgForm) {
-    console.log(form);
     Object.keys(form.controls).forEach(field => {
       form.controls[field].markAsDirty();
     });

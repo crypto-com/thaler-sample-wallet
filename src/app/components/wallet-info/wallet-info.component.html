@@ -1,7 +1,7 @@
-<div *ngIf="decryptedFlag" clas="row">
+<div *ngIf="decryptedFlag" class="row">
   <div class="col-6">
     <h2>{{ wallet.id }}</h2>
-    <h3>2312312312.12312312312 CRO</h3>
+    <h3>{{ walletBalance }} CRO</h3>
   </div>
   <div class="col-6 text-right">
     <button type="button" class="btn btn-green" (click)="openModal(sendFund)">
@@ -53,3 +53,8 @@
     <app-receive-fund></app-receive-fund>
   </div>
 </ng-template>
+
+<div *ngIf="!decryptedFlag" class="text-center unlock">
+  <fa name="lock"></fa>
+  <div class="unlock_text">Please select/create a wallet.</div>
+</div>

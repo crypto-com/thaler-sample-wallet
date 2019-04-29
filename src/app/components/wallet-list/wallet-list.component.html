@@ -4,12 +4,9 @@
     class="list-group-item list-group-item-action flex-column align-items-start"
     *ngFor="let wallet of walletList"
     [ngClass]="{ active: selectedWallet == wallet }"
-    (click)="selectWallet(wallet.id)"
+    (click)="openModal(decryptWallet, wallet.id)"
   >
-    <div
-      class="d-flex w-100 justify-content-between"
-      (click)="openModal(decryptWallet)"
-    >
+    <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1">{{ wallet.id }}</h5>
     </div>
   </a>

@@ -17,6 +17,7 @@ export class WalletInfoComponent implements OnInit {
   };
   wallet: Wallet;
   decryptedFlag: boolean;
+  walletBalance: string;
   constructor(
     private walletService: WalletService,
     private modalService: BsModalService
@@ -29,6 +30,9 @@ export class WalletInfoComponent implements OnInit {
     this.walletService
       .getDecryptedFlag()
       .subscribe(decryptedFlag => (this.decryptedFlag = decryptedFlag));
+    this.walletService
+      .getWalletBalance()
+      .subscribe(walletBalance => (this.walletBalance = walletBalance));
   }
 
   openModal(template: TemplateRef<any>) {
