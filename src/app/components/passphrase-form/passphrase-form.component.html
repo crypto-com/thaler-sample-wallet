@@ -1,6 +1,6 @@
 <form #form="ngForm" (ngSubmit)="handleSubmit(form)" novalidate>
   <div class="form-group row">
-    <label for="walletId" class="col-sm-3 col-form-label"
+    <label for="walletPassphrase" class="col-sm-3 col-form-label"
       >Wallet Passphrase</label
     >
     <div class="col-sm-9">
@@ -19,7 +19,7 @@
         [(ngModel)]="walletPassphrase"
       />
       <div class="invalid-feedback-block" *ngIf="errorMsgFlag">
-        Cannot decrypt wallet. Wrong passprase.
+        Cannot decrypt wallet. Wrong passphrase.
       </div>
     </div>
   </div>

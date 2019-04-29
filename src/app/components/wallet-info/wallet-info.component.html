@@ -1,7 +1,7 @@
 <div *ngIf="decryptedFlag" class="row">
   <div class="col-6">
     <h2>{{ wallet.id }}</h2>
-    <h3>{{ walletBalance }} CRO</h3>
+    <h3>{{ walletBalance | currency:'':'':'1.0-0' }} CRO</h3>
   </div>
   <div class="col-6 text-right">
     <button type="button" class="btn btn-green" (click)="openModal(sendFund)">
@@ -31,7 +31,8 @@
   <div class="modal-body">
     <app-send-funds-form
       [walletId]="wallet.id"
-      (sent)="closeModal()"
+      [walletBalance]="walletBalance"
+      (sent)="handleFundsSent($event)"
       (cancelled)="closeModal()"
     ></app-send-funds-form>
   </div>

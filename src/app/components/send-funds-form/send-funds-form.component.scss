@@ -15,4 +15,39 @@ select {
 
 .input-group-text {
     font-size: 0.85em;
+    background-color: #FFF;
+}
+
+.wallet {
+    margin-top: 1em;
+    margin-bottom: 1.1em;
+    text-align: center;
+}
+
+.wallet-name {
+    font-size: 1em;
+}
+
+.wallet-balance {
+    font-size: 1.2em;
+}
+
+.wallet-balance-unit {
+    font-size: 0.8em;
+}
+
+.recipient-address {
+    word-break: break-all;
+}
+
+.input-container {
+    padding: 1.2rem;
+    background-color: #F8F9FB;
+}
+
+.form-confirm-value {
+    font-weight: bold;
+    font-size: 0.85em;
+    padding-top: calc(.375rem + 1px);
+    padding-bottom: calc(.375rem + 1px);
 }

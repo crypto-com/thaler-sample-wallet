@@ -10,6 +10,12 @@ export interface FundSent {
   amount: BigNumber;
   toAddress: string;
 }
+enum Status {
+  PREPARING = "PREPARING",
+  CONFIRMING = "CONFIRMING",
+  SENDING = "SENDING",
+  SENT = "SENT",
+}
 @Component({
   selector: "app-send-funds-form",
   templateUrl: "./send-funds-form.component.html",
@@ -19,13 +25,17 @@ export class SendFundsFormComponent implements OnInit {
   walletList: Wallet[];
 
   @Input() walletId: string;
-  selectedWallet: Wallet;
+  @Input() walletBalance: string;
   @Input() amount: BigNumber;
   amountValue: string;
   @Input() toAddress: string;
+  walletPassphrase: string;
 
   @Output() sent = new EventEmitter<FundSent>();
   @Output() cancelled = new EventEmitter<void>();
+
+  private status: Status = Status.PREPARING;
+  private sendToAddressApiError = false;
 
   constructor(private walletService: WalletService) {}
 
@@ -33,37 +43,26 @@ export class SendFundsFormComponent implements OnInit {
     if (this.amount) {
       this.amountValue = this.amount.toString(10);
     }
-    this.loadWalletList();
-  }
-
-  private loadWalletList(): void {
-    this.walletService
-      .getWalletList()
-      .subscribe(walletList => {
-        this.walletList = walletList;
-        if (this.walletId) {
-          this.selectedWallet = this.findWalletById(this.walletId);
-        }
-      });
   }
 
   handleAmountChange(amount: string): void {
     this.amount = new BigNumber(amount);
   }
 
-  handleWalletIdChange(walletId: string): void {
-    this.selectedWallet = this.findWalletById(walletId);
-  }
-
-  findWalletById(walletId: string): Wallet {
-    return this.walletList.find(wallet => wallet.id === walletId);
-  }
-
-  handleSubmit(form: NgForm): void {
+  handleConfirm(form: NgForm): void {
     this.markFormAsDirty(form);
+    this.sendToAddressApiError = false;
     if (form.valid) {
-      this.send();
+      this.confirm();
     }
+  }
+
+  confirm(): void {
+    this.status = Status.CONFIRMING;
+  }
+
+  handleSend(form: NgForm): void {
+    this.send();
   }
 
   markFormAsDirty(form: NgForm) {
@@ -73,10 +72,28 @@ export class SendFundsFormComponent implements OnInit {
   }
 
   send(): void {
+    this.walletService.sendToAddress(
+      this.walletId,
+      this.walletPassphrase,
+      this.toAddress,
+      this.amountValue,
+    ).subscribe(data => {
+      if (data["error"]) {
+        this.status = Status.PREPARING;
+        // TODO: Distinguish from insufficient balance?
+        this.sendToAddressApiError = true;
+      } else {
+        this.walletBalance = new BigNumber(this.walletBalance).minus(this.amount).toString(10);
+        this.status = Status.SENT;
+      }
+    });
+  }
+
+  closeAfterSend(): void {
     this.sent.emit({
       walletId: this.walletId,
       amount: this.amount,
-      toAddress: this.toAddress
+      toAddress: this.toAddress,
     });
   }
 

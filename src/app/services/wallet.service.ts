@@ -46,6 +46,7 @@ export class WalletService {
 
     return result;
   }
+
   addWallet(id: string, passphrase: string): Observable<string> {
     if (this.isWalletIdDuplicated(id)) {
       return throwError(new Error("Duplicated wallet id"));
@@ -107,9 +108,11 @@ export class WalletService {
       ]
     });
   }
+
   checkWalletTxnHistory(walletId: string, passphrase: string) {
     console.log(`getting txn with ${walletId} ${passphrase}`);
   }
+
   getWalletList(): Observable<Wallet[]> {
     return this.walletList.asObservable();
   }
@@ -121,16 +124,36 @@ export class WalletService {
   getSelectedWallet(): Observable<Wallet> {
     return this.selectedWallet;
   }
+
   setDecryptedFlag(flag: boolean) {
     this.decryptedFlag.next(flag);
   }
+
   getDecryptedFlag(): Observable<boolean> {
     return this.decryptedFlag;
   }
+
   setWalletBalance(balance: string) {
     this.walletBalance.next(balance);
   }
+
   getWalletBalance(): Observable<string> {
     return this.walletBalance;
+  }
+
+  sendToAddress(walletId: string, passphrase: string, toAddress: string, amount: string): Observable<string> {
+    return this.http.post<string>(this.coreUrl, {
+      jsonrpc: "2.0",
+      id: "jsonrpc",
+      method: "wallet_sendtoaddress",
+      params: [
+        {
+          name: walletId,
+          passphrase: _.isNil(passphrase) ? "" : passphrase
+        },
+        toAddress,
+        Number(amount),
+      ]
+    });
   }
 }
