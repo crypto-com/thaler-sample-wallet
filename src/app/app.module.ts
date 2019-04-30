@@ -21,7 +21,9 @@ import { PopoverModule } from "ngx-bootstrap/popover";
 import { AddressValidatorDirective } from "./shared/address.directive";
 import { SufficientBalanceValidatorDirective } from "./components/send-funds-form/sufficient-balance.directive";
 import { HttpClientModule } from "@angular/common/http";
-import { PassphraseFormComponent } from './components/passphrase-form/passphrase-form.component';
+import { PassphraseFormComponent } from "./components/passphrase-form/passphrase-form.component";
+
+import { QRCodeModule } from "angularx-qrcode";
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,7 +48,8 @@ import { PassphraseFormComponent } from './components/passphrase-form/passphrase
     ModalModule.forRoot(),
     FormsModule,
     PopoverModule.forRoot(),
-    HttpClientModule
+    HttpClientModule,
+    QRCodeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

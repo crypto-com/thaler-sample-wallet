@@ -27,8 +27,6 @@ export class WalletListComponent implements OnInit {
   ngOnInit() {
     this.walletService.getWalletList().subscribe(walletList => {
       this.walletList = walletList;
-      this.walletService.selectWalletById("Default");
-      this.walletService.decrypt("123456");
     });
 
     this.walletService

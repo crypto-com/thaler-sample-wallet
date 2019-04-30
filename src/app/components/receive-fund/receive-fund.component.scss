@@ -1,11 +1,24 @@
 @import "../../app.component.scss";
-.popover {
-  background-color: rgba(0, 0, 0, 0.8);
+.wallet-title {
+  font-family: Helvetica;
+  font-size: 19px;
+  color: #5e5e5e;
+  text-align: center;
+  padding: 10px;
+  font-weight: 700;
 }
-.popover-body {
-  color: #fff;
+.wallet-address {
+  font-family: Helvetica;
+  font-size: 18px;
+  color: #626973;
+  text-align: center;
+  padding: 10px;
 }
-
-.popover > .arrow:after {
-  border-top-color: rgba(0, 0, 0, 0.8);
+button {
+  margin: 10px;
+}
+.qrcode {
+  padding: 20px;
+  margin-left: 170px;
+  margin-right: 170px;
 }

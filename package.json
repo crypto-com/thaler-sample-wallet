@@ -24,6 +24,7 @@
     "@types/lodash": "^4.14.123",
     "angular-font-awesome": "^3.1.2",
     "angular-in-memory-web-api": "^0.8.0",
+    "angularx-qrcode": "^1.5.3",
     "bignumber.js": "^8.1.1",
     "bootstrap": "^4.3.1",
     "core-js": "^2.5.4",
