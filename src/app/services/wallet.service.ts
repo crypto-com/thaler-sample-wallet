@@ -40,7 +40,10 @@ export class WalletService {
       if (_.isNil(data["result"])) {
         result.next(false);
       } else {
-        this.setWalletBalance(data["result"]);
+        const balance = new BigNumber(data["result"]).dividedBy("100000000").toString(10);
+        console.log(data["result"]);
+        console.log(balance);
+        this.setWalletBalance(balance);
         this.setDecryptedFlag(true);
         result.next(true);
         this.checkWalletAddress(selectedWalletId, passphrase).subscribe(
@@ -201,7 +204,7 @@ export class WalletService {
           passphrase: _.isNil(passphrase) ? "" : passphrase
         },
         toAddress,
-        Number(amount)
+        amount
       ]
     });
   }

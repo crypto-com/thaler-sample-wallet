@@ -79,11 +79,12 @@ export class SendFundsFormComponent implements OnInit {
   send(): void {
     this.walletBalanceBeforeSend = this.walletBalance;
     this.status = Status.SENDING;
+    const amountInBasicUnit = new BigNumber(this.amountValue).multipliedBy("100000000").toString(10);
     this.walletService.sendToAddress(
       this.walletId,
       this.walletPassphrase,
       this.toAddress,
-      this.amountValue,
+      amountInBasicUnit,
     ).subscribe(data => {
       if (data["error"]) {
         this.status = Status.PREPARING;

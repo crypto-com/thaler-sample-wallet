@@ -2,7 +2,7 @@
   <div class="wallet">
     <div class="wallet-name">{{ walletId }}</div>
     <div class="wallet-balance">
-      {{ walletBalance | currency: "":"":"1.0-0" }}
+      {{ walletBalance }}
       <span class="wallet-balance-unit">CRO</span>
     </div>
   </div>
@@ -24,7 +24,7 @@
           [(ngModel)]="amountValue"
           (ngModelChange)="handleAmountChange($event)"
           required
-          pattern="\d*\.?\d+"
+          pattern="\d*\.?\d{0,8}"
           [appSufficientBalance]="walletBalance"
         />
         <div class="input-group-append">
@@ -62,7 +62,7 @@
         class="input-group col-sm-8 form-confirm-value"
         *ngIf="status === 'CONFIRMING' || status === 'SENDING' || status === 'BROADCASTED' || status === 'SENT'"
       >
-        {{ amountValue | currency: "":"":"1.0-0" }}&nbsp;CRO
+        {{ amountValue }}&nbsp;CRO
       </div>
     </div>
     <div>

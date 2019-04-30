@@ -3,7 +3,7 @@
     <div *ngIf="decryptedFlag">
       <div class="wallet wallet-id">{{ wallet.id }}</div>
       <h3 class="wallet wallet-balance">
-        {{ walletBalance | currency: "":"":"1.0-0" }}
+        {{ walletBalance }}
         <span class="wallet-balance-unit">CRO</span>
       </h3>
     </div>
