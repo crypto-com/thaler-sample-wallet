@@ -6,6 +6,7 @@ import {
   NG_VALIDATORS,
   CheckboxControlValueAccessor
 } from "@angular/forms";
+import * as lodash from "lodash";
 import BigNumber from "bignumber.js";
 
 @Directive({
@@ -21,7 +22,7 @@ import BigNumber from "bignumber.js";
 export class SufficientBalanceValidatorDirective implements Validator, OnChanges {
   private onChange: () => void;
 
-  @Input("appSufficientBalance") balance: BigNumber;
+  @Input("appSufficientBalance") balance: string;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.balance && this.onChange) {
@@ -32,19 +33,19 @@ export class SufficientBalanceValidatorDirective implements Validator, OnChanges
   }
 
   validate(control: AbstractControl): { [key: string]: any } | null {
-    return this.balance ? sufficientBalanceValidator(this.balance)(control) : null;
+    return lodash.isNil(this.balance) ? null : sufficientBalanceValidator(this.balance)(control);
   }
 
   registerOnValidatorChange(fn: () => void): void {
     this.onChange = fn;
   }
 }
-export function sufficientBalanceValidator(balance: BigNumber): ValidatorFn {
+export function sufficientBalanceValidator(balance: string): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
     if (!control.value || new BigNumber(control.value).isNaN()) {
       return null;
     }
-    const valid = balance.isGreaterThanOrEqualTo(control.value);
+    const valid = new BigNumber(balance).isGreaterThanOrEqualTo(control.value);
     return valid
       ? null
       : {
