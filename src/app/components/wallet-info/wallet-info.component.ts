@@ -3,7 +3,6 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap/modal";
 
 import { WalletService } from "../../services/wallet.service";
 import { Wallet } from "src/app/types/wallet";
-import BigNumber from "bignumber.js";
 
 @Component({
   selector: "app-wallet-info",
@@ -43,9 +42,6 @@ export class WalletInfoComponent implements OnInit {
   }
 
   handleFundsSent(event) {
-    this.walletBalance = new BigNumber(this.walletBalance)
-      .minus(event.amount)
-      .toString(10);
     this.closeModal();
   }
 
