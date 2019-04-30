@@ -12,6 +12,7 @@ import { Wallet } from "src/app/types/wallet";
 export class TxnHistoryComponent implements OnInit {
   constructor(private walletService: WalletService) {}
   settings = {
+    hideSubHeader: true,
     attr: {
       class: "txn-history"
     },
@@ -38,10 +39,10 @@ export class TxnHistoryComponent implements OnInit {
         filter: false,
         sort: false
       },
-      from: {
-        title: "From",
-        sort: false
-      },
+      // from: {
+      //   title: "From",
+      //   sort: false
+      // },
       action: {
         title: "IN/OUT",
         type: "custom",
@@ -57,7 +58,7 @@ export class TxnHistoryComponent implements OnInit {
         sort: false
       },
       to: {
-        title: "To",
+        title: "Affected address",
         sort: false
       },
       value: {

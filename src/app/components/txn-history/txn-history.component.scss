@@ -1,11 +1,32 @@
 .txn-history-table {
-  overflow-x: scroll;
+  padding-top: 20px;
+  background-color: hsl(0, 0%, 98%);
+  border-radius: 10px;
+  // overflow-x: scroll;
   .ng2-smart-pagination {
+    .page-link,
+    .page-link-prev,
+    .page-link-next {
+      border: 0px;
+      background-color: rgba(255, 255, 255, 0);
+    }
     .page-link-prev,
     .page-link-next {
       padding-top: 11px;
       padding-bottom: 10px;
     }
+    .page-item.active .page-link {
+      background-color: #002a67;
+      border-color: #002a67;
+      border-radius: 15px;
+      font-family: Helvetica;
+      font-size: 12px;
+      color: #ffffff;
+      width: 30px;
+    }
+  }
+  th {
+    border-top: 0px;
   }
 }
 
@@ -35,4 +56,13 @@
 table tr th,
 table tr td {
   font-size: 0.75em !important;
+}
+
+.unlock {
+  color: rgba(0, 0, 0, $alpha: 0.9);
+  font-size: 150px;
+  .unlock_text {
+    font-size: 30px;
+  }
+  padding-bottom: 100px;
 }

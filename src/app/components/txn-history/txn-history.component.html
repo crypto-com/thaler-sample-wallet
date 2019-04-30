@@ -1,7 +1,12 @@
-<div *ngIf="decryptedFlag" class="txn-history-table">
+<div class="txn-history-table justify-content-center">
   <ng2-smart-table
+    *ngIf="decryptedFlag"
     [settings]="settings"
     [source]="data"
     class="table table-striped"
   ></ng2-smart-table>
+  <div *ngIf="!decryptedFlag" class="text-center unlock">
+    <fa name="lock"></fa>
+    <div class="unlock_text">Please select/create a wallet.</div>
+  </div>
 </div>
