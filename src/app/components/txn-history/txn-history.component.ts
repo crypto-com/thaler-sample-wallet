@@ -4,6 +4,7 @@ import { WalletService } from "src/app/services/wallet.service";
 import { Wallet } from "src/app/types/wallet";
 import * as _ from "lodash";
 import { Transaction } from "src/app/types/transaction";
+import { AgeViewComponent } from "./age-view/age-view.component";
 
 @Component({
   selector: "app-txn-history",
@@ -40,6 +41,8 @@ export class TxnHistoryComponent implements OnInit {
       },
       age: {
         title: "Age",
+        type: "custom",
+        renderComponent: AgeViewComponent,
         filter: false,
         sort: false
       },

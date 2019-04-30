@@ -24,6 +24,8 @@ import { HttpClientModule } from "@angular/common/http";
 import { PassphraseFormComponent } from "./components/passphrase-form/passphrase-form.component";
 
 import { QRCodeModule } from "angularx-qrcode";
+import { TimeAgoPipe } from "time-ago-pipe";
+import { AgeViewComponent } from "./components/txn-history/age-view/age-view.component";
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,9 +39,11 @@ import { QRCodeModule } from "angularx-qrcode";
     ReceiveFundComponent,
     AddressValidatorDirective,
     SufficientBalanceValidatorDirective,
-    PassphraseFormComponent
+    PassphraseFormComponent,
+    TimeAgoPipe,
+    AgeViewComponent
   ],
-  entryComponents: [InOutViewComponent],
+  entryComponents: [InOutViewComponent, AgeViewComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
