@@ -1,8 +1,4 @@
 .txn-history-table {
-  min-height: 500px;
-  padding-top: 20px;
-  background-color: hsl(0, 0%, 98%);
-  border-radius: 10px;
   // overflow-x: scroll;
   .ng2-smart-pagination {
     .page-link,
@@ -57,16 +53,4 @@
 table tr th,
 table tr td {
   font-size: 0.75em !important;
-}
-
-.unlock {
-  color: rgba(0, 0, 0, $alpha: 0.9);
-  font-size: 150px;
-  .unlock_text {
-    font-family: Helvetica;
-    font-size: 36px;
-    color: #e6e6e6;
-    text-align: center;
-  }
-  padding-top: 200px;
 }
