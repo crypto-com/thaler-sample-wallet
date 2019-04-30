@@ -54,3 +54,11 @@ table tr th,
 table tr td {
   font-size: 0.75em !important;
 }
+.ng2-smart-pagination-nav {
+  margin: auto;
+}
+.txn-history-table .ng2-smart-pagination .page-link,
+.txn-history-table .ng2-smart-pagination .page-link-prev,
+.txn-history-table .ng2-smart-pagination .page-link-next {
+  color: #626973;
+}

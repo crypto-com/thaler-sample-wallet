@@ -96,10 +96,6 @@ export class WalletService {
             walletListFromClient.push({ id: wallet });
           });
           this.walletList.next(walletListFromClient);
-          if (walletListFromClient.length > 0) {
-            // this.selectedWalletId.next(walletListFromClient[0].id);
-            // this.setDecryptedFlag(true);
-          }
         },
         error => {
           console.log("Error", error);
