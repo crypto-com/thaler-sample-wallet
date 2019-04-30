@@ -6,18 +6,14 @@
     placeholder="Address"
     aria-label="Address"
     aria-describedby="button-addon2"
-    value="0x88022ca8a70ce32827a9476d2a50fb993050dacf79e632907684274368d26d57"
+    value="{{ walletAddress }}"
   />
   <div class="input-group-append">
     <button
       class="btn btn-outline-secondary btn-blue"
       type="button"
       id="button-addon2"
-      (click)="
-        copyMessage(
-          '0x88022ca8a70ce32827a9476d2a50fb993050dacf79e632907684274368d26d57'
-        )
-      "
+      (click)="copyMessage()"
       popover="Wallet address copied!"
     >
       Copy

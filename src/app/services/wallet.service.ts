@@ -16,6 +16,7 @@ export class WalletService {
   private selectedWallet = new BehaviorSubject<Wallet>(null);
   private decryptedFlag = new BehaviorSubject<boolean>(false);
   private walletBalance = new BehaviorSubject<string>("");
+  private walletAddress = new BehaviorSubject<string>("");
   private coreUrl = "http://127.0.0.1:9981";
   constructor(private http: HttpClient) {
     this.selectedWalletId.subscribe(walletId => {
@@ -40,6 +41,12 @@ export class WalletService {
         this.setWalletBalance(data["result"]);
         this.setDecryptedFlag(true);
         result.next(true);
+        this.checkWalletAddress(selectedWalletId, passphrase).subscribe(
+          data => {
+            console.log(data);
+            this.setWalletAddress(data["result"][0]);
+          }
+        );
         this.checkWalletTxnHistory(selectedWalletId, passphrase);
       }
     });
@@ -108,6 +115,19 @@ export class WalletService {
       ]
     });
   }
+  checkWalletAddress(walletId: string, passphrase: string): Observable<string> {
+    return this.http.post<string>(this.coreUrl, {
+      jsonrpc: "2.0",
+      id: "jsonrpc",
+      method: "wallet_addresses",
+      params: [
+        {
+          name: walletId,
+          passphrase: _.isNil(passphrase) ? "" : passphrase
+        }
+      ]
+    });
+  }
 
   checkWalletTxnHistory(walletId: string, passphrase: string) {
     console.log(`getting txn with ${walletId} ${passphrase}`);
@@ -140,8 +160,19 @@ export class WalletService {
   getWalletBalance(): Observable<string> {
     return this.walletBalance;
   }
+  setWalletAddress(address: string) {
+    this.walletAddress.next(address);
+  }
 
-  sendToAddress(walletId: string, passphrase: string, toAddress: string, amount: string): Observable<string> {
+  getWalletAddress(): Observable<string> {
+    return this.walletAddress;
+  }
+  sendToAddress(
+    walletId: string,
+    passphrase: string,
+    toAddress: string,
+    amount: string
+  ): Observable<string> {
     return this.http.post<string>(this.coreUrl, {
       jsonrpc: "2.0",
       id: "jsonrpc",
@@ -152,7 +183,7 @@ export class WalletService {
           passphrase: _.isNil(passphrase) ? "" : passphrase
         },
         toAddress,
-        Number(amount),
+        Number(amount)
       ]
     });
   }
