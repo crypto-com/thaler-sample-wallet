@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import BigNumber from "bignumber.js";
 import { InOutViewComponent } from "./in-out-view/in-out-view.component";
 import { WalletService } from "src/app/services/wallet.service";
 import { Wallet } from "src/app/types/wallet";
@@ -93,11 +94,11 @@ export class TxnHistoryComponent implements OnInit {
         });
         if (!_.isNil(history["balance_change"]["Incoming"])) {
           tmpData.action = "In";
-          tmpData.value = history["balance_change"]["Incoming"];
+          tmpData.value = new BigNumber(history["balance_change"]["Incoming"]).dividedBy("100000000").toString(10);
         }
         if (!_.isNil(history["balance_change"]["Outgoing"])) {
           tmpData.action = "Out";
-          tmpData.value = history["balance_change"]["Outgoing"];
+          tmpData.value = new BigNumber(history["balance_change"]["Outgoing"]).dividedBy("100000000").toString(10);
         }
         this.data.push(tmpData);
       });
