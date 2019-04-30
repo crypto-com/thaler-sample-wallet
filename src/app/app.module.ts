@@ -3,7 +3,6 @@ import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { AngularFontAwesomeModule } from "angular-font-awesome";
 
-import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { TxnHistoryComponent } from "./components/txn-history/txn-history.component";
 
