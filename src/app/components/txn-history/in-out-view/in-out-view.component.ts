@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { ViewCell } from "ng2-smart-table";
-import { isNil } from "lodash";
 
 @Component({
   templateUrl: "./in-out-view.component.html",
@@ -12,8 +11,6 @@ export class InOutViewComponent implements ViewCell, OnInit {
   @Input() value: string | number;
   @Input() rowData: any;
   ngOnInit() {
-    if (!isNil(this.value)) {
-      this.renderValue = this.value.toString().toUpperCase();
-    }
+    this.renderValue = this.value.toString();
   }
 }

@@ -47,14 +47,14 @@ export class TxnHistoryComponent implements OnInit {
         sort: false
       },
       action: {
-        title: "IN/OUT",
+        title: "In/Out",
         type: "custom",
         renderComponent: InOutViewComponent,
         filter: {
           type: "list",
           config: {
             selectText: "Select...",
-            list: [{ value: "IN", title: "IN" }, { value: "OUT", title: "OUT" }]
+            list: [{ value: "In", title: "In" }, { value: "Out", title: "Out" }]
           }
         },
         width: "130px",
@@ -93,11 +93,11 @@ export class TxnHistoryComponent implements OnInit {
           tmpData.txHash = tmpData.txHash + id.toString(16);
         });
         if (!_.isNil(history["balance_change"]["Incoming"])) {
-          tmpData.action = "IN";
+          tmpData.action = "In";
           tmpData.value = history["balance_change"]["Incoming"];
         }
         if (!_.isNil(history["balance_change"]["Outgoing"])) {
-          tmpData.action = "OUT";
+          tmpData.action = "Out";
           tmpData.value = history["balance_change"]["Outgoing"];
         }
         this.data.push(tmpData);
