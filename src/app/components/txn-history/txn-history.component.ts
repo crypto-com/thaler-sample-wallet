@@ -14,7 +14,6 @@ import { AgeViewComponent } from "./age-view/age-view.component";
 })
 export class TxnHistoryComponent implements OnInit {
   constructor(private walletService: WalletService) {}
-  show = false;
   settings = {
     refresh: true,
     hideSubHeader: true,
@@ -102,7 +101,6 @@ export class TxnHistoryComponent implements OnInit {
         }
         this.data.push(tmpData);
       });
-      this.show = true;
     });
 
     this.walletService
