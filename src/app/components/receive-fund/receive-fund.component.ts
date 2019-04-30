@@ -5,8 +5,7 @@ import { Wallet } from "src/app/types/wallet";
 @Component({
   selector: "app-receive-fund",
   templateUrl: "./receive-fund.component.html",
-  styleUrls: ["./receive-fund.component.scss"],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ["./receive-fund.component.scss"]
 })
 export class ReceiveFundComponent implements OnInit {
   wallet: Wallet;

@@ -17,7 +17,6 @@ import { ModalModule } from "ngx-bootstrap/modal";
 import { SendFundsFormComponent } from "./components/send-funds-form/send-funds-form.component";
 import { CreateWalletFormComponent } from "./components/create-wallet-form/create-wallet-form.component";
 import { ReceiveFundComponent } from "./components/receive-fund/receive-fund.component";
-import { PopoverModule } from "ngx-bootstrap/popover";
 import { AddressValidatorDirective } from "./shared/address.directive";
 import { SufficientBalanceValidatorDirective } from "./components/send-funds-form/sufficient-balance.directive";
 import { HttpClientModule } from "@angular/common/http";
@@ -51,7 +50,6 @@ import { AgeViewComponent } from "./components/txn-history/age-view/age-view.com
     AngularFontAwesomeModule,
     ModalModule.forRoot(),
     FormsModule,
-    PopoverModule.forRoot(),
     HttpClientModule,
     QRCodeModule
   ],
