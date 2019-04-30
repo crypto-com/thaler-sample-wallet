@@ -86,7 +86,7 @@ export class TxnHistoryComponent implements OnInit {
           age: history["time"],
           affectedAddress: history["address"]["BasicRedeem"],
           action: "",
-          value: 0,
+          value: "0",
           txFee: 0
         };
         history.transaction_id.forEach(id => {

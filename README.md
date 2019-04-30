@@ -16,15 +16,19 @@ TODO
 
 ## Prerequisites
 
-Crypto.com Chain: https://github.com/crypto-com/chain
+- Node.js: https://nodejs.org/en/
+- Angular CLI: https://cli.angular.io/ 
+- Crypto.com Chain: https://github.com/crypto-com/chain
 
-- Follow the README to build and start a local node
+## How to run wallet
 
-## How to build it
-
+- Start Crypto.com Chain by following instructions in the Crypto.com Chain repository
 - Run `ng serve` to start the wallet.
-
 - Navigate to `http://localhost:4200/`.
+
+## How to receive funds
+
+- Use the `signer-cli` in Crypto.com Chain project to send funds to the receiving address of any created wallet.
 
 ## Code scaffolding
 

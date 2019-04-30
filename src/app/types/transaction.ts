@@ -6,7 +6,7 @@ export interface Transaction {
   age: string;
   action: string;
   affectedAddress: string;
-  value: number;
+  value: string;
   txFee: number;
 }
 
