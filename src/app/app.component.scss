@@ -30,3 +30,25 @@
 .modal-body {
   padding: 0 !important;
 }
+.home {
+  flex: 1 1 auto;
+  margin: 1rem;
+  padding: 1rem;
+  height: 600px;
+  min-width: 1380px;
+  height: 100%;
+}
+
+.app-title {
+  font-family: Helvetica;
+  font-size: 24px;
+  color: #ffffff;
+
+  height: 100px;
+}
+.main {
+  min-height: 500px;
+  padding-top: 20px;
+  background-color: hsl(0, 0%, 98%);
+  border-radius: 10px;
+}
