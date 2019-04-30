@@ -1,9 +1,18 @@
-<div *ngIf="decryptedFlag" class="row">
+<div class="row">
   <div class="col-6">
-    <div class="wallet wallet-id">{{ wallet.id }}</div>
-    <h3 class="wallet wallet-balance">{{ walletBalance | currency:'':'':'1.0-0' }} CRO</h3>
+    <div *ngIf="decryptedFlag">
+      <div class="wallet wallet-id">{{ wallet.id }}</div>
+      <h3 class="wallet wallet-balance">
+        {{ walletBalance | currency: "":"":"1.0-0" }} CRO
+      </h3>
+    </div>
   </div>
-  <div class="col-6 text-right">
+  <div
+    class="col-6 text-right"
+    [ngClass]="{
+      locked: !decryptedFlag
+    }"
+  >
     <button type="button" class="btn" (click)="openModal(sendFund)">
       <svg
         width="37px"

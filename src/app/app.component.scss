@@ -7,21 +7,6 @@
   background-color: #20bca4;
   color: #fff;
 }
-.list-group-item.active {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0);
-  color: white;
-}
-.list-group-item {
-  color: white;
-  background: rgba(255, 255, 255, 0);
-  border-color: rgba(255, 255, 255, 0);
-  border-bottom-left-radius: 15px;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 0px;
-  padding-top: 25px;
-  padding-bottom: 25px;
-}
 // Form
 .invalid-feedback-block {
   display: block !important;

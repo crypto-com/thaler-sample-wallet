@@ -1,4 +1,5 @@
 .txn-history-table {
+  min-height: 500px;
   padding-top: 20px;
   background-color: hsl(0, 0%, 98%);
   border-radius: 10px;
@@ -62,7 +63,10 @@ table tr td {
   color: rgba(0, 0, 0, $alpha: 0.9);
   font-size: 150px;
   .unlock_text {
-    font-size: 30px;
+    font-family: Helvetica;
+    font-size: 36px;
+    color: #e6e6e6;
+    text-align: center;
   }
-  padding-bottom: 100px;
+  padding-top: 200px;
 }
