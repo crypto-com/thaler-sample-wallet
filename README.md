@@ -1,26 +1,38 @@
-# CryptoComChainWallet
+<p align="center">
+  <img src="https://avatars0.githubusercontent.com/u/41934032?s=400&v=4" alt="Crypto.com Chain" width="400">
+</p>
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.8.
+# Crypto.com Chain Sample Wallet
 
-## Development server
+This repository contains a sample implementation of Crypto.com Chain wallet with integration of [client JSON-RPC server](https://github.com/crypto-com/chain/tree/master/client-rpc).
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Contribution
+
+TODO
+
+## License
+
+TODO
+
+## Prerequisites
+
+- Node.js: https://nodejs.org/en/
+- Angular CLI: https://cli.angular.io/ 
+- Crypto.com Chain: https://github.com/crypto-com/chain
+
+## How to run wallet
+
+- Start Crypto.com Chain by following instructions in the Crypto.com Chain repository
+- Run `ng serve` to start the wallet.
+- Navigate to `http://localhost:4200/`.
+
+## How to receive funds
+
+- Use the `signer-cli` in Crypto.com Chain project to send funds to the receiving address of any created wallet.
 
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
 ## Further help
 

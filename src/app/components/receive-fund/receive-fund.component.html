@@ -1,31 +1,19 @@
-<small>CRO WALLET ADDRESS</small>
-<div class="input-group mb-3">
-  <input
-    type="text"
-    class="form-control"
-    placeholder="Address"
-    aria-label="Address"
-    aria-describedby="button-addon2"
-    value="0x88022ca8a70ce32827a9476d2a50fb993050dacf79e632907684274368d26d57"
-  />
-  <div class="input-group-append">
-    <button
-      class="btn btn-outline-secondary btn-blue"
-      type="button"
-      id="button-addon2"
-      (click)="
-        copyMessage(
-          '0x88022ca8a70ce32827a9476d2a50fb993050dacf79e632907684274368d26d57'
-        )
-      "
-      popover="Wallet address copied!"
-    >
-      Copy
-    </button>
-  </div>
-</div>
 <div class="text-center">
-  <img src="./assets/sampleQrCode.png" alt="" />
-  <br />
-  <small>CRO WALLET ADDRESS QR CODE</small>
+  <div class="wallet-title">{{ wallet.id }} CRO address</div>
+  <div class="wallet-address">
+    {{ walletAddress }}
+  </div>
+  <button
+    class="btn btn-blue"
+    type="submit"
+    (click)="copyMessage()"
+    [ngClass]="{
+      'btn-green': btnMsg == 'Copied!'
+    }"
+  >
+    {{ btnMsg }}
+  </button>
+  <div class="qrcode">
+    <qrcode [qrdata]="walletAddress" [size]="128" [level]="'M'"></qrcode>
+  </div>
 </div>

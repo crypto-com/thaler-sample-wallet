@@ -1,16 +1,14 @@
-<form
-  class="form"
-  name="sendFundsForm"
-  #form="ngForm"
-  novalidate
->
+<form class="form" name="sendFundsForm" #form="ngForm" novalidate>
   <div class="wallet">
     <div class="wallet-name">{{ walletId }}</div>
-    <div class="wallet-balance">{{ walletBalance | currency:'':'':'1.0-0' }} <span class="wallet-balance-unit">CRO</span></div>
+    <div class="wallet-balance">
+      {{ walletBalance }}
+      <span class="wallet-balance-unit">CRO</span>
+    </div>
   </div>
   <div class="input-container">
     <div class="form-group row">
-      <label for="amount" class="col-sm-4 col-form-label">Amount</label>
+      <label for="amount" class="col-sm-4 col-form-label">Amount&nbsp;*</label>
       <div class="input-group col-sm-8" *ngIf="status === 'PREPARING'">
         <input
           id="amount"
@@ -26,7 +24,7 @@
           [(ngModel)]="amountValue"
           (ngModelChange)="handleAmountChange($event)"
           required
-          pattern="\d*\.?\d+"
+          pattern="\d*\.?\d{0,8}"
           [appSufficientBalance]="walletBalance"
         />
         <div class="input-group-append">
@@ -60,14 +58,17 @@
           Insufficient wallet balance
         </div>
       </div>
-      <div class="input-group col-sm-8 form-confirm-value" *ngIf="status === 'CONFIRMING' || status === 'SENT'">
-        {{ amountValue | currency:'':'':'1.0-0' }}&nbsp;CRO
+      <div
+        class="input-group col-sm-8 form-confirm-value"
+        *ngIf="status === 'CONFIRMING' || status === 'SENDING' || status === 'BROADCASTED' || status === 'SENT'"
+      >
+        {{ amountValue }}&nbsp;CRO
       </div>
     </div>
     <div>
       <div class="form-group row">
         <label for="toAddress" class="col-sm-4 col-form-label"
-          >Recipient CRO Address</label
+          >Recipient CRO Address&nbsp;*</label
         >
         <div class="col-sm-8" *ngIf="status === 'PREPARING'">
           <input
@@ -105,7 +106,10 @@
             Invalid recipient address
           </div>
         </div>
-        <div class="col-sm-8 recipient-address form-confirm-value" *ngIf="status === 'CONFIRMING' || status === 'SENT'">
+        <div
+          class="col-sm-8 recipient-address form-confirm-value"
+          *ngIf="status === 'CONFIRMING' || status === 'SENDING' || status === 'BROADCASTED' || status === 'SENT'"
+        >
           {{ toAddress }}
         </div>
       </div>
@@ -128,33 +132,45 @@
           }"
           placeholder="Wallet Passphrase"
           [(ngModel)]="walletPassphrase"
-          required
         />
-        <div
-          class="invalid-feedback"
-          *ngIf="
-            (walletPassphraseModel.dirty || walletPassphraseModel.touched) &&
-            walletPassphraseModel.errors?.required
-          "
-        >
-          Missing wallet passphrase
-        </div>
-        <div
-          class="invalid-feedback-block"
-          *ngIf="sendToAddressApiError"
-        >
+        <div class="invalid-feedback-block" *ngIf="sendToAddressApiError">
           Unable to send funds. Please check if the passphrase is correct.
         </div>
       </div>
     </div>
     <div class="text-center">
-      <button class="btn btn-blue" *ngIf="status === 'PREPARING'" (click)="handleConfirm(form)">
+      <button
+        class="btn btn-blue"
+        *ngIf="status === 'PREPARING'"
+        (click)="handleConfirm(form)"
+      >
         Confirm
       </button>
-      <button class="btn btn-blue" *ngIf="status === 'CONFIRMING'" (click)="handleSend(form)">
+      <button
+        class="btn btn-blue"
+        *ngIf="status === 'CONFIRMING'"
+        (click)="handleSend(form)"
+      >
         Send
       </button>
-      <button class="btn btn-green" *ngIf="status === 'SENT'" (click)="closeAfterSend()">
+      <button
+        class="btn btn-blue"
+        *ngIf="status === 'SENDING'"
+      >
+        Sending ...
+      </button>
+      <button
+        class="btn btn-green"
+        *ngIf="status === 'BROADCASTED'"
+        (click)="closeAfterSend()"
+      >
+        Broadcasted!
+      </button>
+      <button
+        class="btn btn-green"
+        *ngIf="status === 'SENT'"
+        (click)="closeAfterSend()"
+      >
         Success!
       </button>
     </div>

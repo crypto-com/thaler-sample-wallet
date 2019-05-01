@@ -1,9 +1,35 @@
-/* You can add global styles to this file, and also import other style files */
-html {
-  height: 95%;
-  min-height: 600px;
+html,
+body {
+  min-height: 100%;
+  margin: 0;
 }
 body {
-  height: 100%;
-  background-color: #0b1426;
+  background-image: linear-gradient(#021e3f, #002a67);
+}
+.no-padding {
+  padding: 5px;
+}
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+.qrcode {
+  img {
+    margin-left: 170px;
+    margin-right: 170px;
+  }
 }

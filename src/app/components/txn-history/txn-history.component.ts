@@ -1,7 +1,11 @@
 import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import BigNumber from "bignumber.js";
 import { InOutViewComponent } from "./in-out-view/in-out-view.component";
 import { WalletService } from "src/app/services/wallet.service";
 import { Wallet } from "src/app/types/wallet";
+import * as _ from "lodash";
+import { Transaction } from "src/app/types/transaction";
+import { AgeViewComponent } from "./age-view/age-view.component";
 
 @Component({
   selector: "app-txn-history",
@@ -12,6 +16,8 @@ import { Wallet } from "src/app/types/wallet";
 export class TxnHistoryComponent implements OnInit {
   constructor(private walletService: WalletService) {}
   settings = {
+    refresh: true,
+    hideSubHeader: true,
     attr: {
       class: "txn-history"
     },
@@ -24,181 +30,79 @@ export class TxnHistoryComponent implements OnInit {
       delete: false
     },
     columns: {
-      tx_hash: {
+      txHash: {
         title: "TxHash",
         sort: false
       },
-      block: {
+      blockHeight: {
         title: "Block",
         filter: false,
         sortDirection: "desc"
       },
       age: {
         title: "Age",
+        type: "custom",
+        renderComponent: AgeViewComponent,
         filter: false,
         sort: false
       },
-      from: {
-        title: "From",
-        sort: false
-      },
       action: {
-        title: "IN/OUT",
+        title: "In/Out",
         type: "custom",
         renderComponent: InOutViewComponent,
         filter: {
           type: "list",
           config: {
             selectText: "Select...",
-            list: [{ value: "IN", title: "IN" }, { value: "OUT", title: "OUT" }]
+            list: [{ value: "In", title: "In" }, { value: "Out", title: "Out" }]
           }
         },
         width: "130px",
         sort: false
       },
-      to: {
-        title: "To",
+      affectedAddress: {
+        title: "Affected address",
         sort: false
       },
       value: {
         title: "Value",
         filter: false
       },
-      tx_fee: {
+      txFee: {
         title: "TxFee",
         filter: false
       }
     }
   };
-  data = [
-    {
-      tx_hash:
-        "0x52d762946bc6f0defcbeb600f8ef02af40ea4a69b88997aba294598dd0b627c9",
-      block: 1,
-      age: 132,
-      from: "0x412177283576d69bc8fd9d05336830776ed3971b",
-      action: "OUT",
-      to: "0x4fb2445742d0c413a917b2484960b0d80950b540",
-      value: 123.123,
-      tx_fee: 0.00001
-    },
-    {
-      tx_hash:
-        "0x60f2057e6d82138cdc5d621241ff21835f392823ef91f58a2a076118f3b4483f",
-      block: 2,
-      age: 132,
-      from: "0x412177283576d69bc8fd9d05336830776ed3971b",
-      action: "OUT",
-      to: "0x4fb2445742d0c413a917b2484960b0d80950b540",
-      value: 123.123,
-      tx_fee: 0.00001
-    },
-    {
-      tx_hash:
-        "0x88022ca8a70ce32827a9476d2a50fb993050dacf79e632907684274368d26d57",
-      block: 3,
-      age: 132,
-      from: "0x412177283576d69bc8fd9d05336830776ed3971b",
-      action: "IN",
-      to: "0x412177283576d69bc8fd9d05336830776ed3971b",
-      value: 123.123,
-      tx_fee: 0.00001
-    },
-    {
-      tx_hash:
-        "0x88022ca8a70ce32827a9476d2a50fb993050dacf79e632907684274368d26d57",
-      block: 4,
-      age: 132,
-      from: "0x412177283576d69bc8fd9d05336830776ed3971b",
-      action: "IN",
-      to: "0x412177283576d69bc8fd9d05336830776ed3971b",
-      value: 123.123,
-      tx_fee: 0.00001
-    },
-    {
-      tx_hash:
-        "0x88022ca8a70ce32827a9476d2a50fb993050dacf79e632907684274368d26d57",
-      block: 5,
-      age: 132,
-      from: "0x412177283576d69bc8fd9d05336830776ed3971b",
-      action: "IN",
-      to: "0x412177283576d69bc8fd9d05336830776ed3971b",
-      value: 123.123,
-      tx_fee: 0.00001
-    },
-    {
-      tx_hash:
-        "0x88022ca8a70ce32827a9476d2a50fb993050dacf79e632907684274368d26d57",
-      block: 6,
-      age: 132,
-      from: "0x412177283576d69bc8fd9d05336830776ed3971b",
-      action: "IN",
-      to: "0x412177283576d69bc8fd9d05336830776ed3971b",
-      value: 123.123,
-      tx_fee: 0.00001
-    },
-    {
-      tx_hash:
-        "0x88022ca8a70ce32827a9476d2a50fb993050dacf79e632907684274368d26d57",
-      block: 7,
-      age: 132,
-      from: "0x412177283576d69bc8fd9d05336830776ed3971b",
-      action: "IN",
-      to: "0x412177283576d69bc8fd9d05336830776ed3971b",
-      value: 123.123,
-      tx_fee: 0.00001
-    },
-    {
-      tx_hash:
-        "0x88022ca8a70ce32827a9476d2a50fb993050dacf79e632907684274368d26d57",
-      block: 8,
-      age: 132,
-      from: "0x412177283576d69bc8fd9d05336830776ed3971b",
-      action: "IN",
-      to: "0x412177283576d69bc8fd9d05336830776ed3971b",
-      value: 123.123,
-      tx_fee: 0.00001
-    },
-    {
-      tx_hash:
-        "0x88022ca8a70ce32827a9476d2a50fb993050dacf79e632907684274368d26d57",
-      block: 9,
-      age: 132,
-      from: "0x412177283576d69bc8fd9d05336830776ed3971b",
-      action: "IN",
-      to: "0x412177283576d69bc8fd9d05336830776ed3971b",
-      value: 123.123,
-      tx_fee: 0.00001
-    },
-    {
-      tx_hash:
-        "0x88022ca8a70ce32827a9476d2a50fb993050dacf79e632907684274368d26d57",
-      block: 10,
-      age: 132,
-      from: "0x412177283576d69bc8fd9d05336830776ed3971b",
-      action: "OUT",
-      to: "0x412177283576d69bc8fd9d05336830776ed3971b",
-      value: 123.123,
-      tx_fee: 0.00001
-    },
-    {
-      tx_hash:
-        "0x88022ca8a70ce32827a9476d2a50fb993050dacf79e632907684274368d26d57",
-      block: 11,
-      age: 132,
-      from: "0x412177283576d69bc8fd9d05336830776ed3971b",
-      action: "IN",
-      to: "0x412177283576d69bc8fd9d05336830776ed3971b",
-      value: 123.123,
-      tx_fee: 0.00001
-    }
-  ];
-  wallet: Wallet;
+  data: Transaction[] = [];
   decryptedFlag: boolean;
   ngOnInit() {
-    this.walletService
-      .getSelectedWallet()
-      .subscribe(selectedWallet => (this.wallet = selectedWallet));
+    this.walletService.getWalletTxnHistory().subscribe(walletTxnHistory => {
+      this.data = [];
+      walletTxnHistory.forEach(history => {
+        const tmpData: Transaction = {
+          txHash: "0x",
+          blockHeight: history["height"],
+          age: history["time"],
+          affectedAddress: history["address"]["BasicRedeem"],
+          action: "",
+          value: "0",
+          txFee: 0
+        };
+        history.transaction_id.forEach(id => {
+          tmpData.txHash = tmpData.txHash + id.toString(16);
+        });
+        if (!_.isNil(history["balance_change"]["Incoming"])) {
+          tmpData.action = "In";
+          tmpData.value = new BigNumber(history["balance_change"]["Incoming"]).dividedBy("100000000").toString(10);
+        }
+        if (!_.isNil(history["balance_change"]["Outgoing"])) {
+          tmpData.action = "Out";
+          tmpData.value = new BigNumber(history["balance_change"]["Outgoing"]).dividedBy("100000000").toString(10);
+        }
+        this.data.push(tmpData);
+      });
+    });
 
     this.walletService
       .getDecryptedFlag()

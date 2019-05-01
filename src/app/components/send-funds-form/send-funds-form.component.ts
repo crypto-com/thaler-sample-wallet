@@ -14,6 +14,7 @@ enum Status {
   PREPARING = "PREPARING",
   CONFIRMING = "CONFIRMING",
   SENDING = "SENDING",
+  BROADCASTED = "BROADCASTED",
   SENT = "SENT",
 }
 @Component({
@@ -35,6 +36,7 @@ export class SendFundsFormComponent implements OnInit {
   @Output() cancelled = new EventEmitter<void>();
 
   private status: Status = Status.PREPARING;
+  private walletBalanceBeforeSend = "";
   private sendToAddressApiError = false;
 
   constructor(private walletService: WalletService) {}
@@ -43,6 +45,9 @@ export class SendFundsFormComponent implements OnInit {
     if (this.amount) {
       this.amountValue = this.amount.toString(10);
     }
+    this.walletService.getWalletBalance().subscribe(balance => {
+      this.walletBalance = balance;
+    });
   }
 
   handleAmountChange(amount: string): void {
@@ -72,18 +77,33 @@ export class SendFundsFormComponent implements OnInit {
   }
 
   send(): void {
+    this.walletBalanceBeforeSend = this.walletBalance;
+    this.status = Status.SENDING;
+    const amountInBasicUnit = new BigNumber(this.amountValue).multipliedBy("100000000").toString(10);
     this.walletService.sendToAddress(
       this.walletId,
       this.walletPassphrase,
       this.toAddress,
-      this.amountValue,
+      amountInBasicUnit,
     ).subscribe(data => {
       if (data["error"]) {
         this.status = Status.PREPARING;
         // TODO: Distinguish from insufficient balance?
         this.sendToAddressApiError = true;
       } else {
-        this.walletBalance = new BigNumber(this.walletBalance).minus(this.amount).toString(10);
+        setTimeout(() => {
+          this.checkTxAlreadySent();
+        }, 3000);
+      }
+    });
+  }
+
+  checkTxAlreadySent() {
+    // TODO: Should use more reliable way to check for transaction confirmed
+    this.walletService.decrypt(this.walletPassphrase).subscribe(() => {
+      if (this.walletBalance === this.walletBalanceBeforeSend) {
+        this.status = Status.BROADCASTED;
+      } else {
         this.status = Status.SENT;
       }
     });

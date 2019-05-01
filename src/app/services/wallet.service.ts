@@ -4,6 +4,7 @@ import BigNumber from "bignumber.js";
 import * as lodash from "lodash";
 
 import { Wallet } from "../types/wallet";
+import { TransactionFromRpc } from "../types/transaction";
 import { HttpClient } from "@angular/common/http";
 import * as _ from "lodash";
 
@@ -16,6 +17,8 @@ export class WalletService {
   private selectedWallet = new BehaviorSubject<Wallet>(null);
   private decryptedFlag = new BehaviorSubject<boolean>(false);
   private walletBalance = new BehaviorSubject<string>("");
+  private walletAddress = new BehaviorSubject<string>("");
+  private walletTxnHistory = new BehaviorSubject<TransactionFromRpc[]>([]);
   private coreUrl = "http://127.0.0.1:9981";
   constructor(private http: HttpClient) {
     this.selectedWalletId.subscribe(walletId => {
@@ -37,10 +40,22 @@ export class WalletService {
       if (_.isNil(data["result"])) {
         result.next(false);
       } else {
-        this.setWalletBalance(data["result"]);
+        const balance = new BigNumber(data["result"]).dividedBy("100000000").toString(10);
+        console.log(data["result"]);
+        console.log(balance);
+        this.setWalletBalance(balance);
         this.setDecryptedFlag(true);
         result.next(true);
-        this.checkWalletTxnHistory(selectedWalletId, passphrase);
+        this.checkWalletAddress(selectedWalletId, passphrase).subscribe(
+          data => {
+            this.setWalletAddress(data["result"][0]);
+          }
+        );
+        this.checkWalletTxnHistory(selectedWalletId, passphrase).subscribe(
+          data => {
+            this.setWalletTxnHistory(data["result"]);
+          }
+        );
       }
     });
 
@@ -84,10 +99,6 @@ export class WalletService {
             walletListFromClient.push({ id: wallet });
           });
           this.walletList.next(walletListFromClient);
-          if (walletListFromClient.length > 0) {
-            // this.selectedWalletId.next(walletListFromClient[0].id);
-            // this.setDecryptedFlag(true);
-          }
         },
         error => {
           console.log("Error", error);
@@ -108,9 +119,32 @@ export class WalletService {
       ]
     });
   }
+  checkWalletAddress(walletId: string, passphrase: string): Observable<string> {
+    return this.http.post<string>(this.coreUrl, {
+      jsonrpc: "2.0",
+      id: "jsonrpc",
+      method: "wallet_addresses",
+      params: [
+        {
+          name: walletId,
+          passphrase: _.isNil(passphrase) ? "" : passphrase
+        }
+      ]
+    });
+  }
 
   checkWalletTxnHistory(walletId: string, passphrase: string) {
-    console.log(`getting txn with ${walletId} ${passphrase}`);
+    return this.http.post<string>(this.coreUrl, {
+      jsonrpc: "2.0",
+      id: "jsonrpc",
+      method: "wallet_transactions",
+      params: [
+        {
+          name: walletId,
+          passphrase: _.isNil(passphrase) ? "" : passphrase
+        }
+      ]
+    });
   }
 
   getWalletList(): Observable<Wallet[]> {
@@ -140,8 +174,26 @@ export class WalletService {
   getWalletBalance(): Observable<string> {
     return this.walletBalance;
   }
+  setWalletAddress(address: string) {
+    this.walletAddress.next(address);
+  }
 
-  sendToAddress(walletId: string, passphrase: string, toAddress: string, amount: string): Observable<string> {
+  getWalletAddress(): Observable<string> {
+    return this.walletAddress;
+  }
+  setWalletTxnHistory(txnHistory: TransactionFromRpc[]) {
+    this.walletTxnHistory.next(txnHistory);
+  }
+
+  getWalletTxnHistory(): Observable<TransactionFromRpc[]> {
+    return this.walletTxnHistory;
+  }
+  sendToAddress(
+    walletId: string,
+    passphrase: string,
+    toAddress: string,
+    amount: string
+  ): Observable<string> {
     return this.http.post<string>(this.coreUrl, {
       jsonrpc: "2.0",
       id: "jsonrpc",
@@ -152,7 +204,7 @@ export class WalletService {
           passphrase: _.isNil(passphrase) ? "" : passphrase
         },
         toAddress,
-        Number(amount),
+        amount
       ]
     });
   }
