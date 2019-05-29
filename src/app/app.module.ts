@@ -17,13 +17,15 @@ import { CreateWalletFormComponent } from "./components/create-wallet-form/creat
 import { ReceiveFundComponent } from "./components/receive-fund/receive-fund.component";
 import { AddressValidatorDirective } from "./shared/address.directive";
 import { SufficientBalanceValidatorDirective } from "./components/send-funds-form/sufficient-balance.directive";
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { PassphraseFormComponent } from "./components/passphrase-form/passphrase-form.component";
 
 import { QRCodeModule } from "angularx-qrcode";
 import { TimeAgoPipe } from "time-ago-pipe";
 import { AgeViewComponent } from "./components/txn-history/age-view/age-view.component";
 import { LockViewComponent } from "./components/lock-view/lock-view.component";
+import { HttpConfigInterceptor } from "./interceptor/httpconfig.interceptor";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,7 +53,9 @@ import { LockViewComponent } from "./components/lock-view/lock-view.component";
     HttpClientModule,
     QRCodeModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
