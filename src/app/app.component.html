@@ -19,3 +19,6 @@
     </div>
   </div>
 </div>
+<div *ngIf="!isClientRpcAlive" class="connection-failed">
+  <div class="vertical-center">Trying to connect the client RPC.</div>
+</div>
