@@ -52,3 +52,23 @@
   background-color: hsl(0, 0%, 98%);
   border-radius: 10px;
 }
+.connection-failed {
+  position: absolute;
+  background-color: rgba($color: #000000, $alpha: 0.8);
+  height: 100%;
+  width: 100%;
+  z-index: 9999;
+  padding: 0px;
+  margin: 0px;
+  top: 0px;
+}
+.vertical-center {
+  color: #9b1c1c;
+  width: 100%;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  text-align: center;
+}

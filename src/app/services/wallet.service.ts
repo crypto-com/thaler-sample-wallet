@@ -19,7 +19,7 @@ export class WalletService {
   private walletBalance = new BehaviorSubject<string>("");
   private walletAddress = new BehaviorSubject<string>("");
   private walletTxnHistory = new BehaviorSubject<TransactionFromRpc[]>([]);
-  private coreUrl = "http://127.0.0.1:9981";
+  private coreUrl = "http://127.0.0.1:26659";
   constructor(private http: HttpClient) {
     this.selectedWalletId.subscribe(walletId => {
       // TODO: What if wallet id cannot be found?
@@ -40,7 +40,9 @@ export class WalletService {
       if (_.isNil(data["result"])) {
         result.next(false);
       } else {
-        const balance = new BigNumber(data["result"]).dividedBy("100000000").toString(10);
+        const balance = new BigNumber(data["result"])
+          .dividedBy("100000000")
+          .toString(10);
         console.log(data["result"]);
         console.log(balance);
         this.setWalletBalance(balance);
@@ -206,6 +208,13 @@ export class WalletService {
         toAddress,
         amount
       ]
+    });
+  }
+
+  pingClientRPC(): Observable<string> {
+    return this.http.post<string>(this.coreUrl, {
+      jsonrpc: "2.0",
+      id: "jsonrpc"
     });
   }
 }
