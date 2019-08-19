@@ -11,14 +11,10 @@ export interface Transaction {
 }
 
 export interface TransactionFromRpc {
-  address: {
-    BasicRedeem: string;
-  };
-  balance_change: {
-    Incoming?: number;
-    Outgoing?: number;
-  };
-  height: number;
-  time: string;
-  transaction_id: number[];
+  address: string;
+  amount: string;
+  kind: string;
+  block_height: number;
+  block_time: string;
+  transaction_id: string;
 }
