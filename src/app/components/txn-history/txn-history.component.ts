@@ -14,7 +14,7 @@ import { AgeViewComponent } from "./age-view/age-view.component";
   encapsulation: ViewEncapsulation.None
 })
 export class TxnHistoryComponent implements OnInit {
-  constructor(private walletService: WalletService) {}
+  constructor(private walletService: WalletService) { }
   settings = {
     refresh: true,
     hideSubHeader: true,
@@ -81,25 +81,14 @@ export class TxnHistoryComponent implements OnInit {
       this.data = [];
       walletTxnHistory.forEach(history => {
         const tmpData: Transaction = {
-          txHash: "0x",
-          blockHeight: history["height"],
-          age: history["time"],
-          affectedAddress: history["address"]["BasicRedeem"],
-          action: "",
-          value: "0",
+          txHash: "0x" + history["transaction_id"],
+          blockHeight: history["block_height"],
+          age: history["block_time"],
+          affectedAddress: history["address"],
+          action: (history["kind"] === "Incoming") ? "In" : "Out",
+          value: new BigNumber(history["amount"]).dividedBy("100000000").toString(10),
           txFee: 0
         };
-        history.transaction_id.forEach(id => {
-          tmpData.txHash = tmpData.txHash + id.toString(16);
-        });
-        if (!_.isNil(history["balance_change"]["Incoming"])) {
-          tmpData.action = "In";
-          tmpData.value = new BigNumber(history["balance_change"]["Incoming"]).dividedBy("100000000").toString(10);
-        }
-        if (!_.isNil(history["balance_change"]["Outgoing"])) {
-          tmpData.action = "Out";
-          tmpData.value = new BigNumber(history["balance_change"]["Outgoing"]).dividedBy("100000000").toString(10);
-        }
         this.data.push(tmpData);
       });
     });
