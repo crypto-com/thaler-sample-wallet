@@ -26,13 +26,15 @@ export function addressValidator(): ValidatorFn {
     if (!control.value) {
       return null;
     }
-    const valid = /^0x.+$/.test(control.value);
+    const valid = control.value.startsWith("cro")
+      || control.value.startsWith("tcro")
+      || control.value.startsWith("dcro");
     return valid
       ? null
       : {
-          address: {
-            value: control.value
-          }
-        };
+        address: {
+          value: control.value
+        }
+      };
   };
 }

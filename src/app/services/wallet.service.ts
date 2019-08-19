@@ -19,7 +19,7 @@ export class WalletService {
   private walletBalance = new BehaviorSubject<string>("");
   private walletAddress = new BehaviorSubject<string>("");
   private walletTxnHistory = new BehaviorSubject<TransactionFromRpc[]>([]);
-  private coreUrl = "http://127.0.0.1:26659";
+  private coreUrl = "http://127.0.0.1:9981";
   constructor(private http: HttpClient) {
     this.selectedWalletId.subscribe(walletId => {
       // TODO: What if wallet id cannot be found?
@@ -125,7 +125,7 @@ export class WalletService {
     return this.http.post<string>(this.coreUrl, {
       jsonrpc: "2.0",
       id: "jsonrpc",
-      method: "wallet_addresses",
+      method: "wallet_listTransferAddresses",
       params: [
         {
           name: walletId,
@@ -194,19 +194,21 @@ export class WalletService {
     walletId: string,
     passphrase: string,
     toAddress: string,
-    amount: string
+    amount: string,
+    viewKeys: string[],
   ): Observable<string> {
     return this.http.post<string>(this.coreUrl, {
       jsonrpc: "2.0",
       id: "jsonrpc",
-      method: "wallet_sendtoaddress",
+      method: "wallet_sendToAddress",
       params: [
         {
           name: walletId,
           passphrase: _.isNil(passphrase) ? "" : passphrase
         },
         toAddress,
-        amount
+        amount,
+        viewKeys,
       ]
     });
   }

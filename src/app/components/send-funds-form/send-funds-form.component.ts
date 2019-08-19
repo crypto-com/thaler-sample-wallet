@@ -39,7 +39,7 @@ export class SendFundsFormComponent implements OnInit {
   private walletBalanceBeforeSend = "";
   private sendToAddressApiError = false;
 
-  constructor(private walletService: WalletService) {}
+  constructor(private walletService: WalletService) { }
 
   ngOnInit() {
     if (this.amount) {
@@ -85,6 +85,7 @@ export class SendFundsFormComponent implements OnInit {
       this.walletPassphrase,
       this.toAddress,
       amountInBasicUnit,
+      []
     ).subscribe(data => {
       if (data["error"]) {
         this.status = Status.PREPARING;
