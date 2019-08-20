@@ -36,28 +36,34 @@ export class WalletService {
       selectedWallet => (selectedWalletId = selectedWallet.id)
     );
 
-    this.checkWalletBalance(selectedWalletId, passphrase).subscribe(data => {
-      if (_.isNil(data["result"])) {
+    this.syncWallet(selectedWalletId, passphrase).subscribe(data => {
+      if (_.isUndefined(data["result"])) {
         result.next(false);
       } else {
-        const balance = new BigNumber(data["result"])
-          .dividedBy("100000000")
-          .toString(10);
-        console.log(data["result"]);
-        console.log(balance);
-        this.setWalletBalance(balance);
-        this.setDecryptedFlag(true);
-        result.next(true);
-        this.checkWalletAddress(selectedWalletId, passphrase).subscribe(
-          data => {
-            this.setWalletAddress(data["result"][0]);
+        this.checkWalletBalance(selectedWalletId, passphrase).subscribe(data => {
+          if (_.isNil(data["result"])) {
+            result.next(false);
+          } else {
+            const balance = new BigNumber(data["result"])
+              .dividedBy("100000000")
+              .toString(10);
+            console.log(data["result"]);
+            console.log(balance);
+            this.setWalletBalance(balance);
+            this.setDecryptedFlag(true);
+            result.next(true);
+            this.checkWalletAddress(selectedWalletId, passphrase).subscribe(
+              data => {
+                this.setWalletAddress(data["result"][0]);
+              }
+            );
+            this.checkWalletTxnHistory(selectedWalletId, passphrase).subscribe(
+              data => {
+                this.setWalletTxnHistory(data["result"]);
+              }
+            );
           }
-        );
-        this.checkWalletTxnHistory(selectedWalletId, passphrase).subscribe(
-          data => {
-            this.setWalletTxnHistory(data["result"]);
-          }
-        );
+        });
       }
     });
 
@@ -85,6 +91,20 @@ export class WalletService {
     return !lodash.isUndefined(
       this.walletList.getValue().find(wallet => wallet.id === id)
     );
+  }
+
+  syncWallet(walletId: string, passphrase: string): Observable<string> {
+    return this.http.post<string>(this.coreUrl, {
+      jsonrpc: "2.0",
+      id: "jsonrpc",
+      method: "sync",
+      params: [
+        {
+          name: walletId,
+          passphrase: _.isNil(passphrase) ? "" : passphrase
+        }
+      ]
+    });
   }
 
   syncWalletList() {
@@ -125,7 +145,7 @@ export class WalletService {
     return this.http.post<string>(this.coreUrl, {
       jsonrpc: "2.0",
       id: "jsonrpc",
-      method: "wallet_addresses",
+      method: "wallet_listTransferAddresses",
       params: [
         {
           name: walletId,
@@ -194,19 +214,21 @@ export class WalletService {
     walletId: string,
     passphrase: string,
     toAddress: string,
-    amount: string
+    amount: string,
+    viewKeys: string[],
   ): Observable<string> {
     return this.http.post<string>(this.coreUrl, {
       jsonrpc: "2.0",
       id: "jsonrpc",
-      method: "wallet_sendtoaddress",
+      method: "wallet_sendToAddress",
       params: [
         {
           name: walletId,
           passphrase: _.isNil(passphrase) ? "" : passphrase
         },
         toAddress,
-        amount
+        amount,
+        viewKeys,
       ]
     });
   }
