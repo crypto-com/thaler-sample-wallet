@@ -24,6 +24,7 @@ import { QRCodeModule } from "angularx-qrcode";
 import { TimeAgoPipe } from "time-ago-pipe";
 import { AgeViewComponent } from "./components/txn-history/age-view/age-view.component";
 import { LockViewComponent } from "./components/lock-view/lock-view.component";
+import { PendingMultiSigTxnComponent } from "./components/pending-multi-sig-txn/pending-multi-sig-txn.component";
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +40,8 @@ import { LockViewComponent } from "./components/lock-view/lock-view.component";
     PassphraseFormComponent,
     TimeAgoPipe,
     AgeViewComponent,
-    LockViewComponent
+    LockViewComponent,
+    PendingMultiSigTxnComponent
   ],
   entryComponents: [InOutViewComponent, AgeViewComponent],
   imports: [

@@ -10,15 +10,11 @@ import * as lodash from "lodash";
 })
 export class AppComponent implements OnInit {
   title = "crypto.com-chain-wallet";
-
   constructor(private walletService: WalletService, private http: HttpClient) {}
   isClientRpcAlive = true;
   ngOnInit() {
     this.walletService.syncWalletList();
     this.pingClientRPC();
-    setInterval(() => {
-      this.pingClientRPC();
-    }, 5000);
   }
   pingClientRPC() {
     this.walletService.pingClientRPC().subscribe(
@@ -29,5 +25,8 @@ export class AppComponent implements OnInit {
         this.isClientRpcAlive = false;
       }
     );
+    setTimeout(() => {
+      this.pingClientRPC();
+    }, 5000);
   }
 }
