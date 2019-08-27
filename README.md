@@ -12,7 +12,7 @@ TODO
 
 ## License
 
-TODO
+[Apache 2.0](./LICENSE)
 
 ## Prerequisites
 
