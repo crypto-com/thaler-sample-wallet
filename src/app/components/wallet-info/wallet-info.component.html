@@ -75,7 +75,7 @@
       </svg>
     </button>
     &nbsp;
-    <button type="button" class="btn" (click)="openModal(sendFund)">
+    <button type="button" class="btn" (click)="openModal(multiSig)">
       <svg
         width="37px"
         height="80px"
@@ -221,6 +221,27 @@
   </div>
 </ng-template>
 
+<ng-template #multiSig>
+  <div class="modal-header">
+    <h5 class="modal-title pull-left">Pay</h5>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="closeModal()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-multi-sig-form
+      [walletId]="wallet.id"
+      [walletBalance]="walletBalance"
+      (sent)="handleFundsSent($event)"
+      (cancelled)="closeModal()"
+    ></app-multi-sig-form>
+  </div>
+</ng-template>
 <ng-template #receiveFund>
   <div class="modal-header">
     <h5 class="modal-title pull-left">Receive Funds</h5>

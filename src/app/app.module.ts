@@ -27,6 +27,7 @@ import { LockViewComponent } from "./components/lock-view/lock-view.component";
 import { OutstandingMultiSigTxnComponent } from "./components/outstanding-multi-sig-txn/outstanding-multi-sig-txn.component";
 import { ActionComponent } from "./components/outstanding-multi-sig-txn/action/action.component";
 import { SignMultiSigFormComponent } from "./components/sign-multi-sig-form/sign-multi-sig-form.component";
+import { MultiSigFormComponent } from "./components/multi-sig-form/multi-sig-form.component";
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,7 +46,8 @@ import { SignMultiSigFormComponent } from "./components/sign-multi-sig-form/sign
     LockViewComponent,
     OutstandingMultiSigTxnComponent,
     ActionComponent,
-    SignMultiSigFormComponent
+    SignMultiSigFormComponent,
+    MultiSigFormComponent
   ],
   entryComponents: [InOutViewComponent, AgeViewComponent, ActionComponent],
   imports: [
