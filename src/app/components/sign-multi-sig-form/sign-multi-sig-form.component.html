@@ -1,0 +1,117 @@
+<form class="form" name="sendFundsForm" #form="ngForm" novalidate>
+  <div class="input-container">
+    <div class="form-group row">
+      <label for="amount" class="col-sm-4 col-form-label">{{ partyA }}</label>
+      <div class="input-group col-sm-8" *ngIf="status === 'PREPARING'">
+        <input
+          id="amount"
+          type="text"
+          name="amount"
+          class="form-control"
+          value="{{ partyAAmount }}"
+          required
+          disabled
+        />
+        <div class="input-group-append">
+          <div class="input-group-text">CRO</div>
+        </div>
+      </div>
+      <div
+        class="input-group col-sm-8 form-confirm-value"
+        *ngIf="
+          status === 'CONFIRMING' ||
+          status === 'SENDING' ||
+          status === 'BROADCASTED' ||
+          status === 'SENT'
+        "
+      >
+        {{ partyAAmount }}&nbsp;CRO
+      </div>
+    </div>
+    <div class="form-group row">
+      <label for="amount" class="col-sm-4 col-form-label">{{ partyB }}</label>
+      <div class="input-group col-sm-8" *ngIf="status === 'PREPARING'">
+        <input
+          id="amount"
+          type="text"
+          name="amount"
+          class="form-control"
+          value="{{ partyBAmount }}"
+          required
+          disabled
+        />
+        <div class="input-group-append">
+          <div class="input-group-text">CRO</div>
+        </div>
+      </div>
+      <div
+        class="input-group col-sm-8 form-confirm-value"
+        *ngIf="
+          status === 'CONFIRMING' ||
+          status === 'SENDING' ||
+          status === 'BROADCASTED' ||
+          status === 'SENT'
+        "
+      >
+        {{ partyBAmount }}&nbsp;CRO
+      </div>
+    </div>
+    <div class="form-group row" *ngIf="status === 'PREPARING'">
+      <label for="walletPassphrase" class="col-sm-4 col-form-label"
+        >Wallet Passphrase</label
+      >
+      <div class="col-sm-8">
+        <input
+          id="walletPassphrase"
+          type="password"
+          name="walletPassphrase"
+          class="form-control"
+          #walletPassphraseModel="ngModel"
+          [ngClass]="{
+            'is-invalid':
+              walletPassphraseModel.invalid &&
+              (walletPassphraseModel.dirty || walletPassphraseModel.touched)
+          }"
+          placeholder="Wallet Passphrase"
+          [(ngModel)]="walletPassphrase"
+        />
+        <div class="invalid-feedback-block" *ngIf="sendToAddressApiError">
+          Unable to send funds. Please check if the passphrase is correct.
+        </div>
+      </div>
+    </div>
+    <div class="text-center">
+      <button
+        class="btn btn-blue"
+        *ngIf="status === 'PREPARING'"
+        (click)="handleConfirm(form)"
+      >
+        Confirm
+      </button>
+      <button
+        class="btn btn-blue"
+        *ngIf="status === 'CONFIRMING'"
+        (click)="handleSend(form)"
+      >
+        Send
+      </button>
+      <button class="btn btn-blue" *ngIf="status === 'SENDING'">
+        Sending ...
+      </button>
+      <button
+        class="btn btn-green"
+        *ngIf="status === 'BROADCASTED'"
+        (click)="closeAfterSend()"
+      >
+        Broadcasted!
+      </button>
+      <button
+        class="btn btn-green"
+        *ngIf="status === 'SENT'"
+        (click)="closeAfterSend()"
+      >
+        Success!
+      </button>
+    </div>
+  </div>
+</form>

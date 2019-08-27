@@ -24,7 +24,9 @@ import { QRCodeModule } from "angularx-qrcode";
 import { TimeAgoPipe } from "time-ago-pipe";
 import { AgeViewComponent } from "./components/txn-history/age-view/age-view.component";
 import { LockViewComponent } from "./components/lock-view/lock-view.component";
-import { PendingMultiSigTxnComponent } from "./components/pending-multi-sig-txn/pending-multi-sig-txn.component";
+import { OutstandingMultiSigTxnComponent } from "./components/outstanding-multi-sig-txn/outstanding-multi-sig-txn.component";
+import { ActionComponent } from "./components/outstanding-multi-sig-txn/action/action.component";
+import { SignMultiSigFormComponent } from "./components/sign-multi-sig-form/sign-multi-sig-form.component";
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,9 +43,11 @@ import { PendingMultiSigTxnComponent } from "./components/pending-multi-sig-txn/
     TimeAgoPipe,
     AgeViewComponent,
     LockViewComponent,
-    PendingMultiSigTxnComponent
+    OutstandingMultiSigTxnComponent,
+    ActionComponent,
+    SignMultiSigFormComponent
   ],
-  entryComponents: [InOutViewComponent, AgeViewComponent],
+  entryComponents: [InOutViewComponent, AgeViewComponent, ActionComponent],
   imports: [
     BrowserModule,
     Ng2SmartTableModule,

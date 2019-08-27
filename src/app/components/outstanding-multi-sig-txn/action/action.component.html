@@ -1,0 +1,97 @@
+<div>
+  <button
+    type="button"
+    class="btn btn-info btn-sm"
+    (click)="openModal(recevied)"
+    *ngIf="status === 'resolved'"
+  >
+    Confirm receipt
+  </button>
+  <button
+    type="button"
+    class="btn btn-danger btn-sm"
+    (click)="openModal(refund)"
+    *ngIf="status === 'refund'"
+  >
+    Confirm refund
+  </button>
+  <button
+    type="button"
+    class="btn btn-warning btn-sm"
+    (click)="openModal(escrow)"
+  >
+    Involve escrow
+  </button>
+</div>
+
+<ng-template #recevied>
+  <div class="modal-header bg-info">
+    <h5 class="modal-title pull-left">Confirm receipt</h5>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-sign-multi-sig-form
+      [partyA]="'Merchant'"
+      [partyAAmount]="amount - 10"
+      [partyB]="'You'"
+      [partyBAmount]="10"
+      (sent)="handleFundsSent($event)"
+      (cancelled)="closeModal()"
+    ></app-sign-multi-sig-form>
+  </div>
+</ng-template>
+
+<ng-template #refund>
+  <div class="modal-header bg-danger">
+    <h5 class="modal-title pull-left">Confirm refund</h5>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-sign-multi-sig-form
+      [partyA]="'Merchant'"
+      [partyAAmount]="0"
+      [partyB]="'You'"
+      [partyBAmount]="amount"
+      (sent)="handleFundsSent($event)"
+      (cancelled)="closeModal()"
+    ></app-sign-multi-sig-form>
+  </div>
+</ng-template>
+
+<ng-template #escrow>
+  <div class="modal-header bg-warning">
+    <h5 class="modal-title pull-left">Involve escrow</h5>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-sign-multi-sig-form
+      [partyA]="'Escrow'"
+      [partyAAmount]="10"
+      [partyB]="'You'"
+      [partyBAmount]="amount - 10"
+      (sent)="handleFundsSent($event)"
+      (cancelled)="closeModal()"
+    ></app-sign-multi-sig-form>
+  </div>
+</ng-template>

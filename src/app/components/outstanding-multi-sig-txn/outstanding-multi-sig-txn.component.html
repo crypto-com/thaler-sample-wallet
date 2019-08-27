@@ -1,0 +1,12 @@
+<div
+  class="outstanding-txn-history-table justify-content-center"
+  *ngIf="decryptedFlag"
+>
+  <h5>Outstanding transactions</h5>
+  <ng2-smart-table
+    [settings]="settings"
+    [source]="data"
+    class="table table-striped"
+  ></ng2-smart-table>
+  <hr />
+</div>

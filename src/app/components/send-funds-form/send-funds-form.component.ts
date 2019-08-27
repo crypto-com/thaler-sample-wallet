@@ -15,7 +15,7 @@ enum Status {
   CONFIRMING = "CONFIRMING",
   SENDING = "SENDING",
   BROADCASTED = "BROADCASTED",
-  SENT = "SENT",
+  SENT = "SENT"
 }
 @Component({
   selector: "app-send-funds-form",
@@ -39,7 +39,7 @@ export class SendFundsFormComponent implements OnInit {
   private walletBalanceBeforeSend = "";
   private sendToAddressApiError = false;
 
-  constructor(private walletService: WalletService) { }
+  constructor(private walletService: WalletService) {}
 
   ngOnInit() {
     if (this.amount) {
@@ -79,24 +79,28 @@ export class SendFundsFormComponent implements OnInit {
   send(): void {
     this.walletBalanceBeforeSend = this.walletBalance;
     this.status = Status.SENDING;
-    const amountInBasicUnit = new BigNumber(this.amountValue).multipliedBy("100000000").toString(10);
-    this.walletService.sendToAddress(
-      this.walletId,
-      this.walletPassphrase,
-      this.toAddress,
-      amountInBasicUnit,
-      []
-    ).subscribe(data => {
-      if (data["error"]) {
-        this.status = Status.PREPARING;
-        // TODO: Distinguish from insufficient balance?
-        this.sendToAddressApiError = true;
-      } else {
-        setTimeout(() => {
-          this.checkTxAlreadySent();
-        }, 3000);
-      }
-    });
+    const amountInBasicUnit = new BigNumber(this.amountValue)
+      .multipliedBy("100000000")
+      .toString(10);
+    this.walletService
+      .sendToAddress(
+        this.walletId,
+        this.walletPassphrase,
+        this.toAddress,
+        amountInBasicUnit,
+        []
+      )
+      .subscribe(data => {
+        if (data["error"]) {
+          this.status = Status.PREPARING;
+          // TODO: Distinguish from insufficient balance?
+          this.sendToAddressApiError = true;
+        } else {
+          setTimeout(() => {
+            this.checkTxAlreadySent();
+          }, 3000);
+        }
+      });
   }
 
   checkTxAlreadySent() {
@@ -114,7 +118,7 @@ export class SendFundsFormComponent implements OnInit {
     this.sent.emit({
       walletId: this.walletId,
       amount: this.amount,
-      toAddress: this.toAddress,
+      toAddress: this.toAddress
     });
   }
 
