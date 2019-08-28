@@ -37,14 +37,14 @@
     </button>
   </div>
   <div class="modal-body">
-    <app-sign-multi-sig-form
+    <app-multi-sig-action-form
       [partyA]="'Merchant'"
       [partyAAmount]="amount - 10"
       [partyB]="'You'"
       [partyBAmount]="10"
       (sent)="handleFundsSent($event)"
       (cancelled)="closeModal()"
-    ></app-sign-multi-sig-form>
+    ></app-multi-sig-action-form>
   </div>
 </ng-template>
 
@@ -61,14 +61,14 @@
     </button>
   </div>
   <div class="modal-body">
-    <app-sign-multi-sig-form
+    <app-multi-sig-action-form
       [partyA]="'Merchant'"
       [partyAAmount]="0"
       [partyB]="'You'"
       [partyBAmount]="amount"
       (sent)="handleFundsSent($event)"
       (cancelled)="closeModal()"
-    ></app-sign-multi-sig-form>
+    ></app-multi-sig-action-form>
   </div>
 </ng-template>
 
@@ -85,13 +85,13 @@
     </button>
   </div>
   <div class="modal-body">
-    <app-sign-multi-sig-form
+    <app-multi-sig-action-form
       [partyA]="'Escrow'"
       [partyAAmount]="10"
       [partyB]="'You'"
       [partyBAmount]="amount - 10"
       (sent)="handleFundsSent($event)"
       (cancelled)="closeModal()"
-    ></app-sign-multi-sig-form>
+    ></app-multi-sig-action-form>
   </div>
 </ng-template>

@@ -234,12 +234,12 @@
     </button>
   </div>
   <div class="modal-body">
-    <app-multi-sig-form
+    <app-multi-sig-creation-form
       [walletId]="wallet.id"
       [walletBalance]="walletBalance"
       (sent)="handleFundsSent($event)"
       (cancelled)="closeModal()"
-    ></app-multi-sig-form>
+    ></app-multi-sig-creation-form>
   </div>
 </ng-template>
 <ng-template #receiveFund>

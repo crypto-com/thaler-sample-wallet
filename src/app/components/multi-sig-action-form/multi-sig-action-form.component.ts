@@ -18,11 +18,11 @@ enum Status {
   SENT = "SENT"
 }
 @Component({
-  selector: "app-sign-multi-sig-form",
-  templateUrl: "./sign-multi-sig-form.component.html",
-  styleUrls: ["./sign-multi-sig-form.component.scss"]
+  selector: "app-multi-sig-action-form",
+  templateUrl: "./multi-sig-action-form.component.html",
+  styleUrls: ["./multi-sig-action-form.component.scss"]
 })
-export class SignMultiSigFormComponent implements OnInit {
+export class MultiSigActionFormComponent implements OnInit {
   walletList: Wallet[];
   @Input() partyA: string;
   @Input() partyAAmount: string;

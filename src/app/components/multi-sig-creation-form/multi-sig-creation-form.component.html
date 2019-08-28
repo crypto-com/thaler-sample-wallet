@@ -8,6 +8,32 @@
   </div>
   <div class="input-container">
     <div class="form-group row">
+      <label for="amount" class="col-sm-4 col-form-label"
+        >Order ID&nbsp;*</label
+      >
+      <div class="input-group col-sm-8" *ngIf="status === 'PREPARING'">
+        <input
+          id="amount"
+          type="text"
+          name="amount"
+          class="form-control"
+          placeholder="Order ID from shopping cart"
+          required
+        />
+      </div>
+      <div
+        class="input-group col-sm-8 form-confirm-value"
+        *ngIf="
+          status === 'CONFIRMING' ||
+          status === 'SENDING' ||
+          status === 'BROADCASTED' ||
+          status === 'SENT'
+        "
+      >
+        {{ amountValue }}&nbsp;CRO
+      </div>
+    </div>
+    <div class="form-group row">
       <label for="amount" class="col-sm-4 col-form-label">Amount&nbsp;*</label>
       <div class="input-group col-sm-8" *ngIf="status === 'PREPARING'">
         <input

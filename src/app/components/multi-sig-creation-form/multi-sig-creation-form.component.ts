@@ -19,11 +19,11 @@ enum Status {
 }
 
 @Component({
-  selector: "app-multi-sig-form",
-  templateUrl: "./multi-sig-form.component.html",
-  styleUrls: ["./multi-sig-form.component.scss"]
+  selector: "app-multi-sig-creation-form",
+  templateUrl: "./multi-sig-creation-form.component.html",
+  styleUrls: ["./multi-sig-creation-form.component.scss"]
 })
-export class MultiSigFormComponent implements OnInit {
+export class MultiSigCreationFormComponent implements OnInit {
   merchantList = [
     { name: "Crypto.com", url: "127.0.0.1" },
     { name: "Nike", url: "127.0.0.1" },
