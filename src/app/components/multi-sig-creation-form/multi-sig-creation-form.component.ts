@@ -5,6 +5,7 @@ import { WalletService } from "src/app/services/wallet.service";
 import { Wallet } from "src/app/types/wallet";
 import { NgForm } from "@angular/forms";
 
+import { HttpClient } from "@angular/common/http";
 export interface FundSent {
   walletId: string;
   amount: BigNumber;
@@ -35,7 +36,10 @@ export class MultiSigCreationFormComponent implements OnInit {
   @Input() walletId: string;
   @Input() walletBalance: string;
   @Input() amount: BigNumber;
+  orderId: string;
   amountValue: string;
+  selectedMerchant: string = this.merchantList[0].name;
+  selectedEscrow: string = this.escrowList[0].name;
   @Input() toAddress: string;
   walletPassphrase: string;
 
@@ -45,8 +49,8 @@ export class MultiSigCreationFormComponent implements OnInit {
   private status: Status = Status.PREPARING;
   private walletBalanceBeforeSend = "";
   private sendToAddressApiError = false;
-
-  constructor(private walletService: WalletService) {}
+  private coreUrl = "http://127.0.0.1:9981";
+  constructor(private http: HttpClient, private walletService: WalletService) {}
 
   ngOnInit() {
     if (this.amount) {
@@ -132,4 +136,27 @@ export class MultiSigCreationFormComponent implements OnInit {
   cancel(): void {
     this.cancelled.emit();
   }
+  // multiSig(): void {
+  //   this.getBuyerKeys();
+  //   this.getEscrowKeys();
+  //   this.getMerchantKeys(
+  //     order_id,
+  //     buyer_public_key,
+  //     buyer_view_key,
+  //     escrow_public_key,
+  //     escrow_view_key
+  //   );
+  //   this.createMultiSigAddress(
+  //     buyer_public_key,
+  //     buyer_view_key,
+  //     escrow_public_key,
+  //     escrow_view_key,
+  //     merchant_public_key,
+  //     merchant_view_key
+  //   );
+  //   this.transfer(address, amount + 10);
+  //   this.submitPaymentProof(order_id, txid);
+  //   this.storeToLocalStorage(merchant_name, escrow_name, amount + 10, order_id);
+  // }
+  // getBuyerKeys(): void {}
 }

@@ -13,10 +13,11 @@
       >
       <div class="input-group col-sm-8" *ngIf="status === 'PREPARING'">
         <input
-          id="amount"
+          id="orderId"
           type="text"
-          name="amount"
+          name="orderId"
           class="form-control"
+          [(ngModel)]="orderId"
           placeholder="Order ID from shopping cart"
           required
         />
@@ -30,11 +31,13 @@
           status === 'SENT'
         "
       >
-        {{ amountValue }}&nbsp;CRO
+        {{ orderId }}
       </div>
     </div>
     <div class="form-group row">
-      <label for="amount" class="col-sm-4 col-form-label">Amount&nbsp;*</label>
+      <label for="amount" class="col-sm-4 col-form-label"
+        >Order amount&nbsp;*</label
+      >
       <div class="input-group col-sm-8" *ngIf="status === 'PREPARING'">
         <input
           id="amount"
@@ -102,9 +105,44 @@
           >Merchant&nbsp;*</label
         >
         <div class="col-sm-8" *ngIf="status === 'PREPARING'">
-          <select class="form-control" id="exampleFormControlSelect1">
-            <option *ngFor="let merchant of merchantList">{{
-              merchant.name
+          <select
+            class="form-control"
+            [(ngModel)]="selectedMerchant"
+            [ngModelOptions]="{ standalone: true }"
+          >
+            <option
+              *ngFor="let merchant of merchantList"
+              [ngValue]="merchant.name"
+              >{{ merchant.name }}</option
+            >
+          </select>
+        </div>
+        <div
+          class="col-sm-8 recipient-address form-confirm-value"
+          *ngIf="
+            status === 'CONFIRMING' ||
+            status === 'SENDING' ||
+            status === 'BROADCASTED' ||
+            status === 'SENT'
+          "
+        >
+          {{ selectedMerchant }}
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="form-group row">
+        <label for="toAddress" class="col-sm-4 col-form-label"
+          >Escrow&nbsp;*</label
+        >
+        <div class="col-sm-8" *ngIf="status === 'PREPARING'">
+          <select
+            class="form-control"
+            [(ngModel)]="selectedEscrow"
+            [ngModelOptions]="{ standalone: true }"
+          >
+            <option *ngFor="let escrow of escrowList" [ngValue]="escrow.name">{{
+              escrow.name
             }}</option>
           </select>
         </div>
@@ -117,30 +155,7 @@
             status === 'SENT'
           "
         >
-          {{ toAddress }}
-        </div>
-      </div>
-    </div>
-    <div>
-      <div class="form-group row">
-        <label for="toAddress" class="col-sm-4 col-form-label"
-          >Escrow&nbsp;*</label
-        >
-        <div class="col-sm-8" *ngIf="status === 'PREPARING'">
-          <select class="form-control" id="exampleFormControlSelect1">
-            <option *ngFor="let escrow of escrowList">{{ escrow.name }}</option>
-          </select>
-        </div>
-        <div
-          class="col-sm-8 recipient-address form-confirm-value"
-          *ngIf="
-            status === 'CONFIRMING' ||
-            status === 'SENDING' ||
-            status === 'BROADCASTED' ||
-            status === 'SENT'
-          "
-        >
-          {{ toAddress }}
+          {{ selectedEscrow }}
         </div>
       </div>
     </div>
@@ -151,9 +166,9 @@
         >
         <div class="col-sm-8" *ngIf="status === 'PREPARING'">
           <input
-            id="toAddress"
+            id="escrowFee"
             type="text"
-            name="toAddress"
+            name="escrowFee"
             class="form-control"
             value="10"
             required
@@ -169,7 +184,7 @@
             status === 'SENT'
           "
         >
-          {{ toAddress }}
+          {{ 10 }} &nbsp;CRO
         </div>
       </div>
     </div>
