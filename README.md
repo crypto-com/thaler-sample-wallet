@@ -35,6 +35,10 @@ This repository contains a sample implementation of Crypto.com Chain wallet with
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
+## Contribution
+
+TODO
+
 ## License
 
 [Apache 2.0](./LICENSE)
