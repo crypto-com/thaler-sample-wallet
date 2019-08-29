@@ -29,7 +29,7 @@ This repository contains a sample implementation of Crypto.com Chain wallet with
 
 ### How to send funds
 
-- You can send funds by clicking `Send funds` button and entering recepient's wallet address, view key and other necessary details.
+- You can send funds by clicking `Send funds` button and entering recipient's wallet address, view key and other necessary details.
 
 ## Code scaffolding
 
