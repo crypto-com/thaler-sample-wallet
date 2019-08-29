@@ -1,5 +1,3 @@
-import BigNumber from "bignumber.js";
-
 export interface Transaction {
   txHash: string;
   blockHeight: number;
@@ -7,7 +5,6 @@ export interface Transaction {
   action: string;
   affectedAddress: string;
   value: string;
-  txFee: number;
 }
 
 export interface TransactionFromRpc {
