@@ -6,7 +6,7 @@
 
 This repository contains a sample implementation of Crypto.com Chain wallet with integration of [client JSON-RPC server](https://github.com/crypto-com/chain/tree/master/client-rpc).
 
-### Alpha Disclaimer
+### Warning
 
 Crypto.com Chain wallet is currently in the alpha development phase and subjects to changes. Before proceeding, please be aware of the following:
 
