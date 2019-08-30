@@ -6,14 +6,30 @@
   <button
     class="btn btn-blue"
     type="submit"
-    (click)="copyMessage()"
+    (click)="copyAddressMessage()"
     [ngClass]="{
       'btn-green': btnMsg == 'Copied!'
     }"
   >
-    {{ btnMsg }}
+    {{ addressBtnMsg }}
   </button>
+  <hr>
+  <div class="wallet-title">{{ wallet.id }} View Key</div>
+  <div class="wallet-address">
+    {{ walletViewKey }}
+  </div>
+  <button
+    class="btn btn-blue"
+    type="submit"
+    (click)="copyViewKeyMessage()"
+    [ngClass]="{
+      'btn-green': btnMsg == 'Copied!'
+    }"
+  >
+    {{ viewKeyBtnMsg }}
+  </button>
+  <hr>
   <div class="qrcode">
-    <qrcode [qrdata]="walletAddress" [size]="128" [level]="'M'"></qrcode>
+    <qrcode [qrdata]="walletAddress + ',' + walletViewKey" [size]="128" [level]="'M'"></qrcode>
   </div>
 </div>
