@@ -24,6 +24,7 @@ import { QRCodeModule } from "angularx-qrcode";
 import { TimeAgoPipe } from "time-ago-pipe";
 import { AgeViewComponent } from "./components/txn-history/age-view/age-view.component";
 import { LockViewComponent } from "./components/lock-view/lock-view.component";
+import { ViewKeyValidatorDirective } from './shared/view-key.directive';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,6 +36,7 @@ import { LockViewComponent } from "./components/lock-view/lock-view.component";
     CreateWalletFormComponent,
     ReceiveFundComponent,
     AddressValidatorDirective,
+    ViewKeyValidatorDirective,
     SufficientBalanceValidatorDirective,
     PassphraseFormComponent,
     TimeAgoPipe,
