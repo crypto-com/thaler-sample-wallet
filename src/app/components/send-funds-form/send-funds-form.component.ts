@@ -30,6 +30,7 @@ export class SendFundsFormComponent implements OnInit {
   @Input() amount: BigNumber;
   amountValue: string;
   @Input() toAddress: string;
+  @Input() viewKey: string;
   walletPassphrase: string;
 
   @Output() sent = new EventEmitter<FundSent>();
@@ -85,7 +86,7 @@ export class SendFundsFormComponent implements OnInit {
       this.walletPassphrase,
       this.toAddress,
       amountInBasicUnit,
-      []
+      [this.viewKey]
     ).subscribe(data => {
       if (data["error"]) {
         this.status = Status.PREPARING;
