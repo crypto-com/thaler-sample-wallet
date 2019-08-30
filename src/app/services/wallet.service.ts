@@ -18,6 +18,7 @@ export class WalletService {
   private decryptedFlag = new BehaviorSubject<boolean>(false);
   private walletBalance = new BehaviorSubject<string>("");
   private walletAddress = new BehaviorSubject<string>("");
+  private walletViewKey = new BehaviorSubject<string>("");
   private walletTxnHistory = new BehaviorSubject<TransactionFromRpc[]>([]);
   private coreUrl = "http://127.0.0.1:9981";
   constructor(private http: HttpClient) {
@@ -57,6 +58,11 @@ export class WalletService {
                 this.setWalletAddress(data["result"][0]);
               }
             );
+            this.checkWalletViewKey(selectedWalletId, passphrase).subscribe(
+              data => {
+                this.setWalletViewKey(data["result"]);
+              }
+            )
             this.checkWalletTxnHistory(selectedWalletId, passphrase).subscribe(
               data => {
                 this.setWalletTxnHistory(data["result"]);
@@ -155,6 +161,20 @@ export class WalletService {
     });
   }
 
+  checkWalletViewKey(walletId: string, passphrase: string): Observable<string> {
+    return this.http.post<string>(this.coreUrl, {
+      jsonrpc: "2.0",
+      id: "jsonrpc",
+      method: "wallet_getViewKey",
+      params: [
+        {
+          name: walletId,
+          passphrase: _.isNil(passphrase) ? "" : passphrase
+        }
+      ]
+    });
+  }
+
   checkWalletTxnHistory(walletId: string, passphrase: string) {
     return this.http.post<string>(this.coreUrl, {
       jsonrpc: "2.0",
@@ -203,6 +223,15 @@ export class WalletService {
   getWalletAddress(): Observable<string> {
     return this.walletAddress;
   }
+
+  setWalletViewKey(address: string) {
+    this.walletViewKey.next(address);
+  }
+
+  getWalletViewKey(): Observable<string> {
+    return this.walletViewKey;
+  }
+
   setWalletTxnHistory(txnHistory: TransactionFromRpc[]) {
     this.walletTxnHistory.next(txnHistory);
   }
