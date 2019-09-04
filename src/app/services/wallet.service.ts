@@ -19,7 +19,8 @@ export class WalletService {
   private walletBalance = new BehaviorSubject<string>("");
   private walletAddress = new BehaviorSubject<string>("");
   private walletTxnHistory = new BehaviorSubject<TransactionFromRpc[]>([]);
-  private coreUrl = "http://127.0.0.1:9981";
+
+  coreUrl = "http://127.0.0.1:9981";
   constructor(private http: HttpClient) {
     this.selectedWalletId.subscribe(walletId => {
       // TODO: What if wallet id cannot be found?

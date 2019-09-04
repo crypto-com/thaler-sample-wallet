@@ -111,8 +111,8 @@
             [ngModelOptions]="{ standalone: true }"
           >
             <option
-              *ngFor="let merchant of merchantList"
-              [ngValue]="merchant.name"
+              *ngFor="let merchant of multiSigService.merchantList"
+              [ngValue]="merchant"
               >{{ merchant.name }}</option
             >
           </select>
@@ -126,7 +126,7 @@
             status === 'SENT'
           "
         >
-          {{ selectedMerchant }}
+          {{ selectedMerchant.name }}
         </div>
       </div>
     </div>
@@ -141,9 +141,11 @@
             [(ngModel)]="selectedEscrow"
             [ngModelOptions]="{ standalone: true }"
           >
-            <option *ngFor="let escrow of escrowList" [ngValue]="escrow.name">{{
-              escrow.name
-            }}</option>
+            <option
+              *ngFor="let escrow of multiSigService.escrowList"
+              [ngValue]="escrow"
+              >{{ escrow.name }}</option
+            >
           </select>
         </div>
         <div
@@ -155,7 +157,7 @@
             status === 'SENT'
           "
         >
-          {{ selectedEscrow }}
+          {{ selectedEscrow.name }}
         </div>
       </div>
     </div>

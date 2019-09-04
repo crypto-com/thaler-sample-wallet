@@ -15,7 +15,9 @@ import { ViewCell } from "ng2-smart-table";
 })
 export class ActionComponent implements ViewCell, OnInit {
   status: string;
-  amount: number;
+  amount: string;
+  fee: string;
+  orderId: string;
   modalRef: BsModalRef;
   modalConfig = {
     backdrop: true,
@@ -26,8 +28,10 @@ export class ActionComponent implements ViewCell, OnInit {
   constructor(private modalService: BsModalService) {}
 
   ngOnInit() {
-    this.status = this.value["action"];
+    this.status = this.value["status"];
     this.amount = this.value["amount"];
+    this.fee = this.value["fee"];
+    this.orderId = this.value["orderId"];
   }
 
   openModal(template: TemplateRef<any>) {

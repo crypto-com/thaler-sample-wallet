@@ -1,32 +1,4 @@
-.txn-history-table {
-  // overflow-x: scroll;
-  .ng2-smart-pagination {
-    .page-link,
-    .page-link-prev,
-    .page-link-next {
-      border: 0px;
-      background-color: rgba(255, 255, 255, 0);
-    }
-    .page-link-prev,
-    .page-link-next {
-      padding-top: 11px;
-      padding-bottom: 10px;
-    }
-    .page-item.active .page-link {
-      background-color: #002a67;
-      border-color: #002a67;
-      border-radius: 15px;
-      font-family: Helvetica;
-      font-size: 12px;
-      color: #ffffff;
-      width: 30px;
-    }
-  }
-  th {
-    border-top: 0px;
-  }
-}
-
+@import "../../app.component.scss";
 .txn-history {
   .card.custom-card {
     overflow-x: scroll;

@@ -5,7 +5,14 @@ import { WalletService } from "src/app/services/wallet.service";
 import { Wallet } from "src/app/types/wallet";
 import { NgForm } from "@angular/forms";
 
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
+import {
+  MultiSigService,
+  IMerchant,
+  IEscrow,
+  IOutstandingTransaction,
+  OrderStatus
+} from "src/app/services/multi-sig.service";
 export interface FundSent {
   walletId: string;
   amount: BigNumber;
@@ -25,33 +32,39 @@ enum Status {
   styleUrls: ["./multi-sig-creation-form.component.scss"]
 })
 export class MultiSigCreationFormComponent implements OnInit {
-  merchantList = [
-    { name: "Crypto.com", url: "127.0.0.1" },
-    { name: "Nike", url: "127.0.0.1" },
-    { name: "BMW", url: "127.0.0.1" }
-  ];
-  escrowList = [{ name: "Escrow.com", url: "127.0.0.1", fee: 10 }];
   walletList: Wallet[];
 
   @Input() walletId: string;
   @Input() walletBalance: string;
   @Input() amount: BigNumber;
-  orderId: string;
-  amountValue: string;
-  selectedMerchant: string = this.merchantList[0].name;
-  selectedEscrow: string = this.escrowList[0].name;
+  private orderId: string;
+  private amountValue: string;
+  private selectedMerchant: IMerchant = this.multiSigService.merchantList[0];
+  private selectedEscrow: IEscrow = this.multiSigService.escrowList[0];
   @Input() toAddress: string;
-  walletPassphrase: string;
+  private walletPassphrase: string;
 
   @Output() sent = new EventEmitter<FundSent>();
   @Output() cancelled = new EventEmitter<void>();
-
+  private buyerPublicKey: string;
+  private buyerViewKey: string;
+  private escrowPublicKey: string;
+  private escrowViewKey: string;
+  private merchantPublicKey: string;
+  private merchantViewKey: string;
+  private multiSigAddr: string;
   private status: Status = Status.PREPARING;
   private walletBalanceBeforeSend = "";
   private sendToAddressApiError = false;
-  private coreUrl = "http://127.0.0.1:9981";
-  constructor(private http: HttpClient, private walletService: WalletService) {}
-
+  private transaction_id: string;
+  private escrowAddress: string;
+  private merchantAddress: string;
+  private buyerAddress: string;
+  constructor(
+    private http: HttpClient,
+    private walletService: WalletService,
+    private multiSigService: MultiSigService
+  ) {}
   ngOnInit() {
     if (this.amount) {
       this.amountValue = this.amount.toString(10);
@@ -72,13 +85,141 @@ export class MultiSigCreationFormComponent implements OnInit {
       this.confirm();
     }
   }
+  async submitPaymentProof() {
+    const params = new HttpParams({
+      fromObject: {
+        order_id: this.orderId,
+        transaction_id: this.transaction_id
+      }
+    });
 
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/x-www-form-urlencoded"
+      })
+    };
+
+    await this.http
+      .post(
+        `${
+          this.multiSigService.merchantList.filter(
+            merchant => merchant.id === this.selectedMerchant.id
+          )[0].url
+        }/order/payment-proof`,
+        params,
+        httpOptions
+      )
+      .toPromise()
+      .then(data => {
+        this.merchantPublicKey = data["public_key"];
+        this.merchantViewKey = data["view_key"];
+      });
+  }
+  storeToLocalStorage() {
+    const outstandingTxnInStorage: IOutstandingTransaction = {
+      merchantId: this.selectedMerchant.id,
+      merchantAddress: this.merchantAddress,
+      merchantViewKey: this.merchantViewKey,
+      escrowId: this.selectedEscrow.id,
+      escrowAddress: this.escrowAddress,
+      escrowViewKey: this.escrowViewKey,
+      amount: this.amount.toString(),
+      orderId: this.orderId,
+      fee: this.selectedEscrow.fee,
+      payment_transaction_id: this.transaction_id
+    };
+    this.multiSigService.insertOutstandingTxn = outstandingTxnInStorage;
+  }
+  async createMultiSigAddr() {
+    await this.http
+      .post(this.walletService.coreUrl, {
+        jsonrpc: "2.0",
+        id: "jsonrpc",
+        method: "multiSig_createAddress",
+        params: [
+          {
+            name: this.walletId,
+            passphrase: this.walletPassphrase
+          },
+          [this.merchantPublicKey, this.buyerPublicKey, this.escrowPublicKey],
+          this.buyerPublicKey,
+          2
+        ]
+      })
+      .toPromise()
+      .then(data => {
+        this.multiSigAddr = data["result"];
+      });
+  }
+
+  getBuyerAddress() {
+    this.walletService
+      .getWalletAddress()
+      .subscribe(walletAddress => (this.buyerAddress = walletAddress));
+  }
+
+  async getBuyerViewKey(): Promise<void> {
+    await this.http
+      .post(this.walletService.coreUrl, {
+        jsonrpc: "2.0",
+        id: "jsonrpc",
+        method: "wallet_getViewKey",
+        params: [
+          {
+            name: this.walletId,
+            passphrase: this.walletPassphrase
+          }
+        ]
+      })
+      .toPromise()
+      .then(data => {
+        this.buyerViewKey = data["result"];
+      });
+  }
+  async getBuyerPublicKey(): Promise<void> {
+    await this.http
+      .post(this.walletService.coreUrl, {
+        jsonrpc: "2.0",
+        id: "jsonrpc",
+        method: "wallet_listPublicKeys",
+        params: [
+          {
+            name: this.walletId,
+            passphrase: this.walletPassphrase
+          }
+        ]
+      })
+      .toPromise()
+      .then(data => {
+        this.buyerPublicKey = data["result"][0];
+      });
+  }
+
+  async asyncConfirm(form: NgForm): Promise<void> {}
   confirm(): void {
     this.status = Status.CONFIRMING;
   }
 
-  handleSend(form: NgForm): void {
-    this.send();
+  async handleSend(form: NgForm): Promise<void> {
+    this.walletService
+      .syncWallet(this.walletId, this.walletPassphrase)
+      .subscribe(async data => {
+        if (data["error"]) {
+          this.status = Status.PREPARING;
+          // TODO: Distinguish from insufficient balance?
+          this.sendToAddressApiError = true;
+        } else {
+          await this.getBuyerViewKey();
+          await this.getBuyerPublicKey();
+          this.getBuyerAddress();
+          this.getEscrowKeys();
+          await this.registerNewOrder();
+          await this.createMultiSigAddr();
+          await this.send();
+          await this.submitPaymentProof();
+          this.storeToLocalStorage();
+        }
+      });
   }
 
   markFormAsDirty(form: NgForm) {
@@ -87,26 +228,29 @@ export class MultiSigCreationFormComponent implements OnInit {
     });
   }
 
-  send(): void {
+  async send(): Promise<void> {
     this.walletBalanceBeforeSend = this.walletBalance;
     this.status = Status.SENDING;
     const amountInBasicUnit = new BigNumber(this.amountValue)
+      .plus(this.selectedEscrow.fee)
       .multipliedBy("100000000")
       .toString(10);
-    this.walletService
+    await this.walletService
       .sendToAddress(
         this.walletId,
         this.walletPassphrase,
-        this.toAddress,
+        this.multiSigAddr,
         amountInBasicUnit,
         []
       )
-      .subscribe(data => {
+      .toPromise()
+      .then(data => {
         if (data["error"]) {
           this.status = Status.PREPARING;
           // TODO: Distinguish from insufficient balance?
           this.sendToAddressApiError = true;
         } else {
+          this.transaction_id = data["result"];
           setTimeout(() => {
             this.checkTxAlreadySent();
           }, 3000);
@@ -136,27 +280,47 @@ export class MultiSigCreationFormComponent implements OnInit {
   cancel(): void {
     this.cancelled.emit();
   }
-  // multiSig(): void {
-  //   this.getBuyerKeys();
-  //   this.getEscrowKeys();
-  //   this.getMerchantKeys(
-  //     order_id,
-  //     buyer_public_key,
-  //     buyer_view_key,
-  //     escrow_public_key,
-  //     escrow_view_key
-  //   );
-  //   this.createMultiSigAddress(
-  //     buyer_public_key,
-  //     buyer_view_key,
-  //     escrow_public_key,
-  //     escrow_view_key,
-  //     merchant_public_key,
-  //     merchant_view_key
-  //   );
-  //   this.transfer(address, amount + 10);
-  //   this.submitPaymentProof(order_id, txid);
-  //   this.storeToLocalStorage(merchant_name, escrow_name, amount + 10, order_id);
-  // }
-  // getBuyerKeys(): void {}
+  getEscrowKeys(): void {
+    this.escrowPublicKey = this.buyerViewKey;
+    this.escrowViewKey = this.buyerViewKey;
+    this.escrowAddress = this.buyerAddress;
+  }
+  async registerNewOrder(): Promise<void> {
+    const params = new HttpParams({
+      fromObject: {
+        order_id: this.orderId,
+        buyer_public_key: this.buyerPublicKey,
+        buyer_view_key: this.buyerViewKey,
+        escrow_public_key: this.escrowPublicKey,
+        escrow_view_key: this.escrowViewKey,
+        buyer_address: this.buyerAddress,
+        amount: (
+          parseInt(this.amountValue) + parseInt(this.selectedEscrow.fee)
+        ).toString()
+      }
+    });
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/x-www-form-urlencoded"
+      })
+    };
+
+    await this.http
+      .post(
+        `${
+          this.multiSigService.merchantList.filter(
+            merchant => merchant.id === this.selectedMerchant.id
+          )[0].url
+        }/order/new`,
+        params,
+        httpOptions
+      )
+      .toPromise()
+      .then(data => {
+        this.merchantPublicKey = data["public_key"];
+        this.merchantViewKey = data["view_key"];
+        this.merchantAddress = data["address"];
+      });
+  }
 }

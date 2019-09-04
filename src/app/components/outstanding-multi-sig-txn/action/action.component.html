@@ -1,9 +1,9 @@
-<div>
+<div *ngIf="status !== 'Completed' || status !== 'Refunded'">
   <button
     type="button"
     class="btn btn-info btn-sm"
     (click)="openModal(recevied)"
-    *ngIf="status === 'resolved'"
+    *ngIf="status === 'Delivering'"
   >
     Confirm receipt
   </button>
@@ -11,7 +11,7 @@
     type="button"
     class="btn btn-danger btn-sm"
     (click)="openModal(refund)"
-    *ngIf="status === 'refund'"
+    *ngIf="status === 'Refunding'"
   >
     Confirm refund
   </button>
@@ -39,9 +39,10 @@
   <div class="modal-body">
     <app-multi-sig-action-form
       [partyA]="'Merchant'"
-      [partyAAmount]="amount - 10"
+      [partyAAmount]="amount"
       [partyB]="'You'"
-      [partyBAmount]="10"
+      [partyBAmount]="fee"
+      [orderId]="orderId"
       (sent)="handleFundsSent($event)"
       (cancelled)="closeModal()"
     ></app-multi-sig-action-form>
@@ -65,7 +66,8 @@
       [partyA]="'Merchant'"
       [partyAAmount]="0"
       [partyB]="'You'"
-      [partyBAmount]="amount"
+      [partyBAmount]="amount + fee"
+      [orderId]="orderId"
       (sent)="handleFundsSent($event)"
       (cancelled)="closeModal()"
     ></app-multi-sig-action-form>
@@ -87,9 +89,10 @@
   <div class="modal-body">
     <app-multi-sig-action-form
       [partyA]="'Escrow'"
-      [partyAAmount]="10"
+      [partyAAmount]="fee"
       [partyB]="'You'"
-      [partyBAmount]="amount - 10"
+      [partyBAmount]="amount"
+      [orderId]="orderId"
       (sent)="handleFundsSent($event)"
       (cancelled)="closeModal()"
     ></app-multi-sig-action-form>
