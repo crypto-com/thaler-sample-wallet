@@ -2,7 +2,6 @@ import { Component, OnInit, ViewEncapsulation } from "@angular/core";
 import BigNumber from "bignumber.js";
 import { InOutViewComponent } from "./in-out-view/in-out-view.component";
 import { WalletService } from "src/app/services/wallet.service";
-import { Wallet } from "src/app/types/wallet";
 import * as _ from "lodash";
 import { Transaction } from "src/app/types/transaction";
 import { AgeViewComponent } from "./age-view/age-view.component";
@@ -67,10 +66,6 @@ export class TxnHistoryComponent implements OnInit {
       value: {
         title: "Value",
         filter: false
-      },
-      txFee: {
-        title: "TxFee",
-        filter: false
       }
     }
   };
@@ -86,8 +81,7 @@ export class TxnHistoryComponent implements OnInit {
           age: history["block_time"],
           affectedAddress: history["address"],
           action: (history["kind"] === "Incoming") ? "In" : "Out",
-          value: new BigNumber(history["amount"]).dividedBy("100000000").toString(10),
-          txFee: 0
+          value: new BigNumber(history["amount"]).dividedBy("100000000").toString(10)
         };
         this.data.push(tmpData);
       });

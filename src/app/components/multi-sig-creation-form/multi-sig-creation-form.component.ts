@@ -132,7 +132,7 @@ export class MultiSigCreationFormComponent implements OnInit {
   }
   async createMultiSigAddr() {
     await this.http
-      .post(this.walletService.coreUrl, {
+      .post(this.walletService.getCoreUrl(), {
         jsonrpc: "2.0",
         id: "jsonrpc",
         method: "multiSig_createAddress",
@@ -160,7 +160,7 @@ export class MultiSigCreationFormComponent implements OnInit {
 
   async getBuyerViewKey(): Promise<void> {
     await this.http
-      .post(this.walletService.coreUrl, {
+      .post(this.walletService.getCoreUrl(), {
         jsonrpc: "2.0",
         id: "jsonrpc",
         method: "wallet_getViewKey",
@@ -178,7 +178,7 @@ export class MultiSigCreationFormComponent implements OnInit {
   }
   async getBuyerPublicKey(): Promise<void> {
     await this.http
-      .post(this.walletService.coreUrl, {
+      .post(this.walletService.getCoreUrl(), {
         jsonrpc: "2.0",
         id: "jsonrpc",
         method: "wallet_listPublicKeys",

@@ -28,6 +28,7 @@ import { OutstandingMultiSigTxnComponent } from "./components/outstanding-multi-
 import { ActionComponent } from "./components/outstanding-multi-sig-txn/action/action.component";
 import { MultiSigActionFormComponent } from "./components/multi-sig-action-form/multi-sig-action-form.component";
 import { MultiSigCreationFormComponent } from "./components/multi-sig-creation-form/multi-sig-creation-form.component";
+import { ViewKeyValidatorDirective } from "./shared/view-key.directive";
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,6 +40,7 @@ import { MultiSigCreationFormComponent } from "./components/multi-sig-creation-f
     CreateWalletFormComponent,
     ReceiveFundComponent,
     AddressValidatorDirective,
+    ViewKeyValidatorDirective,
     SufficientBalanceValidatorDirective,
     PassphraseFormComponent,
     TimeAgoPipe,

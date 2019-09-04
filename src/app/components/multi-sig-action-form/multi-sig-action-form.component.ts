@@ -108,7 +108,7 @@ export class MultiSigActionFormComponent implements OnInit {
       )[0].merchantAddress;
     }
     await this.http
-      .post(this.walletService.coreUrl, {
+      .post(this.walletService.getCoreUrl(), {
         jsonrpc: "2.0",
         id: "jsonrpc",
         method: "transaction_createRaw",
