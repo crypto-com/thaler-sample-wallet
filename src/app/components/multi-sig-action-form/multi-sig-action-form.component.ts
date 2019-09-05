@@ -11,11 +11,6 @@ import {
 } from "src/app/services/multi-sig.service";
 import { I18nContext } from "@angular/compiler/src/render3/view/i18n/context";
 import * as _ from "lodash";
-export interface FundSent {
-  walletId: string;
-  amount: BigNumber;
-  toAddress: string;
-}
 enum Status {
   PREPARING = "PREPARING",
   CONFIRMING = "CONFIRMING",
@@ -31,14 +26,14 @@ enum Status {
 export class MultiSigActionFormComponent implements OnInit {
   walletList: Wallet[];
 
-  @Input() orderStatus: OrderStatus;
+  @Input() orderStatus: string;
   @Input() partyA: string;
   @Input() partyAAmount: string;
   @Input() partyB: string;
   @Input() partyBAmount: string;
   @Input() orderId: string;
   walletPassphrase: string;
-  @Output() sent = new EventEmitter<FundSent>();
+  @Output() sent = new EventEmitter<void>();
   @Output() cancelled = new EventEmitter<void>();
   private wallet: Wallet;
   private status: Status = Status.PREPARING;
@@ -145,10 +140,10 @@ export class MultiSigActionFormComponent implements OnInit {
     await this.createSession();
     await this.getCommitment();
     await this.exchangeSession();
-    await this.addNonceAndCommitment();
+    await this.addCommitment();
+    await this.addNonce();
     await this.getNonce();
     await this.sign();
-    debugger;
     await this.sendResultAndNonce();
   }
   async createTxn() {
@@ -207,7 +202,7 @@ export class MultiSigActionFormComponent implements OnInit {
               : this.walletPassphrase
           },
           this.tx_id,
-          [this.buyerPublicKey, this.partyAPublicKey],
+          [this.partyAPublicKey, this.buyerPublicKey],
           this.buyerPublicKey
         ]
       })
@@ -253,7 +248,7 @@ export class MultiSigActionFormComponent implements OnInit {
         this.partyACommitment = data["commitment"];
       });
   }
-  async addNonceAndCommitment() {
+  async addCommitment() {
     await this.http
       .post(this.walletService.getCoreUrl(), {
         jsonrpc: "2.0",
@@ -267,6 +262,8 @@ export class MultiSigActionFormComponent implements OnInit {
         ]
       })
       .toPromise();
+  }
+  async addNonce() {
     await this.http
       .post(this.walletService.getCoreUrl(), {
         jsonrpc: "2.0",
@@ -328,7 +325,7 @@ export class MultiSigActionFormComponent implements OnInit {
     };
 
     let url: string;
-    if (this.orderStatus === OrderStatus.Delivering) {
+    if (this.orderStatus === "Delivering") {
       url = "delivery";
     } else {
       url = "refund";
@@ -337,12 +334,13 @@ export class MultiSigActionFormComponent implements OnInit {
       .post(`${this.partyAUrl}/order/confirm/${url}`, params, httpOptions)
       .toPromise()
       .then(data => {
-        console.log(data);
+        this.status = Status.BROADCASTED;
       });
   }
-  checkTxAlreadySent() {}
 
-  closeAfterSend(): void {}
+  closeAfterSend(): void {
+    this.cancelled.emit();
+  }
 
   cancel(): void {
     this.cancelled.emit();

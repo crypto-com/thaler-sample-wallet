@@ -81,6 +81,13 @@ export class OutstandingMultiSigTxnComponent implements OnInit {
     this.walletService
       .getDecryptedFlag()
       .subscribe(decryptedFlag => (this.decryptedFlag = decryptedFlag));
+    this.fetchInBackground();
+  }
+  fetchInBackground() {
+    this.multiSigService.fetchStatus();
+    setTimeout(() => {
+      this.fetchInBackground();
+    }, 2000);
   }
   updateData(outstandingTxn: IOutstandingTransaction[]) {
     this.data = [];

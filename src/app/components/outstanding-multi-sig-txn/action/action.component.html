@@ -1,4 +1,12 @@
-<div *ngIf="status !== 'Completed' || status !== 'Refunded'">
+<div
+  *ngIf="
+    !(
+      status === 'Completed' ||
+      status === 'Refunded' ||
+      status === 'PendingPayment'
+    )
+  "
+>
   <button
     type="button"
     class="btn btn-info btn-sm"
@@ -19,7 +27,6 @@
     type="button"
     class="btn btn-warning btn-sm"
     (click)="openModal(escrow)"
-    *ngIf="status !== 'PendingPayment'"
   >
     Involve escrow
   </button>
