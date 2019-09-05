@@ -13,6 +13,7 @@ import {
   IOutstandingTransaction,
   OrderStatus
 } from "src/app/services/multi-sig.service";
+import * as _ from "lodash";
 export interface FundSent {
   walletId: string;
   amount: BigNumber;
@@ -109,20 +110,18 @@ export class MultiSigCreationFormComponent implements OnInit {
         params,
         httpOptions
       )
-      .toPromise()
-      .then(data => {
-        this.merchantPublicKey = data["public_key"];
-        this.merchantViewKey = data["view_key"];
-      });
+      .toPromise();
   }
   storeToLocalStorage() {
     const outstandingTxnInStorage: IOutstandingTransaction = {
       merchantId: this.selectedMerchant.id,
       merchantAddress: this.merchantAddress,
       merchantViewKey: this.merchantViewKey,
+      merchantPublicKey: this.merchantPublicKey,
       escrowId: this.selectedEscrow.id,
       escrowAddress: this.escrowAddress,
       escrowViewKey: this.escrowViewKey,
+      escrowPublicKey: this.escrowPublicKey,
       amount: this.amount.toString(),
       orderId: this.orderId,
       fee: this.selectedEscrow.fee,
@@ -139,7 +138,9 @@ export class MultiSigCreationFormComponent implements OnInit {
         params: [
           {
             name: this.walletId,
-            passphrase: this.walletPassphrase
+            passphrase: _.isNil(this.walletPassphrase)
+              ? ""
+              : this.walletPassphrase
           },
           [this.merchantPublicKey, this.buyerPublicKey, this.escrowPublicKey],
           this.buyerPublicKey,
@@ -149,49 +150,6 @@ export class MultiSigCreationFormComponent implements OnInit {
       .toPromise()
       .then(data => {
         this.multiSigAddr = data["result"];
-      });
-  }
-
-  getBuyerAddress() {
-    this.walletService
-      .getWalletAddress()
-      .subscribe(walletAddress => (this.buyerAddress = walletAddress));
-  }
-
-  async getBuyerViewKey(): Promise<void> {
-    await this.http
-      .post(this.walletService.getCoreUrl(), {
-        jsonrpc: "2.0",
-        id: "jsonrpc",
-        method: "wallet_getViewKey",
-        params: [
-          {
-            name: this.walletId,
-            passphrase: this.walletPassphrase
-          }
-        ]
-      })
-      .toPromise()
-      .then(data => {
-        this.buyerViewKey = data["result"];
-      });
-  }
-  async getBuyerPublicKey(): Promise<void> {
-    await this.http
-      .post(this.walletService.getCoreUrl(), {
-        jsonrpc: "2.0",
-        id: "jsonrpc",
-        method: "wallet_listPublicKeys",
-        params: [
-          {
-            name: this.walletId,
-            passphrase: this.walletPassphrase
-          }
-        ]
-      })
-      .toPromise()
-      .then(data => {
-        this.buyerPublicKey = data["result"][0];
       });
   }
 
@@ -206,18 +164,28 @@ export class MultiSigCreationFormComponent implements OnInit {
       .subscribe(async data => {
         if (data["error"]) {
           this.status = Status.PREPARING;
-          // TODO: Distinguish from insufficient balance?
+
           this.sendToAddressApiError = true;
         } else {
-          await this.getBuyerViewKey();
-          await this.getBuyerPublicKey();
-          this.getBuyerAddress();
+          this.walletService
+            .getWalletAddress()
+            .subscribe(walletAddress => (this.buyerAddress = walletAddress));
+
+          this.walletService
+            .getWalletPublicKey()
+            .subscribe(
+              walletPublicKey => (this.buyerPublicKey = walletPublicKey)
+            );
+
+          this.walletService
+            .getWalletViewKey()
+            .subscribe(walletViewKey => (this.buyerViewKey = walletViewKey));
           this.getEscrowKeys();
           await this.registerNewOrder();
           await this.createMultiSigAddr();
           await this.send();
-          await this.submitPaymentProof();
           this.storeToLocalStorage();
+          this.submitPaymentProof();
         }
       });
   }
@@ -241,13 +209,13 @@ export class MultiSigCreationFormComponent implements OnInit {
         this.walletPassphrase,
         this.multiSigAddr,
         amountInBasicUnit,
-        []
+        [this.buyerViewKey, this.merchantViewKey, this.escrowViewKey]
       )
       .toPromise()
       .then(data => {
         if (data["error"]) {
           this.status = Status.PREPARING;
-          // TODO: Distinguish from insufficient balance?
+
           this.sendToAddressApiError = true;
         } else {
           this.transaction_id = data["result"];
@@ -259,7 +227,6 @@ export class MultiSigCreationFormComponent implements OnInit {
   }
 
   checkTxAlreadySent() {
-    // TODO: Should use more reliable way to check for transaction confirmed
     this.walletService.decrypt(this.walletPassphrase).subscribe(() => {
       if (this.walletBalance === this.walletBalanceBeforeSend) {
         this.status = Status.BROADCASTED;
@@ -295,7 +262,8 @@ export class MultiSigCreationFormComponent implements OnInit {
         escrow_view_key: this.escrowViewKey,
         buyer_address: this.buyerAddress,
         amount: (
-          parseInt(this.amountValue) + parseInt(this.selectedEscrow.fee)
+          (parseInt(this.amountValue) + parseInt(this.selectedEscrow.fee)) *
+          Math.pow(10, 8)
         ).toString()
       }
     });

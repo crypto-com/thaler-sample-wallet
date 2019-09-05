@@ -19,6 +19,7 @@
     type="button"
     class="btn btn-warning btn-sm"
     (click)="openModal(escrow)"
+    *ngIf="status !== 'PendingPayment'"
   >
     Involve escrow
   </button>
@@ -43,6 +44,7 @@
       [partyB]="'You'"
       [partyBAmount]="fee"
       [orderId]="orderId"
+      [orderStatus]="status"
       (sent)="handleFundsSent($event)"
       (cancelled)="closeModal()"
     ></app-multi-sig-action-form>
@@ -68,6 +70,7 @@
       [partyB]="'You'"
       [partyBAmount]="amount + fee"
       [orderId]="orderId"
+      [orderStatus]="status"
       (sent)="handleFundsSent($event)"
       (cancelled)="closeModal()"
     ></app-multi-sig-action-form>
@@ -93,6 +96,7 @@
       [partyB]="'You'"
       [partyBAmount]="amount"
       [orderId]="orderId"
+      [orderStatus]="status"
       (sent)="handleFundsSent($event)"
       (cancelled)="closeModal()"
     ></app-multi-sig-action-form>

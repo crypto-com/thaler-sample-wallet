@@ -5,7 +5,12 @@ import { WalletService } from "src/app/services/wallet.service";
 import { Wallet } from "src/app/types/wallet";
 import { NgForm } from "@angular/forms";
 import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
-import { MultiSigService } from "src/app/services/multi-sig.service";
+import {
+  MultiSigService,
+  OrderStatus
+} from "src/app/services/multi-sig.service";
+import { I18nContext } from "@angular/compiler/src/render3/view/i18n/context";
+import * as _ from "lodash";
 export interface FundSent {
   walletId: string;
   amount: BigNumber;
@@ -25,6 +30,8 @@ enum Status {
 })
 export class MultiSigActionFormComponent implements OnInit {
   walletList: Wallet[];
+
+  @Input() orderStatus: OrderStatus;
   @Input() partyA: string;
   @Input() partyAAmount: string;
   @Input() partyB: string;
@@ -38,6 +45,20 @@ export class MultiSigActionFormComponent implements OnInit {
   private walletBalanceBeforeSend = "";
   private sendToAddressApiError = false;
   private buyerAddress: string;
+  private buyerViewKey: string;
+  private buyerPublicKey: string;
+  private tx: ITransaction;
+  private tx_id: string;
+  private partyAAddress: string;
+  private partyAPublicKey: string;
+  private partyAId: string;
+  private partyAUrl: string;
+  private partyANonce: string;
+  private partyACommitment: string;
+  private partialSignedResult: string;
+  private sessionId: string;
+  private buyerCommitment: string;
+  private buyerNonce: string;
   constructor(
     private http: HttpClient,
     private walletService: WalletService,
@@ -48,6 +69,43 @@ export class MultiSigActionFormComponent implements OnInit {
     this.walletService
       .getSelectedWallet()
       .subscribe(selectedWallet => (this.wallet = selectedWallet));
+
+    this.walletService
+      .getWalletViewKey()
+      .subscribe(walletViewKey => (this.buyerViewKey = walletViewKey));
+    this.walletService
+      .getWalletAddress()
+      .subscribe(walletAddress => (this.buyerAddress = walletAddress));
+    this.walletService
+      .getWalletPublicKey()
+      .subscribe(walletPublicKey => (this.buyerPublicKey = walletPublicKey));
+    if (this.partyA === "Escrow") {
+      this.partyAAddress = this.multiSigService.theOutstandingTxn.filter(
+        txn => txn.orderId === this.orderId
+      )[0].escrowAddress;
+      this.partyAPublicKey = this.multiSigService.theOutstandingTxn.filter(
+        txn => txn.orderId === this.orderId
+      )[0].escrowPublicKey;
+      this.partyAId = this.multiSigService.theOutstandingTxn.filter(
+        txn => txn.orderId === this.orderId
+      )[0].escrowId;
+      this.partyAUrl = this.multiSigService.escrowList.filter(
+        escrow => escrow.id === this.partyAId
+      )[0].url;
+    } else if (this.partyA === "Merchant") {
+      this.partyAAddress = this.multiSigService.theOutstandingTxn.filter(
+        txn => txn.orderId === this.orderId
+      )[0].merchantAddress;
+      this.partyAPublicKey = this.multiSigService.theOutstandingTxn.filter(
+        txn => txn.orderId === this.orderId
+      )[0].merchantPublicKey;
+      this.partyAId = this.multiSigService.theOutstandingTxn.filter(
+        txn => txn.orderId === this.orderId
+      )[0].merchantId;
+      this.partyAUrl = this.multiSigService.merchantList.filter(
+        merchant => merchant.id === this.partyAId
+      )[0].url;
+    }
   }
 
   handleConfirm(form: NgForm): void {
@@ -82,31 +140,18 @@ export class MultiSigActionFormComponent implements OnInit {
     });
   }
 
-  send(): void {
-    this.getBuyerAddress();
-    this.createTxn();
-    this.createSession();
-    this.exchangeSession();
-    this.addNonceAndCommitment();
-    this.sign();
-    this.sendResultAndNonce();
-  }
-  getBuyerAddress() {
-    this.walletService
-      .getWalletAddress()
-      .subscribe(walletAddress => (this.buyerAddress = walletAddress));
+  async send(): Promise<void> {
+    await this.createTxn();
+    await this.createSession();
+    await this.getCommitment();
+    await this.exchangeSession();
+    await this.addNonceAndCommitment();
+    await this.getNonce();
+    await this.sign();
+    debugger;
+    await this.sendResultAndNonce();
   }
   async createTxn() {
-    let partAAddress: string;
-    if (this.partyA === "Escrow") {
-      partAAddress = this.multiSigService.theOutstandingTxn.filter(
-        txn => txn.orderId === this.orderId
-      )[0].escrowAddress;
-    } else if (this.partyA === "Merchant") {
-      partAAddress = this.multiSigService.theOutstandingTxn.filter(
-        txn => txn.orderId === this.orderId
-      )[0].merchantAddress;
-    }
     await this.http
       .post(this.walletService.getCoreUrl(), {
         jsonrpc: "2.0",
@@ -123,53 +168,178 @@ export class MultiSigActionFormComponent implements OnInit {
           ],
           [
             {
-              address: partAAddress,
-              value: this.partyAAmount
+              address: this.partyAAddress,
+              value: (+this.partyAAmount * Math.pow(10, 8)).toString()
             },
-            { address: this.buyerAddress, value: this.partyBAmount }
+            {
+              address: this.buyerAddress,
+              value: (+this.partyBAmount * Math.pow(10, 8)).toString()
+            }
           ],
           [
             this.multiSigService.theOutstandingTxn.filter(
               txn => txn.orderId === this.orderId
-            )[0].escrowViewKey,
+            )[0].merchantViewKey,
+            this.buyerViewKey,
             this.multiSigService.theOutstandingTxn.filter(
               txn => txn.orderId === this.orderId
-            )[0].merchantViewKey
-          ],
-          ""
+            )[0].escrowViewKey
+          ]
         ]
       })
       .toPromise()
       .then(data => {
-        // this.multiSigAddr = data["result"];
+        this.tx = data["result"]["tx"];
+        this.tx_id = data["result"]["tx_id"];
       });
   }
-  sendResultAndNonce() {
-    throw new Error("Method not implemented.");
-    // multiSig_signature
-    // multiSig_nonce
-    // send
-    // /order/confirm/delivery
-    // /order/confirm/refund
+  async createSession() {
+    await this.http
+      .post(this.walletService.getCoreUrl(), {
+        jsonrpc: "2.0",
+        id: "jsonrpc",
+        method: "multiSig_newSession",
+        params: [
+          {
+            name: this.wallet.id,
+            passphrase: _.isNil(this.walletPassphrase)
+              ? ""
+              : this.walletPassphrase
+          },
+          this.tx_id,
+          [this.buyerPublicKey, this.partyAPublicKey],
+          this.buyerPublicKey
+        ]
+      })
+      .toPromise()
+      .then(data => {
+        this.sessionId = data["result"];
+      });
   }
-  sign() {
-    throw new Error("Method not implemented.");
-    // rpc multiSig_partialSign
+  async getCommitment() {
+    await this.http
+      .post(this.walletService.getCoreUrl(), {
+        jsonrpc: "2.0",
+        id: "jsonrpc",
+        method: "multiSig_nonceCommitment",
+        params: [
+          this.sessionId,
+          _.isNil(this.walletPassphrase) ? "" : this.walletPassphrase
+        ]
+      })
+      .toPromise()
+      .then(data => {
+        this.buyerCommitment = data["result"];
+      });
   }
-  addNonceAndCommitment() {
-    throw new Error("Method not implemented.");
-    // multiSig_nonceCommitment
-    // multiSig_addNonceCommitment
-  }
-  exchangeSession() {
-    throw new Error("Method not implemented.");
-    // /order/exchange-commitment
-  }
-  createSession() {
-    throw new Error("Method not implemented.");
-    // rpc multiSig_newSession
-  }
+  async exchangeSession() {
+    const params = new HttpParams({
+      fromObject: {
+        order_id: this.orderId,
+        commitment: this.buyerCommitment
+      }
+    });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/x-www-form-urlencoded"
+      })
+    };
 
+    await this.http
+      .post(`${this.partyAUrl}/order/exchange-commitment`, params, httpOptions)
+      .toPromise()
+      .then(data => {
+        this.partyANonce = data["nonce"];
+        this.partyACommitment = data["commitment"];
+      });
+  }
+  async addNonceAndCommitment() {
+    await this.http
+      .post(this.walletService.getCoreUrl(), {
+        jsonrpc: "2.0",
+        id: "jsonrpc",
+        method: "multiSig_addNonceCommitment",
+        params: [
+          this.sessionId,
+          _.isNil(this.walletPassphrase) ? "" : this.walletPassphrase,
+          this.partyACommitment,
+          this.partyAPublicKey
+        ]
+      })
+      .toPromise();
+    await this.http
+      .post(this.walletService.getCoreUrl(), {
+        jsonrpc: "2.0",
+        id: "jsonrpc",
+        method: "multiSig_addNonce",
+        params: [
+          this.sessionId,
+          _.isNil(this.walletPassphrase) ? "" : this.walletPassphrase,
+          this.partyANonce,
+          this.partyAPublicKey
+        ]
+      })
+      .toPromise();
+  }
+  async getNonce() {
+    await this.http
+      .post(this.walletService.getCoreUrl(), {
+        jsonrpc: "2.0",
+        id: "jsonrpc",
+        method: "multiSig_nonce",
+        params: [
+          this.sessionId,
+          _.isNil(this.walletPassphrase) ? "" : this.walletPassphrase
+        ]
+      })
+      .toPromise()
+      .then(data => {
+        this.buyerNonce = data["result"];
+      });
+  }
+  async sign() {
+    await this.http
+      .post(this.walletService.getCoreUrl(), {
+        jsonrpc: "2.0",
+        id: "jsonrpc",
+        method: "multiSig_partialSign",
+        params: [
+          this.sessionId,
+          _.isNil(this.walletPassphrase) ? "" : this.walletPassphrase
+        ]
+      })
+      .toPromise()
+      .then(data => {
+        this.partialSignedResult = data["result"];
+      });
+  }
+  async sendResultAndNonce() {
+    const params = new HttpParams({
+      fromObject: {
+        order_id: this.orderId,
+        nonce: this.buyerNonce,
+        partial_signature: this.partialSignedResult
+      }
+    });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/x-www-form-urlencoded"
+      })
+    };
+
+    let url: string;
+    if (this.orderStatus === OrderStatus.Delivering) {
+      url = "delivery";
+    } else {
+      url = "refund";
+    }
+    await this.http
+      .post(`${this.partyAUrl}/order/confirm/${url}`, params, httpOptions)
+      .toPromise()
+      .then(data => {
+        console.log(data);
+      });
+  }
   checkTxAlreadySent() {}
 
   closeAfterSend(): void {}
@@ -177,4 +347,15 @@ export class MultiSigActionFormComponent implements OnInit {
   cancel(): void {
     this.cancelled.emit();
   }
+}
+
+interface ITransaction {
+  attibutes: [
+    {
+      access: string;
+      view_key: string;
+    }
+  ];
+  input: [{ id: string; index: number }];
+  output: [{ address: string; valid_form?: string; value: string }];
 }

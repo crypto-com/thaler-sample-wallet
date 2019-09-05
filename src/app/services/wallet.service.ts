@@ -19,6 +19,7 @@ export class WalletService {
   private walletBalance = new BehaviorSubject<string>("");
   private walletAddress = new BehaviorSubject<string>("");
   private walletViewKey = new BehaviorSubject<string>("");
+  private walletPublicKey = new BehaviorSubject<string>("");
   private walletTxnHistory = new BehaviorSubject<TransactionFromRpc[]>([]);
   private coreUrl = "http://127.0.0.1:9981";
   constructor(private http: HttpClient) {
@@ -49,8 +50,6 @@ export class WalletService {
               const balance = new BigNumber(data["result"])
                 .dividedBy("100000000")
                 .toString(10);
-              console.log(data["result"]);
-              console.log(balance);
               this.setWalletBalance(balance);
               this.setDecryptedFlag(true);
               result.next(true);
@@ -62,6 +61,11 @@ export class WalletService {
               this.checkWalletViewKey(selectedWalletId, passphrase).subscribe(
                 data => {
                   this.setWalletViewKey(data["result"]);
+                }
+              );
+              this.checkWalletPublicKey(selectedWalletId, passphrase).subscribe(
+                data => {
+                  this.setWalletPublicKey(data["result"][0]);
                 }
               );
               this.checkWalletTxnHistory(
@@ -177,7 +181,22 @@ export class WalletService {
       ]
     });
   }
-
+  checkWalletPublicKey(
+    walletId: string,
+    passphrase: string
+  ): Observable<string> {
+    return this.http.post<string>(this.coreUrl, {
+      jsonrpc: "2.0",
+      id: "jsonrpc",
+      method: "wallet_listPublicKeys",
+      params: [
+        {
+          name: walletId,
+          passphrase: _.isNil(passphrase) ? "" : passphrase
+        }
+      ]
+    });
+  }
   checkWalletTxnHistory(walletId: string, passphrase: string) {
     return this.http.post<string>(this.coreUrl, {
       jsonrpc: "2.0",
@@ -234,7 +253,13 @@ export class WalletService {
   getWalletViewKey(): Observable<string> {
     return this.walletViewKey;
   }
+  setWalletPublicKey(address: string) {
+    this.walletViewKey.next(address);
+  }
 
+  getWalletPublicKey(): Observable<string> {
+    return this.walletViewKey;
+  }
   setWalletTxnHistory(txnHistory: TransactionFromRpc[]) {
     this.walletTxnHistory.next(txnHistory);
   }

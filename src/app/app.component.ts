@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
   isClientRpcAlive = true;
   ngOnInit() {
     this.walletService.syncWalletList();
-    this.pingClientRPC();
+    // this.pingClientRPC();
   }
   pingClientRPC() {
     this.walletService.pingClientRPC().subscribe(

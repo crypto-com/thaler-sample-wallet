@@ -7,7 +7,13 @@ import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
 })
 export class MultiSigService {
   outstandingTxn = new Subject();
-
+  get theOutstandingTxn(): IOutstandingTransaction[] {
+    if (localStorage.getItem("outstandingTxn")) {
+      return JSON.parse(localStorage.getItem("outstandingTxn"));
+    } else {
+      return [];
+    }
+  }
   set insertOutstandingTxn(value: IOutstandingTransaction) {
     const outstandingTxnInStorage: IOutstandingTransaction[] =
       this.theOutstandingTxn || [];
@@ -18,13 +24,6 @@ export class MultiSigService {
     );
     this.fetchStatus();
     this.outstandingTxn.next(); // this will make sure to tell every subscriber about the change.
-  }
-  get theOutstandingTxn(): IOutstandingTransaction[] {
-    if (localStorage.getItem("outstandingTxn")) {
-      return JSON.parse(localStorage.getItem("outstandingTxn"));
-    } else {
-      return [];
-    }
   }
   set updateStatus(value: IOutstandingTransaction) {
     const outstandingTxnInStorage: IOutstandingTransaction[] =
@@ -83,11 +82,13 @@ export interface IOutstandingTransaction {
   merchantCommitment?: string;
   merchantAddress?: string;
   merchantViewKey?: string;
+  merchantPublicKey?: string;
   escrowId: string;
   escrowNonce?: string;
   escrowCommitment?: string;
   escrowAddress?: string;
   escrowViewKey?: string;
+  escrowPublicKey?: string;
   amount: string;
   orderId: string;
   fee: string;
