@@ -5,26 +5,29 @@ const execa = require("execa");
 
 let win;
 
-function run_program(network_type, network_id, tendermint_url, websocket_url) {
-  (async () => {
-    try {
-      console.log(
-        `run client-rpc network_type=${network_type} network_id=${network_id} tendermint=${tendermint_url} websocket=${websocket_url}`
-      );
-      const { stdout } = await execa("client-rpc", [
-        "--network-type",
-        network_type,
-        "--network-id",
-        network_id,
-        "--tendermint-url",
-        tendermint_url,
-        "--websocket-url",
-        websocket_url
-      ]);
-    } catch (e) {
-      console.log("client-rpc erorr " + e);
-    }
-  })();
+async function run_program(
+  network_type,
+  network_id,
+  tendermint_url,
+  websocket_url
+) {
+  try {
+    console.log(
+      `run client-rpc network_type=${network_type} network_id=${network_id} tendermint=${tendermint_url} websocket=${websocket_url}`
+    );
+    const { stdout } = await execa("client-rpc", [
+      "--network-type",
+      network_type,
+      "--network-id",
+      network_id,
+      "--tendermint-url",
+      tendermint_url,
+      "--websocket-url",
+      websocket_url
+    ]);
+  } catch (e) {
+    console.log("client-rpc erorr " + e);
+  }
 }
 
 function createWindow() {
