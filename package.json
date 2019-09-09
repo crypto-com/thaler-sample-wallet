@@ -9,7 +9,12 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "electron": "ng build --base-href ./ && electron ."
+    "electron": "ng build --base-href ./ && electron .",
+    "package": "yarn build && electron-packager .",
+    "package-all": "yarn build && yarn package-mac && yarn package-win && yarn package-linux",
+    "package-mac": "yarn build && electron-packager . --overwrite --asar --platform=darwin --arch=x64  --out=release-builds",
+    "package-win": "yarn build && electron-packager .  --overwrite --asar --platform=win32  --out=release-builds",
+    "package-linux": "yarn build && electron-packager . --overwrite --asar --platform=linux --arch=x64 --out=release-builds"
   },
   "private": true,
   "dependencies": {
@@ -28,6 +33,7 @@
     "bignumber.js": "^8.1.1",
     "bootstrap": "^4.3.1",
     "core-js": "^2.5.4",
+    "execa": "^2.0.4",
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.15",
     "ng2-completer": "^2.0.8",
@@ -57,6 +63,7 @@
     "karma-jasmine": "~1.1.2",
     "karma-jasmine-html-reporter": "^0.2.2",
     "node-sass": "^4.12.0",
+    "package-manager": "^0.0.42",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
