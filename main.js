@@ -5,15 +5,21 @@ const execa = require("execa");
 
 let win;
 
-function run_program(network_type, network_id) {
+function run_program(network_type, network_id, tendermint_url, websocket_url) {
   (async () => {
     try {
-      console.log(`run client-rpc ${network_type}-${network_id}`);
+      console.log(
+        `run client-rpc network_type=${network_type} network_id=${network_id} tendermint=${tendermint_url} websocket=${websocket_url}`
+      );
       const { stdout } = await execa("client-rpc", [
         "--network-type",
         network_type,
         "--network-id",
-        network_id
+        network_id,
+        "--tendermint-url",
+        tendermint_url,
+        "--websocket-url",
+        websocket_url
       ]);
     } catch (e) {
       console.log("client-rpc erorr " + e);
@@ -27,6 +33,8 @@ function createWindow() {
 
   var network_type = "test";
   var network_id = "42";
+  var tendermint_url = "http://localhost:26657/";
+  var websocket_url = "ws://localhost:26657/websocket";
 
   for (i = 0; i < args.length - 1; i++) {
     if (args[i] == "-n" || args[i] == "--network-id") {
@@ -36,6 +44,15 @@ function createWindow() {
     if (args[i] == "-i" || args[i] == "--network-type") {
       console.log("network type=", args[i + 1]);
       network_type = args[i + 1];
+    }
+    if (args[i] == "-t" || args[i] == "--tendermint-url") {
+      console.log("tendermint url=", args[i + 1]);
+      tendermint_url = args[i + 1];
+    }
+
+    if (args[i] == "-w" || args[i] == "--websocket-url") {
+      console.log("websocket url=", args[i + 1]);
+      websocket_url = args[i + 1];
     }
   }
 
@@ -53,7 +70,7 @@ function createWindow() {
   );
   // The following is optional and will open the DevTools:
   win.webContents.openDevTools();
-  run_program(network_type, network_id);
+  run_program(network_type, network_id, tendermint_url, websocket_url);
 
   win.on("closed", () => {
     win = null;
