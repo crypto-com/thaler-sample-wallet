@@ -1,8 +1,15 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
 const url = require("url");
+const execa = require("execa");
 
 let win;
+
+function run_program() {
+  (async () => {
+    const { stdout } = await execa("client-rpc", ["--network-id", "ab"]);
+  })();
+}
 
 function createWindow() {
   win = new BrowserWindow({ width: 1024, height: 768 });
@@ -17,6 +24,7 @@ function createWindow() {
   );
   // The following is optional and will open the DevTools:
   // win.webContents.openDevTools()
+  run_program();
 
   win.on("closed", () => {
     win = null;
