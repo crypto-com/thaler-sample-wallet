@@ -7,7 +7,11 @@ let win;
 
 function run_program() {
   (async () => {
-    const { stdout } = await execa("client-rpc", ["--network-id", "ab"]);
+    try {
+      const { stdout } = await execa("client-rpc", ["--network-id", "ab"]);
+    } catch (e) {
+      console.log("client-rpc erorr " + e);
+    }
   })();
 }
 
@@ -36,7 +40,8 @@ app.on("ready", createWindow);
 // on macOS, closing the window doesn't quit the app
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
-    app.quit();
+    //app.quit();
+    process.exit();
   }
 });
 
