@@ -32,30 +32,42 @@ async function run_program(
 
 function createWindow() {
   var args = process.argv;
+  console.log(args);
   var i;
 
   var network_type = "test";
   var network_id = "42";
   var tendermint_url = "http://localhost:26657/";
   var websocket_url = "ws://localhost:26657/websocket";
+  var debug = false;
 
-  for (i = 0; i < args.length - 1; i++) {
-    if (args[i] == "-n" || args[i] == "--network-id") {
-      console.log("network id=", args[i + 1]);
-      network_id = args[i + 1];
-    }
-    if (args[i] == "-i" || args[i] == "--network-type") {
-      console.log("network type=", args[i + 1]);
-      network_type = args[i + 1];
-    }
-    if (args[i] == "-t" || args[i] == "--tendermint-url") {
-      console.log("tendermint url=", args[i + 1]);
-      tendermint_url = args[i + 1];
-    }
+  for (i = 0; i < args.length; i++) {
+    if (i < args.length - 1)
+      if (args[i] == "-n" || args[i] == "--network-id") {
+        console.log("network id=", args[i + 1]);
+        network_id = args[i + 1];
+      }
 
-    if (args[i] == "-w" || args[i] == "--websocket-url") {
-      console.log("websocket url=", args[i + 1]);
-      websocket_url = args[i + 1];
+    if (i < args.length - 1)
+      if (args[i] == "-i" || args[i] == "--network-type") {
+        console.log("network type=", args[i + 1]);
+        network_type = args[i + 1];
+      }
+
+    if (i < args.length - 1)
+      if (args[i] == "-t" || args[i] == "--tendermint-url") {
+        console.log("tendermint url=", args[i + 1]);
+        tendermint_url = args[i + 1];
+      }
+
+    if (i < args.length - 1)
+      if (args[i] == "-w" || args[i] == "--websocket-url") {
+        console.log("websocket url=", args[i + 1]);
+        websocket_url = args[i + 1];
+      }
+
+    if (args[i] == "-d" || args[i] == "--debug") {
+      debug = true;
     }
   }
 
@@ -71,8 +83,8 @@ function createWindow() {
       slashes: true
     })
   );
-  // The following is optional and will open the DevTools:
-  win.webContents.openDevTools();
+  // The following is optional and will open the DevTools
+  if (debug) win.webContents.openDevTools();
   run_program(network_type, network_id, tendermint_url, websocket_url);
 
   win.on("closed", () => {
