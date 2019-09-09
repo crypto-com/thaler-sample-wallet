@@ -9,7 +9,12 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "electron": "ng build --base-href ./ && electron ."
+    "electron": "ng build --base-href ./ && electron .",
+    "build": "electron-packager .",
+    "package": "yarn package-mac && yarn package-win && yarn package-linux",
+    "package-mac": "electron-packager . --overwrite --asar --platform=darwin --arch=x64  --out=release-builds",
+    "package-win": "electron-packager .  --overwrite --asar --platform=win32  --out=release-builds",
+    "package-linux": "electron-packager . --overwrite --asar --platform=linux --arch=x64 --out=release-builds"
   },
   "private": true,
   "dependencies": {
@@ -57,6 +62,7 @@
     "karma-jasmine": "~1.1.2",
     "karma-jasmine-html-reporter": "^0.2.2",
     "node-sass": "^4.12.0",
+    "package-manager": "^0.0.42",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
