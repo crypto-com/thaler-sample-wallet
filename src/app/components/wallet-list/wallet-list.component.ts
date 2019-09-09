@@ -45,6 +45,7 @@ export class WalletListComponent implements OnInit {
       this.walletService.selectWalletById(walletId);
       this.walletService.setDecryptedFlag(false);
     }
+    
     return false;
   }
 
