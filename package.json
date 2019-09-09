@@ -10,11 +10,11 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "electron": "ng build --base-href ./ && electron .",
-    "package": "electron-packager .",
-    "package-all": "yarn package-mac && yarn package-win && yarn package-linux",
-    "package-mac": "electron-packager . --overwrite --asar --platform=darwin --arch=x64  --out=release-builds",
-    "package-win": "electron-packager .  --overwrite --asar --platform=win32  --out=release-builds",
-    "package-linux": "electron-packager . --overwrite --asar --platform=linux --arch=x64 --out=release-builds"
+    "package": "yarn build && electron-packager .",
+    "package-all": "yarn build && yarn package-mac && yarn package-win && yarn package-linux",
+    "package-mac": "yarn build && electron-packager . --overwrite --asar --platform=darwin --arch=x64  --out=release-builds",
+    "package-win": "yarn build && electron-packager .  --overwrite --asar --platform=win32  --out=release-builds",
+    "package-linux": "yarn build && electron-packager . --overwrite --asar --platform=linux --arch=x64 --out=release-builds"
   },
   "private": true,
   "dependencies": {
