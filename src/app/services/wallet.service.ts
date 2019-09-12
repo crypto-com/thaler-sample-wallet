@@ -254,11 +254,11 @@ export class WalletService {
     return this.walletViewKey;
   }
   setWalletPublicKey(address: string) {
-    this.walletViewKey.next(address);
+    this.walletPublicKey.next(address);
   }
 
   getWalletPublicKey(): Observable<string> {
-    return this.walletViewKey;
+    return this.walletPublicKey;
   }
   setWalletTxnHistory(txnHistory: TransactionFromRpc[]) {
     this.walletTxnHistory.next(txnHistory);
