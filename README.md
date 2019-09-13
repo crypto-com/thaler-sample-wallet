@@ -16,18 +16,28 @@ Crypto.com Chain wallet is currently in the alpha development phase and subjects
 
 Crypto.com is not liable for any potential damage, loss of data/files arising from the use of the sample wallet.
 
-### Prerequisites
+### Build
+
+#### Build Prerequisites
 
 - Node.js: https://nodejs.org/en/
-- Angular CLI: https://cli.angular.io/ 
 - Crypto.com Chain: https://github.com/crypto-com/chain
 
-### How to run wallet
+#### Build instructions
 
-- Start Crypto.com Chain by following instructions in the Crypto.com Chain repository
-- Run `npm install` to fetch all the dependencies of wallet.
-- Run `ng serve` to start the wallet.
+- Start Crypto.com Chain by following instructions in the [Crypto.com Chain repository](https://github.com/crypto-com/chain)
+- Run the following line to start serving the wallet
+```bash
+$ npm install
+$ npm start
+```
 - Navigate to `http://localhost:4200/`.
+
+### Configuration
+
+#### ClientRPC Server URL
+
+You can configure the ClientRPC server URL by changing the `clientRpcUrl` in `src/app/config.ts`
 
 ### How to create a new wallet
 
@@ -41,10 +51,6 @@ Crypto.com is not liable for any potential damage, loss of data/files arising fr
 
 - You can send funds by clicking `Send funds` button and entering recipient's wallet address, view key and other necessary details.
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
 ## Contribution
 
 TODO
@@ -52,7 +58,3 @@ TODO
 ## License
 
 [Apache 2.0](./LICENSE)
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
