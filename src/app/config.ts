@@ -1,5 +1,5 @@
 const config = {
-    clientRpcUrl: "http://localhost:16659"
+  clientRpcUrl: "http://localhost:9981"
 };
 
 export default config;
