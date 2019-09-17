@@ -5,19 +5,21 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build && yarn neon-build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "electron": "ng build --base-href ./ && electron .",
+    "electron": "yarn neon-build && ng build --base-href ./ && electron .",
     "package": "yarn build && electron-packager .",
     "package-all": "yarn build && yarn package-mac && yarn package-win && yarn package-linux",
     "package-mac": "yarn build && electron-packager . --overwrite --asar --platform=darwin --arch=x64  --out=release-builds",
     "package-win": "yarn build && electron-packager .  --overwrite --asar --platform=win32  --out=release-builds",
-    "package-linux": "yarn build && electron-packager . --overwrite --asar --platform=linux --arch=x64 --out=release-builds"
+    "package-linux": "yarn build && electron-packager . --overwrite --asar --platform=linux --arch=x64 --out=release-builds",
+    "neon-build": "electron-build-env neon build wallet-rust --release"
   },
   "private": true,
   "dependencies": {
+    "wallet-rust": "file:./wallet-rust",
     "@angular/animations": "~7.2.0",
     "@angular/common": "~7.2.0",
     "@angular/compiler": "~7.2.0",
@@ -46,6 +48,10 @@
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
+    "electron": "^4.1.1",
+    "electron-build-env": "^0.2",
+    "electron-packager": "^14.0.6",
+    "neon-cli": "^0.3.1",
     "@angular-devkit/build-angular": "~0.13.0",
     "@angular/cli": "~7.3.8",
     "@angular/compiler-cli": "~7.2.0",
@@ -54,7 +60,6 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
     "codelyzer": "~4.5.0",
-    "electron": "^4.1.4",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~4.0.0",
