@@ -2,6 +2,7 @@ const { app, BrowserWindow } = require("electron");
 const path = require("path");
 const url = require("url");
 const execa = require("execa");
+const runner = require("wallet-rust");
 
 let win;
 
@@ -85,7 +86,10 @@ function createWindow() {
   );
   // The following is optional and will open the DevTools
   if (debug) win.webContents.openDevTools();
-  run_program(network_type, network_id, tendermint_url, websocket_url);
+  //run_program(network_type, network_id, tendermint_url, websocket_url);
+  console.log("run porgram");
+  let r = runner.runProgram();
+  console.log("result=", r);
 
   win.on("closed", () => {
     win = null;

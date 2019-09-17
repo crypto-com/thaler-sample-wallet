@@ -1,0 +1,21 @@
+[package]
+name = "wallet-rust"
+version = "0.1.0"
+build = "build.rs"
+edition = "2018"
+
+[lib]
+name = "wallet_rust"
+crate-type = ["cdylib"]
+
+[build-dependencies]
+neon-build = "0.3.1"
+
+[dependencies]
+neon = "0.3.1"
+chain-tx-filter = { path = "../../../../chain/chain-tx-filter" }
+chain-core = { path = "../../../../chain/chain-core" }
+client-common = { path = "../../../../chain/client-common" }
+client-core = { path = "../../../../chain/client-core" }
+client-network = { path= "../../../../chain/client-network"}
+client-rpc = { path= "../../../../chain/client-rpc"}

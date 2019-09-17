@@ -1,0 +1,11 @@
+{
+  "name": "wallet-rust",
+  "version": "0.1.0",
+  "main": "lib/index.js",
+  "dependencies": {
+    "neon-cli": "^0.3.1"
+  },
+  "scripts": {
+    "install": "neon build --release"
+  }
+}
