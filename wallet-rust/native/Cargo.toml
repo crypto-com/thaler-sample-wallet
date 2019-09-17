@@ -13,9 +13,9 @@ neon-build = "0.3.1"
 
 [dependencies]
 neon = "0.3.1"
-chain-tx-filter = { path = "../../../../chain/chain-tx-filter" }
-chain-core = { path = "../../../../chain/chain-core" }
-client-common = { path = "../../../../chain/client-common" }
-client-core = { path = "../../../../chain/client-core" }
-client-network = { path= "../../../../chain/client-network"}
-client-rpc = { path= "../../../../chain/client-rpc"}
+chain-tx-filter = { git="https://github.com/crypto-com/chain.git",branch="master" }
+chain-core = { git="https://github.com/crypto-com/chain.git", branch="master"}
+client-common = { git="https://github.com/crypto-com/chain.git", branch="master"}
+client-core = { git="https://github.com/crypto-com/chain.git", branch="master" }
+client-network = { git="https://github.com/crypto-com/chain.git", branch="master"}
+client-rpc = { git="https://github.com/crypto-com/chain.git", branch="master"}
