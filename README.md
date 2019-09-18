@@ -26,6 +26,10 @@ Crypto.com is not liable for any potential damage, loss of data/files arising fr
 #### Build instructions
 
 - Start Crypto.com Chain by following instructions in the [Crypto.com Chain repository](https://github.com/crypto-com/chain)
+- Start Crypto.com Chain Client RPC
+```bash
+$ ./target/debug/client-rpc --network-id 42 -i <main|test|dev>
+```
 - Run the following line to start serving the wallet
 ```bash
 $ npm install
