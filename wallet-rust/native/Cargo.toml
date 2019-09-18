@@ -1,0 +1,22 @@
+[package]
+name = "wallet-rust"
+version = "0.1.0"
+build = "build.rs"
+edition = "2018"
+
+[lib]
+name = "wallet_rust"
+crate-type = ["cdylib"]
+
+[build-dependencies]
+neon-build = "0.3.1"
+cc = "1.0"
+
+[dependencies]
+neon = "0.3.1"
+chain-tx-filter = { git="https://github.com/crypto-com/chain.git",branch="master" }
+chain-core = { git="https://github.com/crypto-com/chain.git", branch="master"}
+client-common = { git="https://github.com/crypto-com/chain.git", branch="master"}
+client-core = { git="https://github.com/crypto-com/chain.git", branch="master" }
+client-network = { git="https://github.com/crypto-com/chain.git", branch="master"}
+client-rpc = { git="https://github.com/crypto-com/chain.git", branch="master"}
