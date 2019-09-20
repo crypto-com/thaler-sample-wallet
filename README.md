@@ -57,7 +57,8 @@ You can configure the ClientRPC server URL by changing the `clientRpcUrl` in `sr
 
 ## Contribution
 
-TODO
+Please abide by the [Code of Conduct](CODE_OF_CONDUCT.md) in all interactions,
+and the [contributing guidelines](CONTRIBUTING.md) when submitting code.
 
 ## License
 
