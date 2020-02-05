@@ -4,6 +4,9 @@
 
 ## Crypto.com Chain Sample Wallet
 
+###  WARNING: This wallet is not up-to-dated with the latest Crypto.com chain Thaler Testnet.
+> Please consider using [client CLI](https://github.com/crypto-com/chain/tree/master/client-cli) or [client JSON-RPC server](https://github.com/crypto-com/chain/tree/master/client-rpc) instead. For details, you can open an issue or find us on [Gitter](https://gitter.im/crypto-com/community).
+
 This repository contains a sample implementation of Crypto.com Chain wallet with integration of [client JSON-RPC server](https://github.com/crypto-com/chain/tree/master/client-rpc).
 
 ### Warning
