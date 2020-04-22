@@ -19,12 +19,14 @@ import { AddressValidatorDirective } from "./shared/address.directive";
 import { SufficientBalanceValidatorDirective } from "./components/send-funds-form/sufficient-balance.directive";
 import { HttpClientModule } from "@angular/common/http";
 import { PassphraseFormComponent } from "./components/passphrase-form/passphrase-form.component";
+import { MnemonicsFormComponent } from "./components/mnemonics-form/mnemonics-form.component";
 
 import { QRCodeModule } from "angularx-qrcode";
 import { TimeAgoPipe } from "time-ago-pipe";
 import { AgeViewComponent } from "./components/txn-history/age-view/age-view.component";
 import { LockViewComponent } from "./components/lock-view/lock-view.component";
-import { ViewKeyValidatorDirective } from './shared/view-key.directive';
+import { ViewKeyValidatorDirective } from "./shared/view-key.directive";
+import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +43,8 @@ import { ViewKeyValidatorDirective } from './shared/view-key.directive';
     PassphraseFormComponent,
     TimeAgoPipe,
     AgeViewComponent,
-    LockViewComponent
+    LockViewComponent,
+    MnemonicsFormComponent,
   ],
   entryComponents: [InOutViewComponent, AgeViewComponent],
   imports: [
@@ -51,9 +54,10 @@ import { ViewKeyValidatorDirective } from './shared/view-key.directive';
     ModalModule.forRoot(),
     FormsModule,
     HttpClientModule,
-    QRCodeModule
+    QRCodeModule,
+    NgbModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -96,7 +96,7 @@
   </div>
   <div class="modal-body">
     <app-create-wallet-form
-      (created)="closeModal()"
+      (created)="createdCloseModal()"
       (cancelled)="closeModal()"
     ></app-create-wallet-form>
   </div>
@@ -118,5 +118,30 @@
       (created)="closeModal()"
       (cancelled)="closeModal()"
     ></app-passphrase-form>
+  </div>
+</ng-template>
+
+<ng-template #walletMnemonics>
+  <div class="modal-header">
+    <h5 class="modal-title pull-left">Mnemonics</h5>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="closeModalMnemonics()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-mnemonics-form [walletinfo]="walletdata"></app-mnemonics-form>
+    <div class="text-center">
+      <button
+        class="btn btn-blue confirm-button"
+        (click)="closeModalMnemonics()"
+      >
+        Confirm
+      </button>
+    </div>
   </div>
 </ng-template>

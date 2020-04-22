@@ -20,7 +20,7 @@ enum Status {
 @Component({
   selector: "app-send-funds-form",
   templateUrl: "./send-funds-form.component.html",
-  styleUrls: ["./send-funds-form.component.scss"]
+  styleUrls: ["./send-funds-form.component.scss"],
 })
 export class SendFundsFormComponent implements OnInit {
   walletList: Wallet[];
@@ -32,6 +32,8 @@ export class SendFundsFormComponent implements OnInit {
   @Input() toAddress: string;
   @Input() viewKey: string;
   walletPassphrase: string;
+  walletEnckey: string;
+  senderViewKey: string;
 
   @Output() sent = new EventEmitter<FundSent>();
   @Output() cancelled = new EventEmitter<void>();
@@ -40,13 +42,25 @@ export class SendFundsFormComponent implements OnInit {
   private walletBalanceBeforeSend = "";
   private sendToAddressApiError = false;
 
-  constructor(private walletService: WalletService) { }
+  constructor(private walletService: WalletService) {}
 
   ngOnInit() {
+    this.walletService.loadFromLocal();
+    this.walletPassphrase = this.walletService.walletPassphrase;
+    this.walletEnckey = this.walletService.walletEnckey;
+
+    this.viewKey = this.walletService.sendViewkey;
+    this.toAddress = this.walletService.sendToAddressString;
+    this.amountValue = this.walletService.sendAmount;
+
+    this.walletService
+      .getWalletViewKey()
+      .subscribe((walletViewKey) => (this.senderViewKey = walletViewKey));
+
     if (this.amount) {
       this.amountValue = this.amount.toString(10);
     }
-    this.walletService.getWalletBalance().subscribe(balance => {
+    this.walletService.getWalletBalance().subscribe((balance) => {
       this.walletBalance = balance;
     });
   }
@@ -56,6 +70,8 @@ export class SendFundsFormComponent implements OnInit {
   }
 
   handleConfirm(form: NgForm): void {
+    this.walletPassphrase = form.value.walletPassphrase;
+
     this.markFormAsDirty(form);
     this.sendToAddressApiError = false;
     if (form.valid) {
@@ -64,6 +80,10 @@ export class SendFundsFormComponent implements OnInit {
   }
 
   confirm(): void {
+    this.walletService.sendViewkey = this.viewKey;
+    this.walletService.sendToAddressString = this.toAddress;
+    this.walletService.sendAmount = this.amountValue;
+    this.walletService.saveToLocal();
     this.status = Status.CONFIRMING;
   }
 
@@ -72,43 +92,58 @@ export class SendFundsFormComponent implements OnInit {
   }
 
   markFormAsDirty(form: NgForm) {
-    Object.keys(form.controls).forEach(field => {
+    Object.keys(form.controls).forEach((field) => {
       form.controls[field].markAsDirty();
     });
   }
 
-  send(): void {
+  async send() {
     this.walletBalanceBeforeSend = this.walletBalance;
     this.status = Status.SENDING;
-    const amountInBasicUnit = new BigNumber(this.amountValue).multipliedBy("100000000").toString(10);
-    this.walletService.sendToAddress(
-      this.walletId,
-      this.walletPassphrase,
-      this.toAddress,
-      amountInBasicUnit,
-      [this.viewKey]
-    ).subscribe(data => {
-      if (data["error"]) {
-        this.status = Status.PREPARING;
-        // TODO: Distinguish from insufficient balance?
-        this.sendToAddressApiError = true;
-      } else {
-        setTimeout(() => {
-          this.checkTxAlreadySent();
-        }, 3000);
-      }
-    });
+    const amountInBasicUnit = new BigNumber(this.amountValue)
+      .multipliedBy("100000000")
+      .toString(10);
+
+    this.walletEnckey = (
+      await this.walletService.checkWalletEncKey(
+        this.walletId,
+        this.walletPassphrase
+      )
+    )["result"];
+
+    this.walletService
+      .sendToAddress(
+        this.walletId,
+        this.walletPassphrase,
+        this.walletEnckey,
+        this.toAddress,
+        amountInBasicUnit,
+        [this.senderViewKey, this.viewKey]
+      )
+      .subscribe((data) => {
+        if (data["error"]) {
+          this.status = Status.PREPARING;
+          // TODO: Distinguish from insufficient balance?
+          this.sendToAddressApiError = true;
+        } else {
+          setTimeout(() => {
+            this.checkTxAlreadySent();
+          }, 3000);
+        }
+      });
   }
 
   checkTxAlreadySent() {
     // TODO: Should use more reliable way to check for transaction confirmed
-    this.walletService.decrypt(this.walletPassphrase).subscribe(() => {
-      if (this.walletBalance === this.walletBalanceBeforeSend) {
-        this.status = Status.BROADCASTED;
-      } else {
-        this.status = Status.SENT;
-      }
-    });
+    this.walletService
+      .decrypt(this.walletPassphrase, this.walletEnckey)
+      .subscribe(() => {
+        if (this.walletBalance === this.walletBalanceBeforeSend) {
+          this.status = Status.BROADCASTED;
+        } else {
+          this.status = Status.SENT;
+        }
+      });
   }
 
   closeAfterSend(): void {
