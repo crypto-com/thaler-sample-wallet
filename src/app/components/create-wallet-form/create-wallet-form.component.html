@@ -30,8 +30,27 @@
       <div class="invalid-feedback-block" *ngIf="duplicatedWalletId">
         Wallet name must be unique
       </div>
+  
     </div>
   </div>
+
+
+  <div class="form-group row">
+    <label for="walletMnemonics" class="col-sm-3 col-form-label">Wallet Mnemonics</label>
+    <div class="col-sm-9">
+      <input
+        id="walletMnemonics"
+        type="text"
+        name="walletMnemonics"
+        class="form-control"
+        #walletMnemonicsModel="ngModel"        
+        placeholder="Wallet Mnemonics"
+        [(ngModel)]="walletMnemonics"
+  
+      />      
+    </div>
+  </div>
+
   <div class="form-group row">
     <label for="walletId" class="col-sm-3 col-form-label"
       >Wallet Passphrase</label
@@ -53,6 +72,10 @@
       />
     </div>
   </div>
+
+
+
+
   <div class="text-center">
     <button type="submit" class="btn btn-blue">
       Create

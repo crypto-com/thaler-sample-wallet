@@ -10,40 +10,40 @@ import { AgeViewComponent } from "./age-view/age-view.component";
   selector: "app-txn-history",
   templateUrl: "./txn-history.component.html",
   styleUrls: ["./txn-history.component.scss"],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class TxnHistoryComponent implements OnInit {
-  constructor(private walletService: WalletService) { }
+  constructor(private walletService: WalletService) {}
   settings = {
     refresh: true,
     hideSubHeader: true,
     attr: {
-      class: "txn-history"
+      class: "txn-history",
     },
     pager: {
-      perPage: 10
+      perPage: 10,
     },
     actions: {
       add: false,
       edit: false,
-      delete: false
+      delete: false,
     },
     columns: {
       txHash: {
         title: "TxHash",
-        sort: false
+        sort: false,
       },
       blockHeight: {
         title: "Block",
         filter: false,
-        sortDirection: "desc"
+        sortDirection: "desc",
       },
       age: {
         title: "Age",
         type: "custom",
         renderComponent: AgeViewComponent,
         filter: false,
-        sort: false
+        sort: false,
       },
       action: {
         title: "In/Out",
@@ -53,35 +53,43 @@ export class TxnHistoryComponent implements OnInit {
           type: "list",
           config: {
             selectText: "Select...",
-            list: [{ value: "In", title: "In" }, { value: "Out", title: "Out" }]
-          }
+            list: [
+              { value: "In", title: "In" },
+              { value: "Out", title: "Out" },
+            ],
+          },
         },
         width: "130px",
-        sort: false
+        sort: false,
       },
       affectedAddress: {
         title: "Affected address",
-        sort: false
+        sort: false,
       },
       value: {
         title: "Value",
-        filter: false
-      }
-    }
+        filter: false,
+      },
+    },
   };
   data: Transaction[] = [];
   decryptedFlag: boolean;
   ngOnInit() {
-    this.walletService.getWalletTxnHistory().subscribe(walletTxnHistory => {
+    this.walletService.getWalletTxnHistory().subscribe((walletTxnHistory) => {
       this.data = [];
-      walletTxnHistory.forEach(history => {
+      walletTxnHistory.forEach((history) => {
+        let outputs = history["outputs"];
+        let address = outputs[0]["address"];
+
         const tmpData: Transaction = {
           txHash: "0x" + history["transaction_id"],
           blockHeight: history["block_height"],
           age: history["block_time"],
-          affectedAddress: history["address"],
-          action: (history["kind"] === "Incoming") ? "In" : "Out",
-          value: new BigNumber(history["amount"]).dividedBy("100000000").toString(10)
+          affectedAddress: address,
+          action: history["kind"] === "Incoming" ? "In" : "Out",
+          value: new BigNumber(history["value"])
+            .dividedBy("100000000")
+            .toString(10),
         };
         this.data.push(tmpData);
       });
@@ -89,6 +97,6 @@ export class TxnHistoryComponent implements OnInit {
 
     this.walletService
       .getDecryptedFlag()
-      .subscribe(decryptedFlag => (this.decryptedFlag = decryptedFlag));
+      .subscribe((decryptedFlag) => (this.decryptedFlag = decryptedFlag));
   }
 }
