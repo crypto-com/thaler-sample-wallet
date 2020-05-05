@@ -4,7 +4,6 @@ import {
   AbstractControl,
   Validator,
   NG_VALIDATORS,
-  CheckboxControlValueAccessor
 } from "@angular/forms";
 import * as lodash from "lodash";
 import BigNumber from "bignumber.js";
@@ -15,11 +14,12 @@ import BigNumber from "bignumber.js";
     {
       provide: NG_VALIDATORS,
       useExisting: SufficientBalanceValidatorDirective,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
-export class SufficientBalanceValidatorDirective implements Validator, OnChanges {
+export class SufficientBalanceValidatorDirective
+  implements Validator, OnChanges {
   private onChange: () => void;
 
   @Input("appSufficientBalance") balance: string;
@@ -33,7 +33,9 @@ export class SufficientBalanceValidatorDirective implements Validator, OnChanges
   }
 
   validate(control: AbstractControl): { [key: string]: any } | null {
-    return lodash.isNil(this.balance) ? null : sufficientBalanceValidator(this.balance)(control);
+    return lodash.isNil(this.balance)
+      ? null
+      : sufficientBalanceValidator(this.balance)(control);
   }
 
   registerOnValidatorChange(fn: () => void): void {
@@ -51,8 +53,8 @@ export function sufficientBalanceValidator(balance: string): ValidatorFn {
       : {
           sufficientBalance: {
             balance,
-            value: control.value
-          }
+            value: control.value,
+          },
         };
   };
 }

@@ -1,9 +1,9 @@
-import { Directive, Input } from "@angular/core";
+import { Directive } from "@angular/core";
 import {
   ValidatorFn,
   AbstractControl,
   Validator,
-  NG_VALIDATORS
+  NG_VALIDATORS,
 } from "@angular/forms";
 
 @Directive({
@@ -12,9 +12,9 @@ import {
     {
       provide: NG_VALIDATORS,
       useExisting: AddressValidatorDirective,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class AddressValidatorDirective implements Validator {
   validate(control: AbstractControl): { [key: string]: any } | null {
@@ -26,15 +26,16 @@ export function addressValidator(): ValidatorFn {
     if (!control.value) {
       return null;
     }
-    const valid = control.value.startsWith("cro")
-      || control.value.startsWith("tcro")
-      || control.value.startsWith("dcro");
+    const valid =
+      control.value.startsWith("cro") ||
+      control.value.startsWith("tcro") ||
+      control.value.startsWith("dcro");
     return valid
       ? null
       : {
-        address: {
-          value: control.value
-        }
-      };
+          address: {
+            value: control.value,
+          },
+        };
   };
 }

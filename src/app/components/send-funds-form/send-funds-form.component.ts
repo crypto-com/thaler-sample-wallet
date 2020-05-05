@@ -133,17 +133,18 @@ export class SendFundsFormComponent implements OnInit {
       });
   }
 
-  checkTxAlreadySent() {
+  async checkTxAlreadySent() {
     // TODO: Should use more reliable way to check for transaction confirmed
-    this.walletService
-      .decrypt(this.walletPassphrase, this.walletEnckey)
-      .subscribe(() => {
-        if (this.walletBalance === this.walletBalanceBeforeSend) {
-          this.status = Status.BROADCASTED;
-        } else {
-          this.status = Status.SENT;
-        }
-      });
+    var _data = await this.walletService.decrypt(
+      this.walletPassphrase,
+      this.walletEnckey
+    );
+
+    if (this.walletBalance === this.walletBalanceBeforeSend) {
+      this.status = Status.BROADCASTED;
+    } else {
+      this.status = Status.SENT;
+    }
   }
 
   closeAfterSend(): void {

@@ -1,12 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { WalletService } from "./services/wallet.service";
 import { HttpClient } from "@angular/common/http";
-import * as lodash from "lodash";
 
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.scss"]
+  styleUrls: ["./app.component.scss"],
 })
 export class AppComponent implements OnInit {
   title = "crypto.com-chain-wallet";
@@ -22,10 +21,10 @@ export class AppComponent implements OnInit {
   }
   pingClientRPC() {
     this.walletService.pingClientRPC().subscribe(
-      res => {
+      (res) => {
         this.isClientRpcAlive = true;
       },
-      error => {
+      (error) => {
         this.isClientRpcAlive = false;
       }
     );
