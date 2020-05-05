@@ -1,11 +1,11 @@
-import { Component, OnInit, ViewEncapsulation } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { WalletService } from "src/app/services/wallet.service";
 import { Wallet } from "src/app/types/wallet";
 
 @Component({
   selector: "app-receive-fund",
   templateUrl: "./receive-fund.component.html",
-  styleUrls: ["./receive-fund.component.scss"]
+  styleUrls: ["./receive-fund.component.scss"],
 })
 export class ReceiveFundComponent implements OnInit {
   wallet: Wallet;
@@ -18,13 +18,13 @@ export class ReceiveFundComponent implements OnInit {
   ngOnInit() {
     this.walletService
       .getSelectedWallet()
-      .subscribe(selectedWallet => (this.wallet = selectedWallet));
+      .subscribe((selectedWallet) => (this.wallet = selectedWallet));
     this.walletService
       .getWalletAddress()
-      .subscribe(walletAddress => (this.walletAddress = walletAddress));
+      .subscribe((walletAddress) => (this.walletAddress = walletAddress));
     this.walletService
       .getWalletViewKey()
-      .subscribe(walletViewKey => (this.walletViewKey = walletViewKey));
+      .subscribe((walletViewKey) => (this.walletViewKey = walletViewKey));
   }
   copyAddressMessage() {
     this.addressBtnMsg = "Copied!";

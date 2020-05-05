@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Observable, of, throwError, BehaviorSubject, Subject } from "rxjs";
+import { Observable, of, throwError, BehaviorSubject } from "rxjs";
 import BigNumber from "bignumber.js";
 import * as lodash from "lodash";
 
@@ -9,6 +9,15 @@ import { HttpClient } from "@angular/common/http";
 import * as _ from "lodash";
 
 import config from "../config";
+
+// to await BehaviourSubject
+async function convertToPromise<T>(subject: BehaviorSubject<T>): Promise<T> {
+  return new Promise((resolve) => {
+    subject.subscribe((found: T) => {
+      resolve(found);
+    });
+  });
+}
 
 @Injectable({
   providedIn: "root",
@@ -41,60 +50,68 @@ export class WalletService {
     });
   }
 
-  decrypt(passphrase: string, walletEnckey: string): Observable<boolean> {
-    let result = new BehaviorSubject<boolean>(null);
-    let selectedWalletId: string;
-    this.getSelectedWallet().subscribe(
-      (selectedWallet) => (selectedWalletId = selectedWallet.id)
-    );
+  async decrypt(passphrase: string, walletEnckey: string) {
+    var wallet_found: Wallet = await convertToPromise(this.selectedWallet);
 
-    this.syncWallet(selectedWalletId, passphrase, walletEnckey).subscribe(
-      (data) => {
-        if (_.isUndefined(data["result"])) {
-          result.next(false);
-        } else {
-          this.checkWalletBalance(
-            selectedWalletId,
-            passphrase,
-            walletEnckey
-          ).subscribe((data) => {
-            if (_.isNil(data["result"])) {
-              result.next(false);
-            } else {
-              const balance = new BigNumber(data["result"]["total"])
-                .dividedBy("100000000")
-                .toString(10);
-              this.setWalletBalance(balance);
-              this.setDecryptedFlag(true);
-              result.next(true);
-              this.checkWalletAddress(
-                selectedWalletId,
-                passphrase,
-                walletEnckey
-              ).subscribe((data) => {
-                this.setWalletAddress(data["result"][0]);
-              });
-              this.checkWalletViewKey(
-                selectedWalletId,
-                passphrase,
-                walletEnckey
-              ).subscribe((data) => {
-                this.setWalletViewKey(data["result"]);
-              });
-              this.checkWalletTxnHistory(
-                selectedWalletId,
-                passphrase,
-                walletEnckey
-              ).subscribe((data) => {
-                this.setWalletTxnHistory(data["result"]);
-              });
-            }
-          });
-        }
-      }
-    );
+    let selectedWalletId = wallet_found.id;
 
-    return result;
+    var data = await this.syncWallet(
+      selectedWalletId,
+      passphrase,
+      walletEnckey
+    ).toPromise();
+
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    if (_.isUndefined(data["result"])) {
+      return false;
+    }
+
+    await this.refresh(passphrase, walletEnckey);
+    return true;
+  }
+
+  async refresh(passphrase, walletEnckey) {
+    // get latest value
+    var wallet_found: Wallet = await convertToPromise(this.selectedWallet);
+    let selectedWalletId = wallet_found.id;
+
+    var data = await this.checkWalletBalance(
+      selectedWalletId,
+      passphrase,
+      walletEnckey
+    ).toPromise();
+
+    if (_.isNil(data["result"])) {
+      return false;
+    }
+
+    const balance = new BigNumber(data["result"]["total"])
+      .dividedBy("100000000")
+      .toString(10);
+    this.setWalletBalance(balance);
+    this.setDecryptedFlag(true);
+
+    data = await this.checkWalletAddress(
+      selectedWalletId,
+      passphrase,
+      walletEnckey
+    ).toPromise();
+    this.setWalletAddress(data["result"][0]);
+
+    data = await this.checkWalletViewKey(
+      selectedWalletId,
+      passphrase,
+      walletEnckey
+    ).toPromise();
+    this.setWalletViewKey(data["result"]);
+
+    data = await this.checkWalletTxnHistory(
+      selectedWalletId,
+      passphrase,
+      walletEnckey
+    ).toPromise();
+    this.setWalletTxnHistory(data["result"]);
   }
 
   addWallet(
