@@ -1,0 +1,67 @@
+.txn-history-table {
+    // overflow-x: scroll;
+    .ng2-smart-pagination {
+        .page-link,
+        .page-link-prev,
+        .page-link-next {
+            border: 0px;
+            background-color: rgba(255, 255, 255, 0);
+        }
+        .page-link-prev,
+        .page-link-next {
+            padding-top: 11px;
+            padding-bottom: 10px;
+        }
+        .page-item.active .page-link {
+            background-color: #002a67;
+            border-color: #002a67;
+            border-radius: 15px;
+            font-family: Helvetica;
+            font-size: 12px;
+            color: #ffffff;
+            width: 30px;
+        }
+    }
+    th {
+        border-top: 0px;
+    }
+}
+
+.txn-history {
+    .card.custom-card {
+        overflow-x: scroll;
+    }
+    table-cell-view-mode {
+        div {
+            div {
+                overflow: hidden;
+                max-width: 600px;
+                text-overflow: ellipsis;
+            }
+        }
+    }
+}
+
+.page-item.active .page-link {
+    background-color: #1199fa;
+    border-color: #1199fa;
+}
+
+.ng2-smart-sort {
+    color: rgba($color: #000000, $alpha: 0.4);
+}
+
+table tr th,
+table tr td {
+    font-size: 0.75em !important;
+}
+
+.ng2-smart-pagination-nav {
+    margin: auto;
+}
+
+.txn-history-table .ng2-smart-pagination .page-link,
+.txn-history-table .ng2-smart-pagination .page-link-prev,
+.txn-history-table .ng2-smart-pagination .page-link-next {
+    color: #626973;
+}

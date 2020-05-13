@@ -1,0 +1,193 @@
+<form class="form" name="depositFundsForm" #form="ngForm" novalidate>
+    <div class="wallet">
+        <div class="wallet-name">{{ toAddress }}</div>
+
+        <div class="wallet-balance">
+            Bonded {{ bondedAmount }}
+            <span class="wallet-balance-unit">CRO</span>
+        </div>
+        <div class="wallet-balance">
+            Unbonded {{ unbondedAmount }}
+            <span class="wallet-balance-unit">CRO</span>
+        </div>
+    </div>
+    <div class="input-container">
+        <div class="form-group row">
+            <label for="amount" class="col-sm-4 col-form-label">Deposit Amount&nbsp;*</label
+      >
+      <div class="input-group col-sm-8" *ngIf="status === 'PREPARING'">
+        <input
+          id="amount"
+          type="text"
+          name="amount"
+          class="form-control"
+          #amountModel="ngModel"
+          [ngClass]="{
+            'is-invalid':
+              amountModel.invalid && (amountModel.dirty || amountModel.touched)
+          }"
+          placeholder="Amount to send"
+          [(ngModel)]="amountValue"
+          (ngModelChange)="handleAmountChange($event)"
+          required
+          pattern="\d*\.?\d{0,8}"
+        />
+        <div class="input-group-append">
+          <div class="input-group-text">CRO</div>
+        </div>
+        <div
+          class="invalid-feedback"
+          *ngIf="
+            (amountModel.dirty || amountModel.touched) &&
+            amountModel.errors?.required
+          "
+        >
+          Missing required amount
+        </div>
+        <div
+          class="invalid-feedback"
+          *ngIf="
+            (amountModel.dirty || amountModel.touched) &&
+            amountModel.errors?.pattern
+          "
+        >
+          Invalid amount
+        </div>
+        <div
+          class="invalid-feedback-block"
+          *ngIf="
+            (amountModel.dirty || amountModel.touched) &&
+            amountModel.errors?.sufficientBalance
+          "
+        >
+          Insufficient wallet balance
+        </div>
+      </div>
+      <div
+        class="input-group col-sm-8 form-confirm-value"
+        *ngIf="
+          status === 'CONFIRMING' ||
+          status === 'SENDING' ||
+          status === 'BROADCASTED' ||
+          status === 'SENT'
+        "
+      >
+        {{ amountValue }}&nbsp;CRO
+      </div>
+    </div>
+    <div>
+      <div class="form-group row">
+        <label for="toAddress" class="col-sm-4 col-form-label"
+          >To Staking Address</label
+        >
+        <div class="col-sm-8" *ngIf="status === 'PREPARING'">
+          <input
+            id="toAddress"
+            type="text"
+            name="toAddress"
+            class="form-control"
+            #toAddressModel="ngModel"
+            [ngClass]="{
+              'is-invalid':
+                toAddressModel.invalid &&
+                (toAddressModel.dirty || toAddressModel.touched)
+            }"
+            placeholder="Recipient Address"
+            [(ngModel)]="toAddress"
+            required
+            appStakingAddress
+            (ngModelChange)="handleToAddress($event)"
+          />
+          <div
+            class="invalid-feedback"
+            *ngIf="
+              (toAddressModel.dirty || toAddressModel.touched) &&
+              toAddressModel.errors?.required
+            "
+          >
+            Missing required recipient address
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="
+              (toAddressModel.dirty || toAddressModel.touched) &&
+              toAddressModel.errors?.address
+            "
+          >
+            Invalid recipient address
+          </div>
+        </div>
+        <div
+          class="col-sm-8 recipient-address form-confirm-value"
+          *ngIf="
+            status === 'CONFIRMING' ||
+            status === 'SENDING' ||
+            status === 'BROADCASTED' ||
+            status === 'SENT'
+          "
+        >
+          {{ toAddress }}
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group row" *ngIf="status === 'PREPARING'">
+      <label for="walletPassphrase" class="col-sm-4 col-form-label"
+        >Wallet Passphrase</label
+      >
+      <div class="col-sm-8">
+        <input
+          id="walletPassphrase"
+          type="password"
+          name="walletPassphrase"
+          class="form-control"
+          #walletPassphraseModel="ngModel"
+          [ngClass]="{
+            'is-invalid':
+              walletPassphraseModel.invalid &&
+              (walletPassphraseModel.dirty || walletPassphraseModel.touched)
+          }"
+          placeholder="Wallet Passphrase"
+          [(ngModel)]="walletPassphrase"
+        />
+        <div class="invalid-feedback-block" *ngIf="sendToAddressApiError">
+          Unable to send funds. Please check if the passphrase is correct.
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <button
+        class="btn btn-blue"
+        *ngIf="status === 'PREPARING'"
+        (click)="handleConfirm(form)"
+      >
+        Confirm
+      </button>
+      <button
+        class="btn btn-blue"
+        *ngIf="status === 'CONFIRMING'"
+        (click)="handleSend(form)"
+      >
+        Send
+      </button>
+      <button class="btn btn-blue" *ngIf="status === 'SENDING'">
+        Sending ...
+      </button>
+      <button
+        class="btn btn-green"
+        *ngIf="status === 'BROADCASTED'"
+        (click)="closeAfterSend()"
+      >
+        Broadcasted!
+      </button>
+      <button
+        class="btn btn-green"
+        *ngIf="status === 'SENT'"
+        (click)="closeAfterSend()"
+      >
+        Success!
+      </button>
+    </div>
+  </div>
+</form>

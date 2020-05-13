@@ -50,6 +50,12 @@ export class WalletService {
     });
   }
 
+  async getSelectedWalletID() {
+    var wallet_found: Wallet = await convertToPromise(this.selectedWallet);
+    let selectedWalletId = wallet_found.id;
+    return selectedWalletId;
+  }
+
   async decrypt(passphrase: string, walletEnckey: string) {
     var wallet_found: Wallet = await convertToPromise(this.selectedWallet);
 
@@ -158,6 +164,82 @@ export class WalletService {
     );
   }
 
+  createStakingAddress(
+    walletId: string,
+    passphrase: string,
+    enckey: string
+  ): Observable<string> {
+    return this.http.post<string>(this.coreUrl, {
+      jsonrpc: "2.0",
+      id: "jsonrpc",
+      method: "wallet_createStakingAddress",
+      params: [
+        {
+          name: walletId,
+          passphrase: _.isNil(passphrase) ? "" : passphrase,
+          enckey: _.isNil(passphrase) ? "" : enckey,
+        },
+      ],
+    });
+  }
+
+  listStakingAddress(
+    walletId: string,
+    passphrase: string,
+    enckey: string
+  ): Observable<string> {
+    return this.http.post<string>(this.coreUrl, {
+      jsonrpc: "2.0",
+      id: "jsonrpc",
+      method: "wallet_listStakingAddresses",
+      params: [
+        {
+          name: walletId,
+          passphrase: _.isNil(passphrase) ? "" : passphrase,
+          enckey: _.isNil(passphrase) ? "" : enckey,
+        },
+      ],
+    });
+  }
+
+  createTransferAddress(
+    walletId: string,
+    passphrase: string,
+    enckey: string
+  ): Observable<string> {
+    return this.http.post<string>(this.coreUrl, {
+      jsonrpc: "2.0",
+      id: "jsonrpc",
+      method: "wallet_createTransferAddress",
+      params: [
+        {
+          name: walletId,
+          passphrase: _.isNil(passphrase) ? "" : passphrase,
+          enckey: _.isNil(passphrase) ? "" : enckey,
+        },
+      ],
+    });
+  }
+
+  listTransferAddress(
+    walletId: string,
+    passphrase: string,
+    enckey: string
+  ): Observable<string> {
+    return this.http.post<string>(this.coreUrl, {
+      jsonrpc: "2.0",
+      id: "jsonrpc",
+      method: "wallet_listTransferAddresses",
+      params: [
+        {
+          name: walletId,
+          passphrase: _.isNil(passphrase) ? "" : passphrase,
+          enckey: _.isNil(passphrase) ? "" : enckey,
+        },
+      ],
+    });
+  }
+
   syncWallet(
     walletId: string,
     passphrase: string,
@@ -240,6 +322,16 @@ export class WalletService {
       ],
     });
   }
+
+  checkStakingStake(stakingAddress: string): Observable<string> {
+    return this.http.post<string>(this.coreUrl, {
+      jsonrpc: "2.0",
+      id: "jsonrpc",
+      method: "staking_state",
+      params: [stakingAddress],
+    });
+  }
+
   checkWalletAddress(
     walletId: string,
     passphrase: string,
@@ -389,6 +481,77 @@ export class WalletService {
     });
   }
 
+  withdrawToAddress(
+    walletId: string,
+    passphrase: string,
+    enckey: string,
+    fromAddress: string,
+    toAddress: string,
+    viewKeys: string[]
+  ): Observable<string> {
+    return this.http.post<string>(this.coreUrl, {
+      jsonrpc: "2.0",
+      id: "jsonrpc",
+      method: "staking_withdrawAllUnbondedStake",
+      params: [
+        {
+          name: walletId,
+          passphrase: _.isNil(passphrase) ? "" : passphrase,
+          enckey: _.isNil(enckey) ? "" : enckey,
+        },
+        fromAddress,
+        toAddress,
+        viewKeys,
+      ],
+    });
+  }
+
+  unbondFromAddress(
+    walletId: string,
+    passphrase: string,
+    enckey: string,
+    fromAddress: string,
+    amount: string
+  ): Observable<string> {
+    return this.http.post<string>(this.coreUrl, {
+      jsonrpc: "2.0",
+      id: "jsonrpc",
+      method: "staking_unbondStake",
+      params: [
+        {
+          name: walletId,
+          passphrase: _.isNil(passphrase) ? "" : passphrase,
+          enckey: _.isNil(enckey) ? "" : enckey,
+        },
+        fromAddress,
+        amount,
+      ],
+    });
+  }
+
+  depositToAddress(
+    walletId: string,
+    passphrase: string,
+    enckey: string,
+    toAddress: string,
+    amount: string
+  ): Observable<string> {
+    return this.http.post<string>(this.coreUrl, {
+      jsonrpc: "2.0",
+      id: "jsonrpc",
+      method: "staking_depositAmountStake",
+      params: [
+        {
+          name: walletId,
+          passphrase: _.isNil(passphrase) ? "" : passphrase,
+          enckey: _.isNil(enckey) ? "" : enckey,
+        },
+        toAddress,
+        amount,
+      ],
+    });
+  }
+
   pingClientRPC(): Observable<string> {
     return this.http.post<string>(this.coreUrl, {
       jsonrpc: "2.0",
@@ -404,5 +567,12 @@ export class WalletService {
   saveToLocal() {
     localStorage.setItem("SendViewkey", this.sendViewkey);
     localStorage.setItem("SendToAddressString", this.sendToAddressString);
+  }
+
+  convertFromBasicToCro(amount: string) {
+    return new BigNumber(amount).dividedBy("100000000").toString(10);
+  }
+  convertFromCroToBasic(amount: string) {
+    return new BigNumber(amount).multipliedBy("100000000").toString(10);
   }
 }

@@ -12,10 +12,17 @@ import { WalletListComponent } from "./components/wallet-list/wallet-list.compon
 import { WalletInfoComponent } from "./components/wallet-info/wallet-info.component";
 
 import { ModalModule } from "ngx-bootstrap/modal";
+import { StakingListComponent } from "./components/staking-list/staking-list.component";
+import { TransferListComponent } from "./components/transfer-list/transfer-list.component";
+import { CreateAddressFormComponent } from "./components/create-address-form/create-address-form.component";
 import { SendFundsFormComponent } from "./components/send-funds-form/send-funds-form.component";
+import { DepositFundsFormComponent } from "./components/deposit-funds-form/deposit-funds-form.component";
+import { WithdrawFundsFormComponent } from "./components/withdraw-funds-form/withdraw-funds-form.component";
+import { UnbondFundsFormComponent } from "./components/unbond-funds-form/unbond-funds-form.component";
 import { CreateWalletFormComponent } from "./components/create-wallet-form/create-wallet-form.component";
 import { ReceiveFundComponent } from "./components/receive-fund/receive-fund.component";
 import { AddressValidatorDirective } from "./shared/address.directive";
+import { StakingAddressValidatorDirective } from "./shared/stakingAddress.directive";
 import { SufficientBalanceValidatorDirective } from "./components/send-funds-form/sufficient-balance.directive";
 import { HttpClientModule } from "@angular/common/http";
 import { PassphraseFormComponent } from "./components/passphrase-form/passphrase-form.component";
@@ -27,17 +34,26 @@ import { AgeViewComponent } from "./components/txn-history/age-view/age-view.com
 import { LockViewComponent } from "./components/lock-view/lock-view.component";
 import { ViewKeyValidatorDirective } from "./shared/view-key.directive";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+
 @NgModule({
   declarations: [
     AppComponent,
     TxnHistoryComponent,
     WalletListComponent,
     WalletInfoComponent,
+    StakingListComponent,
+    TransferListComponent,
+    CreateAddressFormComponent,
     SendFundsFormComponent,
+    DepositFundsFormComponent,
+    WithdrawFundsFormComponent,
+    UnbondFundsFormComponent,
+
     InOutViewComponent,
     CreateWalletFormComponent,
     ReceiveFundComponent,
     AddressValidatorDirective,
+    StakingAddressValidatorDirective,
     ViewKeyValidatorDirective,
     SufficientBalanceValidatorDirective,
     PassphraseFormComponent,

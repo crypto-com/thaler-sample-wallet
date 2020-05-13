@@ -1,0 +1,40 @@
+<ngb-tabset [destroyOnHide]="false">
+    <ngb-tab title="Staking">
+        <ng-template ngbTabContent>
+            <form class="form" name="sendFundsForm" #form="ngForm" novalidate>
+                <div class="input-container">
+                    <div class="row">
+                        <div class="col no-padding main">
+                            <app-staking-list #StakingAddresses></app-staking-list>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button class="btn btn-blue" (click)="handleStakingAddress(form)">
+              Staking
+            </button>
+                    </div>
+                </div>
+            </form>
+        </ng-template>
+    </ngb-tab>
+    <ngb-tab title="Transfer">
+        <ng-template ngbTabContent>
+            <form class="form" name="sendFundsForm" #form="ngForm" novalidate>
+                <div class="input-container">
+                    <div class="row">
+                        <div class="col no-padding main">
+                            <app-transfer-list #TransferAddresses></app-transfer-list>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button class="btn btn-blue" (click)="handleTransferAddress(form)">
+              Transfer
+            </button>
+                    </div>
+                </div>
+            </form>
+        </ng-template>
+    </ngb-tab>
+</ngb-tabset>
