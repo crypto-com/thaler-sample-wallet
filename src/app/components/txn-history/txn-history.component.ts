@@ -66,6 +66,10 @@ export class TxnHistoryComponent implements OnInit {
         title: "Affected address",
         sort: false,
       },
+      txType: {
+        title: "TxType",
+        sort: false,
+      },
       value: {
         title: "Value",
         filter: false,
@@ -79,19 +83,37 @@ export class TxnHistoryComponent implements OnInit {
       this.data = [];
       walletTxnHistory.forEach((history) => {
         let outputs = history["outputs"];
-        let address = outputs[0]["address"];
+        let inputs = history["inputs"];
 
-        const tmpData: Transaction = {
-          txHash: "0x" + history["transaction_id"],
-          blockHeight: history["block_height"],
-          age: history["block_time"],
-          affectedAddress: address,
-          action: history["kind"] === "Incoming" ? "In" : "Out",
-          value: new BigNumber(history["value"])
-            .dividedBy("100000000")
-            .toString(10),
-        };
-        this.data.push(tmpData);
+        if (outputs.length > 0) {
+          let address = outputs[0]["address"];
+          const tmpData: Transaction = {
+            txHash: "0x" + history["transaction_id"],
+            blockHeight: history["block_height"],
+            age: history["block_time"],
+            affectedAddress: address,
+            txType: history["transaction_type"],
+            action: history["kind"] === "Incoming" ? "In" : "Out",
+            value: new BigNumber(history["value"])
+              .dividedBy("100000000")
+              .toString(10),
+          };
+          this.data.push(tmpData);
+        } else {
+          let address = inputs[0]["address"];
+          const tmpData: Transaction = {
+            txHash: "0x" + history["transaction_id"],
+            blockHeight: history["block_height"],
+            age: history["block_time"],
+            affectedAddress: address,
+            txType: history["transaction_type"],
+            action: history["kind"] === "Incoming" ? "In" : "Out",
+            value: new BigNumber(history["value"])
+              .dividedBy("100000000")
+              .toString(10),
+          };
+          this.data.push(tmpData);
+        }
       });
     });
 

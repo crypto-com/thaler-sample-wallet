@@ -4,6 +4,7 @@ export interface Transaction {
   age: string;
   action: string;
   affectedAddress: string;
+  txType: string;
   value: string;
 }
 
