@@ -99,10 +99,6 @@ export class DepositFundsFormComponent implements OnInit {
   }
 
   confirm(): void {
-    this.walletService.sendViewkey = this.viewKey;
-    this.walletService.sendToAddressString = this.toAddress;
-    this.walletService.sendAmount = this.amountValue;
-    this.walletService.saveToLocal();
     this.status = Status.CONFIRMING;
   }
 

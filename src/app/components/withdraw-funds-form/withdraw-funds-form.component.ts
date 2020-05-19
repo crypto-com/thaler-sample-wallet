@@ -106,10 +106,6 @@ export class WithdrawFundsFormComponent implements OnInit {
   }
 
   confirm(): void {
-    this.walletService.sendViewkey = this.viewKey;
-    this.walletService.sendToAddressString = this.toAddress;
-
-    this.walletService.saveToLocal();
     this.status = Status.CONFIRMING;
   }
 
