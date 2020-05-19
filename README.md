@@ -30,14 +30,26 @@ Crypto.com is not liable for any potential damage, loss of data/files arising fr
 
 - Start Crypto.com Chain by following instructions in the [Crypto.com Chain repository](https://github.com/crypto-com/chain)
 - Start Crypto.com Chain Client RPC
+
 ```bash
 $ ./target/debug/client-rpc --network-id 42 -i <main|test|dev>
+
 ```
+
+or you want to change storage folder or connect to the server remotely.
+
+```bash
+export CRYPTO_CHAIN_ID=testnet-thaler-crypto-com-chain-42
+./client-rpc --chain-id $CRYPTO_CHAIN_ID --port 9981 --storage-dir $PWD/.storage --websocket-url ws://127.0.0.1:26657/websocket
+```
+
 - Run the following line to start serving the wallet
+  
 ```bash
 $ npm install
 $ npm start
 ```
+
 - Navigate to `http://localhost:4200/`.
 
 ### Configuration
@@ -48,7 +60,16 @@ You can configure the ClientRPC server URL by changing the `clientRpcUrl` in `sr
 
 ### How to create a new wallet
 
-- A new wallet can be created using `Add wallet` button on UI and entering wallet name and passphrase.
+- A new wallet can be created using `Add wallet` button on UI
+- enter wallet name and passphrase  
+- leave mnemonics as blank
+- record new mnemonics to safe place, don't disclose it to anyone
+
+### How to restore a wallet
+
+- A new wallet can be restored using `Add Wallet` button on UI
+- enter name, mnemonics, passphrase
+- transfer addresses will be automatically generated in syncing
 
 ### How to receive funds
 
@@ -57,6 +78,41 @@ You can configure the ClientRPC server URL by changing the `clientRpcUrl` in `sr
 ### How to send funds
 
 - You can send funds by clicking `Send funds` button and entering recipient's wallet address, view key and other necessary details.
+  
+
+### How to generate addresses
+
+- You can generate address clicking `Address` button 
+- In Stakinng tab, click `Staking` to generate 1 staking address
+- In Tranfer tab, click `Transfer` to genreate 1 transfer address
+
+### How to deposit
+
+- click `Deposit` button
+- enter amount to deposit in CRO unit
+- enter staking address
+- enter wallet passphrase, and click `confirm`
+
+### How to unbond
+
+to withdraw from staking account, you need to unbond the amount first
+
+- click `Unbond`
+- enter amount to unbond in CRO unit
+- enter staking address , current staked account will be fetched automatically
+- enter wallet passphrase, and click `confirm`
+
+### How to withdraw
+
+to send the amount to the recipient, you need to withdraw unbonded amount first
+
+- enter staking address to withdraw from
+- enter your transfer address to send the amount to
+- enter wallet passphrase, and click `confirm`
+
+
+
+
 
 ## Contribution
 
