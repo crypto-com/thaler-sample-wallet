@@ -20,6 +20,7 @@ import { DepositFundsFormComponent } from "./components/deposit-funds-form/depos
 import { WithdrawFundsFormComponent } from "./components/withdraw-funds-form/withdraw-funds-form.component";
 import { UnbondFundsFormComponent } from "./components/unbond-funds-form/unbond-funds-form.component";
 import { CreateWalletFormComponent } from "./components/create-wallet-form/create-wallet-form.component";
+import { RestoreWalletFormComponent } from "./components/restore-wallet-form/restore-wallet-form.component";
 import { ReceiveFundComponent } from "./components/receive-fund/receive-fund.component";
 import { AddressValidatorDirective } from "./shared/address.directive";
 import { StakingAddressValidatorDirective } from "./shared/stakingAddress.directive";
@@ -51,6 +52,7 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
     InOutViewComponent,
     CreateWalletFormComponent,
+    RestoreWalletFormComponent,
     ReceiveFundComponent,
     AddressValidatorDirective,
     StakingAddressValidatorDirective,
