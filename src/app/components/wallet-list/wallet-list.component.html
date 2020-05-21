@@ -1,20 +1,80 @@
 <div class="wallet-list">
-  <div class="list-group">
-    <a
-      href="#"
-      class="list-group-item list-group-item-action flex-column align-items-start"
-      *ngFor="let wallet of walletList"
-      [ngClass]="{ active: selectedWallet == wallet }"
-      (click)="openModal(decryptWallet, wallet.id)"
-      title="{{ wallet.id }}"
-    >
-      <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1 wallet-id">{{ wallet.id }}</h5>
-      </div>
+
+    <div class="list-group">
+        <a href="#" class="list-group-item list-group-item-action flex-column align-items-start" *ngFor="let wallet of walletList" [ngClass]="{ active: selectedWallet == wallet }" (click)="openModal(decryptWallet, wallet.id)" title="{{ wallet.id }}">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1 wallet-id">{{ wallet.id }}</h5>
+            </div>
+        </a>
+    </div>
+
+    <div class="text-center add-wallet">
+        <a href="#" class="" (click)="openModal(createWallet)">
+            <small>
+        <svg
+          width="17px"
+          height="17px"
+          viewBox="0 0 17 17"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+        >
+          <g
+            id="CRO-Desktop-Wallet"
+            stroke="none"
+            stroke-width="1"
+            fill="none"
+            fill-rule="evenodd"
+            opacity="0.5"
+          >
+            <g
+              id="Home_5+-wallets"
+              transform="translate(-56.000000, -552.000000)"
+            >
+              <g id="Group-29" transform="translate(24.000000, 529.000000)">
+                <g id="Group-28" transform="translate(32.000000, 20.000000)">
+                  <g id="Group-27" transform="translate(0.000000, 3.000000)">
+                    <g id="Group-25">
+                      <rect
+                        id="BG"
+                        fill="#FFFFFF"
+                        opacity="0.3"
+                        x="0"
+                        y="0"
+                        width="17"
+                        height="17"
+                        rx="8.5"
+                      ></rect>
+                      <g
+                        id="Group-24"
+                        transform="translate(4.250000, 4.250000)"
+                        stroke="#FFFFFF"
+                        stroke-linecap="round"
+                        stroke-width="1.5"
+                      >
+                        <g id="Group-26">
+                          <path d="M0.25,4.5 L8.25,4.5" id="Path-4"></path>
+                          <path
+                            d="M0.375,4.625 L8.125,4.625"
+                            id="Path-4"
+                            transform="translate(4.250000, 4.625000) rotate(-270.000000) translate(-4.250000, -4.625000) "
+                          ></path>
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </svg>
+        Create Wallet</small
+      >
     </a>
-  </div>
-  <div class="text-center add-wallet">
-    <a href="#" class="" (click)="openModal(createWallet)">
+    </div>
+
+    <div class="text-center add-wallet">
+    <a href="#" class="" (click)="openModal(restoreWallet)">
       <small>
         <svg
           width="17px"
@@ -73,14 +133,19 @@
             </g>
           </g>
         </svg>
-        Add Wallet</small
+        Restore Wallet</small
       >
     </a>
-  </div>
+    </div>
+
+
+    <div>
+      <img src="./assets/logoTM.png" alt="Crypto.com Chain" class="logo-tm" />
+    </div>
 </div>
-<div>
-  <img src="./assets/logoTM.png" alt="Crypto.com Chain" class="logo-tm" />
-</div>
+
+
+
 
 <ng-template #createWallet>
   <div class="modal-header">
@@ -101,6 +166,29 @@
     ></app-create-wallet-form>
   </div>
 </ng-template>
+
+
+<ng-template #restoreWallet>
+  <div class="modal-header">
+    <h5 class="modal-title pull-left">Restore Wallet</h5>
+    <button
+      type="button"
+      class="close pull-right"
+      aria-label="Close"
+      (click)="closeModal()"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-restore-wallet-form
+      (created)="createdCloseModal()"
+      (cancelled)="closeModal()"
+    ></app-restore-wallet-form>
+  </div>
+</ng-template>
+
+
 <ng-template #decryptWallet>
   <div class="modal-header">
     <h5 class="modal-title pull-left">Decrypt Wallet</h5>

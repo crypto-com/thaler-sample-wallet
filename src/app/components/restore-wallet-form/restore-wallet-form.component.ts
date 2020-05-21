@@ -3,11 +3,11 @@ import { NgForm } from "@angular/forms";
 
 import { WalletService } from "src/app/services/wallet.service";
 @Component({
-  selector: "app-create-wallet-form",
-  templateUrl: "./create-wallet-form.component.html",
-  styleUrls: ["./create-wallet-form.component.scss"],
+  selector: "app-restore-wallet-form",
+  templateUrl: "./restore-wallet-form.component.html",
+  styleUrls: ["./restore-wallet-form.component.scss"],
 })
-export class CreateWalletFormComponent implements OnInit {
+export class RestoreWalletFormComponent implements OnInit {
   @Output() cancelled = new EventEmitter<void>();
   @Output() created = new EventEmitter<string>();
   duplicatedWalletId = false;
@@ -19,7 +19,11 @@ export class CreateWalletFormComponent implements OnInit {
   handleSubmit(form: NgForm): void {
     this.markFormAsDirty(form);
     if (form.valid) {
-      this.createWallet(form.value.walletId, form.value.walletPassphrase, "");
+      this.createWallet(
+        form.value.walletId,
+        form.value.walletPassphrase,
+        form.value.walletMnemonics
+      );
     } else {
       alert("create-wallet form not valid");
     }
