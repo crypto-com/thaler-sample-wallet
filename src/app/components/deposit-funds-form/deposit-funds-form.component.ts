@@ -68,9 +68,10 @@ export class DepositFundsFormComponent implements OnInit {
   }
 
   async fetchStakingAccount() {
-    var data = await this.walletService
-      .checkStakingStake(this.toAddress)
-      .toPromise();
+    var data = await this.walletService.checkStakingStake(
+      this.walletId,
+      this.toAddress
+    );
     var result = data["result"];
     if (result) {
       var bonded = result["bonded"];

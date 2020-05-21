@@ -9,6 +9,7 @@ import { HttpClient } from "@angular/common/http";
 import * as _ from "lodash";
 
 import config from "../config";
+import { resolve } from "url";
 
 // to await BehaviourSubject
 async function convertToPromise<T>(subject: BehaviorSubject<T>): Promise<T> {
@@ -323,13 +324,30 @@ export class WalletService {
     });
   }
 
-  checkStakingStake(stakingAddress: string): Observable<string> {
-    return this.http.post<string>(this.coreUrl, {
-      jsonrpc: "2.0",
-      id: "jsonrpc",
-      method: "staking_state",
-      params: [stakingAddress],
-    });
+  async checkStakingStake(walletname, stakingAddress: string): Promise<string> {
+    var first_result = await this.http
+      .post<string>(this.coreUrl, {
+        jsonrpc: "2.0",
+        id: "jsonrpc",
+        method: "staking_state",
+        params: [walletname, stakingAddress],
+      })
+      .toPromise();
+    if (first_result["result"]) {
+      return new Promise((resolve) => {
+        resolve(first_result);
+      });
+    }
+
+    // try with previous version
+    return this.http
+      .post<string>(this.coreUrl, {
+        jsonrpc: "2.0",
+        id: "jsonrpc",
+        method: "staking_state",
+        params: [stakingAddress],
+      })
+      .toPromise();
   }
 
   checkWalletAddress(
