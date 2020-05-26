@@ -31,6 +31,7 @@ export class UnbondFundsFormComponent implements OnInit {
   amountValue: string;
   bondedAmount: string;
   unbondedAmount: string;
+  unbondedTime: string; // time duration string, example) days HH:MM:SS
   @Input() fromAddress: string;
 
   walletPassphrase: string;
@@ -66,6 +67,19 @@ export class UnbondFundsFormComponent implements OnInit {
     }
 
     this.fetchStakingAccount();
+    this.fetchUnbondTime();
+  }
+
+  async fetchUnbondTime() {
+    let result_all = await this.walletService.getGenesis();
+    let result = result_all["result"];
+    let consensus_params = result["consensus_params"];
+    let evidence = consensus_params["evidence"];
+    let max_age_duration = evidence["max_age_duration"]; // nano seconds (10^9)
+    let display_seconds = this.walletService.convertNanoSeconds(
+      max_age_duration
+    );
+    this.unbondedTime = display_seconds;
   }
 
   async fetchStakingAccount() {
