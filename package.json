@@ -38,7 +38,7 @@
     "crypto": "^1.0.1",
     "execa": "^2.0.4",
     "font-awesome": "^4.7.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "ng2-completer": "^2.0.8",
     "ng2-smart-table": "1.5.0",
     "ngx-bootstrap": "^4.0.0",
