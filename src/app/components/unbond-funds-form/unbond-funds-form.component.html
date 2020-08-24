@@ -1,19 +1,21 @@
 <form class="form" name="unbondFundsForm" #form="ngForm" novalidate>
-  <div class="wallet">
-    <div class="wallet-name">{{ fromAddress }}</div>
-    <div class="wallet-balance">      
-      Bonded {{bondedAmount}} 
-      <span class="wallet-balance-unit">CRO</span>      
+    <div class="wallet">
+        <div class="wallet-name">{{ fromAddress }}</div>
+        <div class="unbond-limit">
+            CAUTION! can be withdrawn after {{ unbondedTime }}
+        </div>
+        <div class="wallet-balance">
+            Bonded {{ bondedAmount }}
+            <span class="wallet-balance-unit">CRO</span>
+        </div>
+        <div class="wallet-balance">
+            Unbonded {{ unbondedAmount }}
+            <span class="wallet-balance-unit">CRO</span>
+        </div>
     </div>
-    <div class="wallet-balance">            
-      Unbonded {{unbondedAmount}}
-      <span class="wallet-balance-unit">CRO</span>      
-    </div>
-  </div>
-  <div class="input-container">
-    <div class="form-group row">
-      <label for="amount" class="col-sm-4 col-form-label"
-        >Unbond Amount&nbsp;*</label
+    <div class="input-container">
+        <div class="form-group row">
+            <label for="amount" class="col-sm-4 col-form-label">Unbond Amount&nbsp;*</label
       >
       <div class="input-group col-sm-8" *ngIf="status === 'PREPARING'">
         <input
@@ -130,7 +132,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class="form-group row" *ngIf="status === 'PREPARING'">
       <label for="walletPassphrase" class="col-sm-4 col-form-label"
         >Wallet Passphrase</label

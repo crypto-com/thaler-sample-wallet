@@ -350,6 +350,17 @@ export class WalletService {
       .toPromise();
   }
 
+  async getGenesis(): Promise<string> {
+    return this.http
+      .post<string>(this.coreUrl, {
+        jsonrpc: "2.0",
+        id: "jsonrpc",
+        method: "genesis",
+        params: [],
+      })
+      .toPromise();
+  }
+
   checkWalletAddress(
     walletId: string,
     passphrase: string,
@@ -592,5 +603,16 @@ export class WalletService {
   }
   convertFromCroToBasic(amount: string) {
     return new BigNumber(amount).multipliedBy("100000000").toString(10);
+  }
+  convertNanoSeconds(duration: string) {
+    let seconds = new BigNumber(duration).dividedBy("1000000000").toNumber();
+    let days = Math.floor(seconds / (24 * 60 * 60));
+    seconds -= days * 24 * 60 * 60;
+    let hours = Math.floor(seconds / (60 * 60));
+    seconds -= hours * 60 * 60;
+    let mintutes = Math.floor(seconds / 60);
+    seconds -= mintutes * 60;
+    let result = `${days} days ${hours}:${mintutes}:${seconds}`;
+    return result;
   }
 }
